@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stitchify - Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Hind:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Hind', -apple-system, sans-serif;
+    background: #EBE5CC;
+    color: #1C1B19;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .container {
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+  }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: #1C1B19;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: #6F6A5E;
+    margin-bottom: 56px;
+    letter-spacing: 0.3px;
+  }
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    background: #FAF8F0;
+    border: 1px solid #E5E0CE;
+    border-radius: 16px;
+    text-decoration: none;
+    color: #1C1B19;
+    transition: transform 300ms cubic-bezier(0.05,0.7,0.1,1), box-shadow 300ms cubic-bezier(0.05,0.7,0.1,1);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(90,62,139,0.1);
+  }
+  .card-content { text-align: left; }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: #6F6A5E;
+  }
+  .card-arrow {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8A74B8, #5A3E8B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-arrow svg {
+    width: 16px;
+    height: 16px;
+    stroke: #fff;
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .footer {
+    margin-top: 48px;
+    font-size: 12px;
+    color: #9C9688;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="logo">Stitchify</h1>
+  <p class="subtitle">Presentation pages</p>
+  <div class="cards">
+    <a href="./landing/" class="card">
+      <div class="card-content">
+        <div class="card-title">Landing page - option 1</div>
+        <div class="card-desc">Editorial layout with sidebar features and image strip</div>
+      </div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </a>
+    <a href="./landing-v2/" class="card">
+      <div class="card-content">
+        <div class="card-title">Landing page - option 2</div>
+        <div class="card-desc">Beacons.ai inspired with dark hero, bento grid, and scroll animations</div>
+      </div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </a>
+    <a href="./dashboard/" class="card">
+      <div class="card-content">
+        <div class="card-title">Brand dashboard</div>
+        <div class="card-desc">Full SPA with products, orders, payments, profile, and EN/JP toggle</div>
+      </div>
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </a>
+  </div>
+  <p class="footer">© 2026 Stitchify</p>
+</div>
+</body>
+</html>
