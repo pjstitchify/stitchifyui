@@ -7,7 +7,7 @@
 <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Stitchify%20MAKE%22,%22short_name%22:%22MAKE%22,%22display%22:%22standalone%22,%22background_color%22:%22%23FFFFFF%22,%22theme_color%22:%22%234E35E8%22}">
 <title>Stitchify MAKE</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}</style>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative;isolation:isolate}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none;z-index:1}.stitched:active{transform:translateY(1px)}</style>
 </head>
 <body>
 <div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F5F7"><div style="text-align:center"><div style="font-size:48px;font-weight:700;color:#1A1A2E">Stitchify</div><div style="font-size:20px;font-weight:600;color:#4D7C0F;margin-top:4px">MAKE</div><div style="font-size:16px;color:#6B7280;margin-top:8px">Loading...</div></div></div></div>
@@ -88,7 +88,7 @@ const DashboardPage=({projects,onNew,onOpen})=>{
   return(<div>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
       <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>My Projects</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {projects.filter(p=>["manufacturing","ordered"].includes(p.status)).length} in production</p></div>
-      <button onClick={onNew} style={btnP}><Ic n="create" s={15} color="#fff"/> Create</button>
+      <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> Create</button>
     </div>
     <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:18,scrollbarWidth:"none"}}>
       <button onClick={()=>setFilter("all")} style={{padding:"6px 16px",borderRadius:T.rp,border:filter==="all"?"none":`1px solid ${T.border}`,background:filter==="all"?T.primary:"transparent",color:filter==="all"?"#fff":T.textSec,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.font,flexShrink:0}}>All ({projects.length})</button>
@@ -177,7 +177,7 @@ const ConfiguratorPage=({onBack,project,onWithdraw,onMatch})=>{
           <div style={{fontSize:12,color:T.textSec,marginBottom:2}}>Rough estimate</div>
           <div style={{fontSize:24,fontWeight:700,color:T.text,marginBottom:2}}>{estimate}</div>
           <div style={{fontSize:12,color:T.textPh,marginBottom:18}}>Final quote after factory matching</div>
-          <button onClick={onMatch} disabled={locked} style={{...btnP,width:"100%",padding:"14px",fontSize:15,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer"}}>Get factory matches →</button>
+          <button onClick={onMatch} disabled={locked} className="stitched" style={{...btnP,width:"100%",padding:"14px",fontSize:15,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer"}}>Get factory matches →</button>
           <div style={{fontSize:12,color:T.textPh,textAlign:"center",marginTop:10}}>No payment required to see matches</div>
         </div>
       </div>
@@ -199,7 +199,7 @@ const MatchingPage=({onBack,onQuote})=>{
       </div>
       <div style={{display:"flex",gap:16,fontSize:14,color:T.textSec}}><span>{f.specialty}</span><span>Price {f.price}</span><span>{f.quality}</span></div>
     </div>))}
-    <button onClick={onQuote} disabled={!sel} style={{...btnP,width:"100%",padding:"14px",fontSize:15,marginTop:8,opacity:sel?1:0.5,cursor:sel?"pointer":"not-allowed"}}>Continue to quote →</button>
+    <button onClick={onQuote} disabled={!sel} className="stitched" style={{...btnP,width:"100%",padding:"14px",fontSize:15,marginTop:8,opacity:sel?1:0.5,cursor:sel?"pointer":"not-allowed"}}>Continue to quote →</button>
     <Footer/>
   </div>)};
 
@@ -211,7 +211,7 @@ const QuotePage=({onBack,onOrder})=>(<div>
     <div style={{height:1,background:T.hairline,margin:"14px 0"}}/>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><span style={{fontSize:18,fontWeight:700}}>Total</span><span style={{fontSize:24,fontWeight:700,color:T.primary}}>¥82,000</span></div>
     <div style={{background:T.surfaceSubtle,borderRadius:T.rs,padding:"14px 18px",marginBottom:20,fontSize:13,color:T.textSec,lineHeight:1.7}}>1. Factory confirms within 2 business days<br/>2. 50% deposit processed<br/>3. Manufacturing begins · tracked in your project</div>
-    <button onClick={onOrder} style={{...btnP,width:"100%",padding:"14px",fontSize:16}}>Place order · ¥82,000</button>
+    <button onClick={onOrder} className="stitched" style={{...btnP,width:"100%",padding:"14px",fontSize:16}}>Place order · ¥82,000</button>
   </div>
   <Footer/>
 </div>);
@@ -273,7 +273,7 @@ const ChatPage=()=>{
       </div>
       <div style={{padding:"14px 16px",borderTop:`1px solid ${T.hairline}`,display:"flex",gap:10}}>
         <input value={txt} onChange={e=>setTxt(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} placeholder="Type a message..." style={{...inpS,flex:1}}/>
-        <button onClick={send} style={{...btnP,padding:"0 18px"}}><Ic n="send" s={16} color="#fff"/></button>
+        <button onClick={send} className="stitched" style={{...btnP,padding:"0 18px"}}><Ic n="send" s={16} color="#fff"/></button>
       </div>
     </div>
   </div>)};
@@ -286,7 +286,7 @@ const ProfilePage=()=>(<div>
       <div><div style={{fontSize:18,fontWeight:600,color:T.text}}>Aiko Tanaka</div><div style={{fontSize:14,color:T.textPh}}>aiko@brand.jp</div></div>
     </div>
     {[["Full name","Aiko Tanaka"],["Email","aiko@brand.jp"],["Brand / Company","Aiko Studio"],["Phone","+81 90-1234-5678"],["Shipping address","1-2-3 Shibuya, Tokyo 150-0001"]].map(([l,v])=>(<div key={l} style={{marginBottom:18}}><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>{l}</label><input style={inpS} defaultValue={v}/></div>))}
-    <button style={{...btnP,width:"100%",padding:"14px"}}>Save profile</button>
+    <button className="stitched" style={{...btnP,width:"100%",padding:"14px"}}>Save profile</button>
   </div>
   <Footer/>
 </div>);
