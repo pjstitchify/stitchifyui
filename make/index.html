@@ -104,7 +104,7 @@ const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
   return(<div>
     {justOrdered&&<OrderPopup item={justOrdered} onDismiss={onDismiss} onOpen={onOpen}/>}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
-      <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>My Projects</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {projects.filter(p=>["manufacturing","ordered"].includes(p.status)).length} in production</p></div>
+      <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {projects.filter(p=>["manufacturing","ordered"].includes(p.status)).length} in production</p></div>
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
     <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:18,scrollbarWidth:"none"}}>
@@ -384,7 +384,7 @@ const SegToggle=()=>(
   </div>);
 
 const Header=({pg,setPg,onNew,inFlow})=>{
-  const items=[{key:"dashboard",label:"Projects"},{key:"create",label:"MAKE"},{key:"chat",label:"Chat"},{key:"profile",label:"Profile"}];
+  const items=[{key:"dashboard",label:"Home"},{key:"create",label:"MAKE"},{key:"chat",label:"Chat"},{key:"profile",label:"Profile"}];
   const logo=resolveImg("LOGO_AUTH");
   return(<div style={{position:"sticky",top:0,zIndex:50,background:T.bg,borderBottom:`1px solid ${T.hairline}`}}>
     <div style={{maxWidth:1200,margin:"0 auto",padding:"0 44px",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
