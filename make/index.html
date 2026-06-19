@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#FFFFFF">
 <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Stitchify%20MAKE%22,%22short_name%22:%22MAKE%22,%22display%22:%22standalone%22,%22background_color%22:%22%23FFFFFF%22,%22theme_color%22:%22%234E35E8%22}">
 <title>Stitchify MAKE</title><link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}</style></head>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}.embroidered{position:relative}.embroidered::after{content:'';position:absolute;inset:5px;border:2px dashed rgba(255,255,255,0.75);border-radius:13px;pointer-events:none}.embroidered:active{transform:translateY(1px) scale(0.97)}</style></head>
 <body><div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F5F7"><div style="text-align:center"><div style="font-size:48px;font-weight:700;color:#1A1A2E">Stitchify</div><div style="font-size:16px;color:#6B7280;margin-top:8px">Loading...</div></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -97,42 +97,77 @@ const OrderPopup=({item,onDismiss,onOpen})=>{
     <div style={{display:"flex",justifyContent:"flex-end",marginTop:8}}><button onClick={()=>onOpen(item)} style={{...btnO,padding:"7px 16px",fontSize:13}}>View order details →</button></div>
   </div>)};
 
+// Compact production-tracking indicator (shown only when items are in production)
+const IN_PRODUCTION=["ordered","manufacturing","inspection","shipping"];
+const ProductionTracker=({items,onOpen})=>(
+  <div style={{...cardS,padding:"22px 24px",marginBottom:28,background:T.accentBg,borderColor:T.accent}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
+      <Ic n="factory" s={18} color={T.accentText}/><span style={{fontSize:15,fontWeight:700,color:T.text}}>In production</span>
+      <span style={{fontSize:12,color:T.accentText,background:T.bg,borderRadius:T.rp,padding:"2px 10px",fontWeight:600}}>{items.length}</span>
+    </div>
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {items.map(it=>{const idx=Math.max(0,ORDER_STAGES.findIndex(s=>s.k===it.status));return(
+        <div key={it.id} onClick={()=>onOpen(it)} style={{background:T.bg,borderRadius:T.rs,padding:"14px 18px",cursor:"pointer",border:`1px solid ${T.border}`}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+            <div style={{display:"flex",alignItems:"center",gap:12}}>
+              <div style={{width:40,height:40,borderRadius:8,overflow:"hidden",background:T.surfaceCool,flexShrink:0}}><ImgFull src={it.img} h={40}/></div>
+              <div><div style={{fontSize:15,fontWeight:600,color:T.text}}>{it.nameEn}</div><div style={{fontSize:12,color:T.textSec}}>{it.qty} pcs · {it.factory}</div></div>
+            </div>
+            <StatusBadge status={it.status}/>
+          </div>
+          <div style={{display:"flex",alignItems:"center",width:"100%"}}>
+            {ORDER_STAGES.map((st,i)=>{const done=i<=idx;return(<React.Fragment key={st.k}>
+              {i>0&&<div style={{flex:1,height:2,background:i<=idx?T.accent:T.hairline}}/>}
+              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                <div style={{width:16,height:16,borderRadius:"50%",background:done?T.accent:T.bg,border:`2px solid ${done?T.accent:T.border}`,display:"flex",alignItems:"center",justifyContent:"center"}}>{done&&<Ic n="check" s={8} color="#1A1A2E"/>}</div>
+                <span style={{fontSize:10,color:done?T.accentText:T.textPh,fontWeight:i===idx?600:400,whiteSpace:"nowrap"}}>{st.label}</span>
+              </div>
+            </React.Fragment>)})}
+          </div>
+        </div>)})}
+    </div>
+  </div>);
+
+const ProjectCard=({p,onOpen})=>(
+  <div style={{...cardS,overflow:"hidden",cursor:"pointer",transition:`all 300ms ${T.eo}`}} onMouseEnter={e=>hov(e,1)} onMouseLeave={e=>hov(e,0)} onClick={()=>onOpen(p)}>
+    <div style={{position:"relative"}}><ImgFull src={p.img} ar="3/4"/><div style={{position:"absolute",top:12,right:12}}><StatusBadge status={p.status}/></div></div>
+    <div style={{padding:"16px 20px 20px"}}>
+      <div style={{fontSize:18,fontWeight:600,color:T.text,marginBottom:2}}>{p.nameEn}</div>
+      <div style={{fontSize:13,color:T.textSec,marginBottom:10}}>{p.type} · {p.qty} pcs · {p.roughCost}</div>
+      {p.factory!=="–"&&<div style={{fontSize:12,color:T.accentText,fontWeight:500,marginBottom:10}}>🏭 {p.factory}</div>}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontSize:12,color:T.textPh}}>Updated {p.updated}</span>
+        <div style={{display:"flex",gap:6}}>
+          <button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4}}><Ic n="copy" s={12} color={T.textSec}/>Duplicate</button>
+          {p.status==="manufacturing"
+            ?<button disabled title="Cannot delete a project in manufacturing" onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:"#C4C0CF",borderColor:T.hairline,cursor:"not-allowed",background:T.surfaceCool}}><Ic n="trash" s={12} color="#C4C0CF"/></button>
+            :<button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:T.error,borderColor:T.error}}><Ic n="trash" s={12} color={T.error}/></button>}
+        </div>
+      </div>
+    </div>
+  </div>);
+
+// Section order for ungrouped (non-production) items
+const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["completed","Completed"],["cancelled","Cancelled"]];
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
-  const[filter,setFilter]=useState("all");const[search,setSearch]=useState("");
-  const filtered=projects.filter(p=>filter==="all"||p.status===filter).filter(p=>p.nameEn.toLowerCase().includes(search.toLowerCase())||p.name.includes(search));
-  const counts=Object.fromEntries(Object.keys(STATUSES).map(k=>[k,projects.filter(p=>p.status===k).length]));
+  const inProduction=projects.filter(p=>IN_PRODUCTION.includes(p.status));
+  const groups=SECTION_ORDER.map(([k,label])=>[label,projects.filter(p=>p.status===k)]).filter(([,arr])=>arr.length>0);
   return(<div>
     {justOrdered&&<OrderPopup item={justOrdered} onDismiss={onDismiss} onOpen={onOpen}/>}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
-      <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {projects.filter(p=>["manufacturing","ordered"].includes(p.status)).length} in production</p></div>
+      <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {inProduction.length} in production</p></div>
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
-    <div style={{display:"flex",gap:8,overflowX:"auto",paddingBottom:4,marginBottom:18,scrollbarWidth:"none"}}>
-      <button onClick={()=>setFilter("all")} style={{padding:"6px 16px",borderRadius:T.rp,border:filter==="all"?"none":`1px solid ${T.border}`,background:filter==="all"?T.primary:"transparent",color:filter==="all"?"#fff":T.textSec,fontSize:13,fontWeight:500,cursor:"pointer",fontFamily:T.font,flexShrink:0}}>All ({projects.length})</button>
-      {Object.entries(STATUSES).map(([k,v])=>counts[k]>0&&(<button key={k} onClick={()=>setFilter(k)} style={{padding:"6px 14px",borderRadius:T.rp,border:filter===k?"none":`1px solid ${T.border}`,background:filter===k?v.color:"transparent",color:filter===k?"#fff":T.textSec,fontSize:12,fontWeight:500,cursor:"pointer",fontFamily:T.font,flexShrink:0}}>{v.label} ({counts[k]})</button>))}
-    </div>
-    <div style={{display:"flex",alignItems:"center",gap:10,background:T.bg,border:`1px solid ${T.border}`,borderRadius:12,padding:"8px 16px",width:320,marginBottom:24}}>
-      <Ic n="search" s={16} color={T.textPh}/><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search projects..." style={{border:"none",outline:"none",fontSize:14,width:"100%",fontFamily:T.font,background:"transparent",color:T.text}}/>
-    </div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>
-      {filtered.map(p=>(<div key={p.id} style={{...cardS,overflow:"hidden",cursor:"pointer",transition:`all 300ms ${T.eo}`}} onMouseEnter={e=>hov(e,1)} onMouseLeave={e=>hov(e,0)} onClick={()=>onOpen(p)}>
-        <div style={{position:"relative"}}><ImgFull src={p.img} ar="3/4"/><div style={{position:"absolute",top:12,right:12}}><StatusBadge status={p.status}/></div></div>
-        <div style={{padding:"16px 20px 20px"}}>
-          <div style={{fontSize:18,fontWeight:600,color:T.text,marginBottom:2}}>{p.nameEn}</div>
-          <div style={{fontSize:13,color:T.textSec,marginBottom:10}}>{p.type} · {p.qty} pcs · {p.roughCost}</div>
-          {p.factory!=="–"&&<div style={{fontSize:12,color:T.accentText,fontWeight:500,marginBottom:10}}>🏭 {p.factory}</div>}
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:12,color:T.textPh}}>Updated {p.updated}</span>
-            <div style={{display:"flex",gap:6}}>
-              <button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4}}><Ic n="copy" s={12} color={T.textSec}/>Duplicate</button>
-              {p.status==="manufacturing"
-                ?<button disabled title="Cannot delete a project in manufacturing" onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:"#C4C0CF",borderColor:T.hairline,cursor:"not-allowed",background:T.surfaceCool}}><Ic n="trash" s={12} color="#C4C0CF"/></button>
-                :<button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:T.error,borderColor:T.error}}><Ic n="trash" s={12} color={T.error}/></button>}
-            </div>
-          </div>
-        </div>
-      </div>))}
-    </div>
+    {inProduction.length>0&&<ProductionTracker items={inProduction} onOpen={onOpen}/>}
+    {groups.map(([label,arr])=>(<div key={label} style={{marginBottom:32}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
+        <h2 style={{fontSize:18,fontWeight:700,color:T.text}}>{label}</h2>
+        <span style={{fontSize:13,color:T.textPh}}>{arr.length}</span>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>
+        {arr.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}
+      </div>
+    </div>))}
     <Footer/>
   </div>)};
 
@@ -301,39 +336,46 @@ const REVIEWS=[
   {id:3,stars:4,text:"Fast responses and the samples matched our concept well.",author:"@aoi.s",date:"Apr 28"},
 ];
 const ProfilePage=()=>{
+  const[editing,setEditing]=useState(false);
   const[tags,setTags]=useState(["Street style","Clean look","Sustainable"]);
   const allTags=["Street style","Clean look","Sustainable","Vintage","Minimal","Avant-garde","Casual","Luxury"];
-  const toggleTag=(t)=>setTags(p=>p.includes(t)?p.filter(x=>x!==t):p.length<5?[...p,t]:p);
+  const toggleTag=(t)=>{if(!editing)return;setTags(p=>p.includes(t)?p.filter(x=>x!==t):p.length<5?[...p,t]:p)};
   const hdr={fontSize:13,fontWeight:700,color:T.text,marginBottom:14,textTransform:"uppercase",letterSpacing:0.5};
-  const fld=(label,val,ph)=>(<div style={{marginBottom:16}}><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>{label}</label><input style={inpS} defaultValue={val} placeholder={ph}/></div>);
+  const ro=!editing;
+  const fld=(label,val,ph)=>(<div style={{marginBottom:16}}><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>{label}</label><input style={{...inpS,background:ro?T.surfaceCool:T.bg,color:ro?T.textSec:T.text}} defaultValue={val} placeholder={ph} disabled={ro}/></div>);
   return(<div>
-    <h1 style={{fontSize:28,fontWeight:700,color:T.text,marginBottom:24}}>Edit Profile</h1>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
+      <h1 style={{fontSize:28,fontWeight:700,color:T.text}}>{editing?"Edit Profile":"My Profile"}</h1>
+      {editing
+        ?<div style={{display:"flex",gap:10}}><button onClick={()=>setEditing(false)} style={btnGhost}>Cancel</button><button onClick={()=>setEditing(false)} className="stitched" style={{...btnP,padding:"10px 28px"}}>Save</button></div>
+        :<button onClick={()=>setEditing(true)} style={btnO}><Ic n="edit" s={15} color={T.primary}/> Edit profile</button>}
+    </div>
     <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,maxWidth:900,alignItems:"start"}}>
       {/* Left column */}
       <div>
         <div style={{...cardS,padding:"28px",textAlign:"center",marginBottom:20}}>
           <div style={{position:"relative",width:96,height:96,margin:"0 auto 14px"}}>
             <div style={{width:96,height:96,borderRadius:"50%",overflow:"hidden",background:T.surfaceCool,border:`2px solid ${T.border}`}}><ImgFull src="IMG_0" h={96}/></div>
-            <div style={{position:"absolute",bottom:0,right:0,width:30,height:30,borderRadius:"50%",background:T.primary,border:"2px solid #fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Ic n="camera" s={15} color="#fff"/></div>
+            {editing&&<div style={{position:"absolute",bottom:0,right:0,width:30,height:30,borderRadius:"50%",background:T.primary,border:"2px solid #fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Ic n="camera" s={15} color="#fff"/></div>}
           </div>
-          <input style={{...inpS,textAlign:"center",fontSize:20,fontWeight:700,border:"none",marginBottom:4}} defaultValue="Aiko Studio" maxLength={30}/>
+          <input style={{...inpS,textAlign:"center",fontSize:20,fontWeight:700,border:"none",marginBottom:4,background:"transparent",color:T.text}} defaultValue="Aiko Studio" maxLength={30} disabled={ro}/>
           <div style={{fontSize:13,color:T.textPh}}>@aiko.studio</div>
         </div>
         <div style={{...cardS,padding:"24px",marginBottom:20}}>
           <div style={hdr}>About the Brand</div>
-          <textarea style={{...inpS,minHeight:100,resize:"vertical",lineHeight:1.5}} maxLength={200} defaultValue="Modern Tokyo streetwear blending utilitarian silhouettes with clean, minimal detailing. Made for everyday movement in the city."/>
+          <textarea style={{...inpS,minHeight:100,resize:"vertical",lineHeight:1.5,background:ro?T.surfaceCool:T.bg,color:ro?T.textSec:T.text}} maxLength={200} defaultValue="Modern Tokyo streetwear blending utilitarian silhouettes with clean, minimal detailing. Made for everyday movement in the city." disabled={ro}/>
         </div>
         <div style={{...cardS,padding:"24px",marginBottom:20}}>
           <div style={hdr}>Style Tags <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:T.textPh}}>(up to 5)</span></div>
           <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-            {allTags.map(t=>{const sel=tags.includes(t);return(<button key={t} onClick={()=>toggleTag(t)} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:T.rp,border:`1.5px solid ${sel?T.accent:T.border}`,background:sel?T.accentBg:T.bg,color:sel?T.accentText:T.textSec,fontSize:13,fontWeight:sel?600:400,cursor:"pointer",fontFamily:T.font}}>{sel&&<Ic n="check" s={12} color={T.accentText}/>}{t}</button>)})}
+            {(ro?tags:allTags).map(t=>{const sel=tags.includes(t);return(<button key={t} onClick={()=>toggleTag(t)} disabled={ro} style={{display:"flex",alignItems:"center",gap:5,padding:"8px 14px",borderRadius:T.rp,border:`1.5px solid ${sel?T.accent:T.border}`,background:sel?T.accentBg:T.bg,color:sel?T.accentText:T.textSec,fontSize:13,fontWeight:sel?600:400,cursor:ro?"default":"pointer",fontFamily:T.font}}>{sel&&<Ic n="check" s={12} color={T.accentText}/>}{t}</button>)})}
           </div>
         </div>
         <div style={{...cardS,padding:"24px"}}>
           <div style={hdr}>Past Posts & Products</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
             {["IMG_0","IMG_3","IMG_4","IMG_1","IMG_5"].map((im,i)=>(<div key={i} style={{borderRadius:T.rs,overflow:"hidden",background:T.surfaceCool}}><ImgFull src={im} ar="1/1"/></div>))}
-            <div style={{borderRadius:T.rs,border:`2px dashed ${T.border}`,aspectRatio:"1/1",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Ic n="create" s={22} color={T.textPh}/></div>
+            {editing&&<div style={{borderRadius:T.rs,border:`2px dashed ${T.border}`,aspectRatio:"1/1",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}><Ic n="create" s={22} color={T.textPh}/></div>}
           </div>
         </div>
       </div>
@@ -346,8 +388,8 @@ const ProfilePage=()=>{
           {fld("Phone","+81 90-1234-5678")}
           {fld("Address","1-2-3 Shibuya, Tokyo 150-0001")}
           {fld("EC / Site URL","","https://yourbrand.com")}
-          <div style={{marginBottom:16}}><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>Follower count (estimate)</label><select style={{...inpS,appearance:"none"}}><option>~200</option><option>~1,000</option><option>~10,000</option><option>10,000+</option></select></div>
-          <div><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>Monthly sales (estimate)</label><select style={{...inpS,appearance:"none"}}><option>~¥100,000</option><option>~¥500,000</option><option>~¥1,000,000</option><option>Undisclosed</option></select></div>
+          <div style={{marginBottom:16}}><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>Follower count (estimate)</label><select style={{...inpS,appearance:"none",background:ro?T.surfaceCool:T.bg,color:ro?T.textSec:T.text}} disabled={ro}><option>~200</option><option>~1,000</option><option>~10,000</option><option>10,000+</option></select></div>
+          <div><label style={{display:"block",fontSize:12,color:T.textSec,marginBottom:6}}>Monthly sales (estimate)</label><select style={{...inpS,appearance:"none",background:ro?T.surfaceCool:T.bg,color:ro?T.textSec:T.text}} disabled={ro}><option>~¥100,000</option><option>~¥500,000</option><option>~¥1,000,000</option><option>Undisclosed</option></select></div>
         </div>
         <div style={{...cardS,padding:"24px",marginBottom:20}}>
           <div style={hdr}>Past Achievements</div>
@@ -371,7 +413,6 @@ const ProfilePage=()=>{
         </div>
       </div>
     </div>
-    <div style={{maxWidth:900,marginTop:20}}><button className="stitched" style={{...btnP,padding:"14px 40px"}}>Save</button></div>
     <Footer/>
   </div>)};
 
