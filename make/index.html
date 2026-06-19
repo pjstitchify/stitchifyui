@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#FFFFFF">
 <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Stitchify%20MAKE%22,%22short_name%22:%22MAKE%22,%22display%22:%22standalone%22,%22background_color%22:%22%23FFFFFF%22,%22theme_color%22:%22%234E35E8%22}">
 <title>Stitchify MAKE</title><link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}.embroidered{position:relative}.embroidered::after{content:'';position:absolute;inset:5px;border:2px dashed rgba(255,255,255,0.75);border-radius:13px;pointer-events:none}.embroidered:active{transform:translateY(1px) scale(0.97)}</style></head>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}</style></head>
 <body><div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F5F7"><div style="text-align:center"><div style="font-size:48px;font-weight:700;color:#1A1A2E">Stitchify</div><div style="font-size:16px;color:#6B7280;margin-top:8px">Loading...</div></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -99,13 +99,15 @@ const OrderPopup=({item,onDismiss,onOpen})=>{
 
 // Compact production-tracking indicator (shown only when items are in production)
 const IN_PRODUCTION=["ordered","manufacturing","inspection","shipping"];
-const ProductionTracker=({items,onOpen})=>(
-  <div style={{...cardS,padding:"22px 24px",marginBottom:28,background:T.accentBg,borderColor:T.accent}}>
-    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>
+const ProductionTracker=({items,onOpen})=>{
+  const[open,setOpen]=useState(true);
+  return(<div style={{...cardS,marginBottom:28,background:T.accentBg,borderColor:T.accent,overflow:"hidden"}}>
+    <button onClick={()=>setOpen(o=>!o)} style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"18px 24px",background:"none",border:"none",cursor:"pointer",fontFamily:T.font}}>
       <Ic n="factory" s={18} color={T.accentText}/><span style={{fontSize:15,fontWeight:700,color:T.text}}>In production</span>
       <span style={{fontSize:12,color:T.accentText,background:T.bg,borderRadius:T.rp,padding:"2px 10px",fontWeight:600}}>{items.length}</span>
-    </div>
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <span style={{marginLeft:"auto",transform:open?"rotate(180deg)":"none",transition:"transform 200ms",display:"flex"}}><Ic n="chevDown" s={18} color={T.accentText}/></span>
+    </button>
+    {open&&<div style={{display:"flex",flexDirection:"column",gap:14,padding:"0 24px 22px"}}>
       {items.map(it=>{const idx=Math.max(0,ORDER_STAGES.findIndex(s=>s.k===it.status));return(
         <div key={it.id} onClick={()=>onOpen(it)} style={{background:T.bg,borderRadius:T.rs,padding:"14px 18px",cursor:"pointer",border:`1px solid ${T.border}`}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
@@ -125,8 +127,8 @@ const ProductionTracker=({items,onOpen})=>(
             </React.Fragment>)})}
           </div>
         </div>)})}
-    </div>
-  </div>);
+    </div>}
+  </div>)};
 
 const ProjectCard=({p,onOpen})=>(
   <div style={{...cardS,overflow:"hidden",cursor:"pointer",transition:`all 300ms ${T.eo}`}} onMouseEnter={e=>hov(e,1)} onMouseLeave={e=>hov(e,0)} onClick={()=>onOpen(p)}>
@@ -151,7 +153,11 @@ const ProjectCard=({p,onOpen})=>(
 const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["completed","Completed"],["cancelled","Cancelled"]];
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
   const inProduction=projects.filter(p=>IN_PRODUCTION.includes(p.status));
-  const groups=SECTION_ORDER.map(([k,label])=>[label,projects.filter(p=>p.status===k)]).filter(([,arr])=>arr.length>0);
+  const groups=SECTION_ORDER.map(([k,label])=>[k,label,projects.filter(p=>p.status===k)]).filter(([,,arr])=>arr.length>0);
+  const tabs=groups;
+  const[tab,setTab]=useState(tabs[0]?tabs[0][0]:null);
+  const active=tabs.find(([k])=>k===tab)||tabs[0];
+  const shown=active?active[2]:[];
   return(<div>
     {justOrdered&&<OrderPopup item={justOrdered} onDismiss={onDismiss} onOpen={onOpen}/>}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
@@ -159,15 +165,15 @@ const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
     {inProduction.length>0&&<ProductionTracker items={inProduction} onOpen={onOpen}/>}
-    {groups.map(([label,arr])=>(<div key={label} style={{marginBottom:32}}>
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:16}}>
-        <h2 style={{fontSize:18,fontWeight:700,color:T.text}}>{label}</h2>
-        <span style={{fontSize:13,color:T.textPh}}>{arr.length}</span>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>
-        {arr.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}
-      </div>
-    </div>))}
+    {/* Horizontal tabs */}
+    {tabs.length>0&&<div style={{display:"flex",gap:4,borderBottom:`1px solid ${T.hairline}`,marginBottom:24,overflowX:"auto",scrollbarWidth:"none"}}>
+      {tabs.map(([k,label,arr])=>{const on=tab===k;return(<button key={k} onClick={()=>setTab(k)} style={{display:"flex",alignItems:"center",gap:7,background:"none",border:"none",borderBottom:on?`2px solid ${T.primary}`:"2px solid transparent",padding:"12px 18px",fontSize:14,color:on?T.primary:T.textSec,fontWeight:on?600:400,cursor:"pointer",fontFamily:T.font,whiteSpace:"nowrap",marginBottom:-1}}>
+        {label}<span style={{fontSize:12,color:on?T.primary:T.textPh,background:on?T.surfaceSubtle:T.surfaceCool,borderRadius:T.rp,padding:"1px 8px",fontWeight:600}}>{arr.length}</span>
+      </button>)})}
+    </div>}
+    {tabs.length>0&&(shown.length>0
+      ?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>{shown.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}</div>
+      :<div style={{textAlign:"center",padding:"60px 0",color:T.textPh,fontSize:14}}>No projects in this category yet.</div>)}
     <Footer/>
   </div>)};
 
