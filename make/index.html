@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#FFFFFF">
 <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Stitchify%20MAKE%22,%22short_name%22:%22MAKE%22,%22display%22:%22standalone%22,%22background_color%22:%22%23FFFFFF%22,%22theme_color%22:%22%234E35E8%22}">
 <title>Stitchify MAKE</title><link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}</style></head>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Hind','Noto Sans JP',-apple-system,sans-serif}input:focus,select:focus,textarea:focus{border-color:#4E35E8!important;outline:none}::placeholder{color:#757575}::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#E8E5F0;border-radius:3px}.stitched{position:relative}.stitched::after{content:'';position:absolute;inset:4px;border:1.6px dashed rgba(255,255,255,0.6);border-radius:inherit;pointer-events:none}.stitched:active{transform:translateY(1px)}.embroidered{position:relative}.embroidered::after{content:'';position:absolute;inset:5px;border:2px dashed rgba(255,255,255,0.75);border-radius:inherit;pointer-events:none}.embroidered:active{transform:translateY(1px) scale(0.97)}</style></head>
 <body><div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F5F7"><div style="text-align:center"><div style="font-size:48px;font-weight:700;color:#1A1A2E">Stitchify</div><div style="font-size:16px;color:#6B7280;margin-top:8px">Loading...</div></div></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -22,7 +22,7 @@ const { useState, useCallback, useRef, useEffect } = React;
 
 const T={bg:"#FFFFFF",surface:"#FFFFFF",surfaceCool:"#F5F5F7",surfaceSubtle:"#F1F0FA",surfaceEditorial:"#1A1A2E",primary:"#4E35E8",primaryHover:"#3D27D4",primaryLight:"#7B6BF0",accent:"#A3E635",accentBg:"#F7FEE7",accentText:"#4D7C0F",text:"#1A1A2E",textSec:"#6B7280",textPh:"#757575",border:"#E8E5F0",hairline:"#F0F0F0",success:"#15803D",warning:"#B45309",error:"#B91C1C",r:16,rs:10,rp:999,font:"'Hind','Noto Sans JP',-apple-system,sans-serif",shadow:"0 1px 3px rgba(0,0,0,0.04),0 4px 12px rgba(0,0,0,0.04)",shadowH:"0 2px 6px rgba(0,0,0,0.04),0 8px 24px rgba(78,53,232,0.08)",e:"cubic-bezier(0.25,0.1,0.25,1)",eo:"cubic-bezier(0.05,0.7,0.1,1)"};
 
-const STATUSES={draft:{label:"Draft",bg:"#F3F4F6",color:"#6B7280"},creating:{label:"Creating Spec",bg:T.surfaceSubtle,color:T.primary},waiting:{label:"Waiting for Quote",bg:"#FEF3C7",color:T.warning},ordered:{label:"Ordered",bg:"#DBEAFE",color:"#2563EB"},manufacturing:{label:"Manufacturing",bg:T.accentBg,color:T.accentText},inspection:{label:"Inspection",bg:"#FEF3C7",color:T.warning},shipping:{label:"Shipping",bg:"#DBEAFE",color:"#2563EB"},completed:{label:"Completed",bg:"#DCFCE7",color:T.success},cancelled:{label:"Cancelled",bg:"#FEE2E2",color:T.error}};
+const STATUSES={draft:{label:"Draft",bg:"#ECECEF",color:"#57606A"},creating:{label:"Creating Spec",bg:"#EAE6FB",color:"#4E35E8"},waiting:{label:"Waiting for Quote",bg:"#FEF0C7",color:"#B45309"},ordered:{label:"Ordered",bg:"#DDEAFE",color:"#2563EB"},manufacturing:{label:"Manufacturing",bg:"#E6F9C9",color:"#4D7C0F"},inspection:{label:"Inspection",bg:"#FFE8CC",color:"#C2410C"},shipping:{label:"Shipping",bg:"#D2F4F7",color:"#0E7490"},completed:{label:"Completed",bg:"#D7F7E0",color:"#15803D"},cancelled:{label:"Cancelled",bg:"#FCE0E0",color:"#B91C1C"}};
 
 const PROJECTS=[
   {id:1,name:"春夏コレクション Tシャツ",nameEn:"SS Collection T-shirt",type:"T-shirt",qty:100,roughCost:"¥280,000",status:"manufacturing",factory:"TOKYO STITCH Co.",img:"IMG_0",updated:"2026-05-12"},
@@ -57,7 +57,7 @@ const cardS={background:T.bg,border:`1px solid ${T.border}`,borderRadius:T.r};
 const hov=(e,on)=>{e.currentTarget.style.transform=on?"translateY(-2px)":"";e.currentTarget.style.boxShadow=on?T.shadowH:""};
 const resolveImg=(k)=>{try{return window._D?window._D[k]:k}catch{return null}};
 
-const Badge=({label,bg,color,size=12})=>(<span style={{fontSize:size,fontWeight:500,padding:"2px 10px",borderRadius:T.rp,background:bg,color,whiteSpace:"nowrap"}}>{label}</span>);
+const Badge=({label,bg,color,size=12})=>(<span style={{fontSize:size,fontWeight:600,padding:"3px 10px",borderRadius:T.rp,background:bg,color,whiteSpace:"nowrap",lineHeight:1.4,letterSpacing:0.1}}>{label}</span>);
 const StatusBadge=({status})=>{const s=STATUSES[status]||STATUSES.draft;return<Badge label={s.label} bg={s.bg} color={s.color}/>;};
 const Footer=()=>(<div style={{textAlign:"center",padding:"28px 0 12px",fontSize:13,color:T.textPh}}>For questions and help, please email support@stitchify.ai</div>);
 const ImgFull=({src,h=180,ar,bg=T.surfaceCool})=>{const[err,setErr]=useState(false);const i=resolveImg(src);const box=ar?{width:"100%",aspectRatio:ar}:{width:"100%",height:h};return(<div style={{...box,background:bg,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>{(!err&&i)?<img src={i} alt="" onError={()=>setErr(true)} style={{maxWidth:"100%",maxHeight:"100%",objectFit:"contain"}}/>:<Ic n="img" s={(ar?60:h)*0.3} color={T.textPh}/>}</div>)};
@@ -149,6 +149,12 @@ const ProjectCard=({p,onOpen})=>(
     </div>
   </div>);
 
+const CreateCard=({onNew})=>(
+  <div onClick={onNew} style={{border:`2px dashed ${T.border}`,borderRadius:T.r,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14,cursor:"pointer",background:T.surfaceCool,minHeight:260,transition:`border-color 200ms`}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.primary} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
+    <button onClick={onNew} className="embroidered" style={{width:56,height:56,borderRadius:"50%",background:T.primary,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 6px 16px rgba(78,53,232,0.35)"}}><Ic n="create" s={24} color="#fff"/></button>
+    <span style={{fontSize:14,color:T.textSec,fontWeight:600}}>Create new</span>
+  </div>);
+
 // Section order for ungrouped (non-production) items
 const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["completed","Completed"],["cancelled","Cancelled"]];
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
@@ -172,7 +178,7 @@ const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
       </button>)})}
     </div>}
     {tabs.length>0&&(shown.length>0
-      ?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>{shown.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}</div>
+      ?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>{shown.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}{shown.length===1&&<CreateCard onNew={onNew}/>}</div>
       :<div style={{textAlign:"center",padding:"60px 0",color:T.textPh,fontSize:14}}>No projects in this category yet.</div>)}
     <Footer/>
   </div>)};
