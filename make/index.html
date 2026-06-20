@@ -156,7 +156,7 @@ const CreateCard=({onNew})=>(
   </div>);
 
 // Section order for ungrouped (non-production) items
-const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["completed","Completed"],["cancelled","Cancelled"]];
+const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["ordered","Ordered"],["manufacturing","Manufacturing"],["inspection","Inspection"],["shipping","Shipping"],["completed","Completed"],["cancelled","Cancelled"]];
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
   const inProduction=projects.filter(p=>IN_PRODUCTION.includes(p.status));
   const groups=SECTION_ORDER.map(([k,label])=>[k,label,projects.filter(p=>p.status===k)]).filter(([,,arr])=>arr.length>0);
@@ -170,7 +170,6 @@ const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
       <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {inProduction.length} in production</p></div>
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
-    {inProduction.length>0&&<ProductionTracker items={inProduction} onOpen={onOpen}/>}
     {/* Horizontal tabs */}
     {tabs.length>0&&<div style={{display:"flex",gap:4,borderBottom:`1px solid ${T.hairline}`,marginBottom:24,overflowX:"auto",scrollbarWidth:"none"}}>
       {tabs.map(([k,label,arr])=>{const on=tab===k;return(<button key={k} onClick={()=>setTab(k)} style={{display:"flex",alignItems:"center",gap:7,background:"none",border:"none",borderBottom:on?`2px solid ${T.primary}`:"2px solid transparent",padding:"12px 18px",fontSize:14,color:on?T.primary:T.textSec,fontWeight:on?600:400,cursor:"pointer",fontFamily:T.font,whiteSpace:"nowrap",marginBottom:-1}}>
