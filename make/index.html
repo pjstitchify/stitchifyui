@@ -157,29 +157,75 @@ const CreateCard=({onNew})=>(
 
 // Section order for ungrouped (non-production) items
 const SECTION_ORDER=[["draft","Drafts"],["creating","Creating Spec"],["waiting","Waiting for Quote"],["ordered","Ordered"],["manufacturing","Manufacturing"],["inspection","Inspection"],["shipping","Shipping"],["completed","Completed"],["cancelled","Cancelled"]];
+const stageIdxOf=(status)=>{const i=ORDER_STAGES.findIndex(s=>s.k===status);return i<0?0:i;};
+// Slim inline progress bar (compact) for in-production items
+const MiniProgress=({status})=>{const idx=stageIdxOf(status);return(<div style={{display:"flex",alignItems:"center",gap:10,width:"100%"}}>
+  <div style={{display:"flex",gap:3,flex:1}}>{ORDER_STAGES.map((st,i)=>(<div key={st.k} style={{flex:1,height:5,borderRadius:3,background:i<=idx?T.accent:T.hairline}}/>))}</div>
+  <span style={{fontSize:12,fontWeight:600,color:T.accentText,whiteSpace:"nowrap",minWidth:78,textAlign:"right"}}>{ORDER_STAGES[idx].label}</span>
+</div>)};
+// Compact one-line project row
+const ProjectRow=({p,onOpen})=>{const inProd=IN_PRODUCTION.includes(p.status);return(
+  <div onClick={()=>onOpen(p)} style={{...cardS,display:"flex",alignItems:"center",gap:14,padding:"12px 16px",cursor:"pointer",transition:`all 200ms ${T.eo}`}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.primaryLight} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
+    <div style={{width:44,height:58,borderRadius:8,overflow:"hidden",flexShrink:0}}><ImgFull src={p.img} ar="3/4"/></div>
+    <div style={{width:200,flexShrink:0}}><div style={{fontSize:15,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.nameEn}</div><div style={{fontSize:12,color:T.textSec}}>{p.qty} pcs · {p.roughCost}</div></div>
+    <div style={{flex:1,minWidth:120}}>{inProd?<MiniProgress status={p.status}/>:<span style={{fontSize:12,color:T.textPh}}>{p.factory!=="–"?`🏭 ${p.factory}`:`Updated ${p.updated}`}</span>}</div>
+    <div style={{flexShrink:0}}><StatusBadge status={p.status}/></div>
+  </div>)};
+
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
+  const[layout,setLayout]=useState("rows");
   const inProduction=projects.filter(p=>IN_PRODUCTION.includes(p.status));
-  const groups=SECTION_ORDER.map(([k,label])=>[k,label,projects.filter(p=>p.status===k)]).filter(([,,arr])=>arr.length>0);
-  const tabs=groups;
-  const[tab,setTab]=useState(tabs[0]?tabs[0][0]:null);
-  const active=tabs.find(([k])=>k===tab)||tabs[0];
-  const shown=active?active[2]:[];
+  const others=projects.filter(p=>!IN_PRODUCTION.includes(p.status));
+  const counts={prod:inProduction.length,draft:projects.filter(p=>p.status==="draft").length,waiting:projects.filter(p=>p.status==="waiting").length,done:projects.filter(p=>p.status==="completed").length};
+  const SummaryStrip=()=>(<div style={{display:"flex",gap:12,marginBottom:24,flexWrap:"wrap"}}>
+    {[["In production",counts.prod,T.accentText,T.accentBg],["Drafts",counts.draft,T.textSec,T.surfaceCool],["Awaiting quote",counts.waiting,T.warning,"#FEF0C7"],["Completed",counts.done,T.success,"#D7F7E0"]].map(([l,n,c,bg])=>(
+      <div key={l} style={{...cardS,padding:"14px 20px",flex:"1 1 0",minWidth:130,background:bg,borderColor:"transparent"}}><div style={{fontSize:26,fontWeight:700,color:c}}>{n}</div><div style={{fontSize:13,color:T.text}}>{l}</div></div>))}
+  </div>);
   return(<div>
     {justOrdered&&<OrderPopup item={justOrdered} onDismiss={onDismiss} onOpen={onOpen}/>}
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
       <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {inProduction.length} in production</p></div>
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
-    {/* Horizontal tabs */}
-    {tabs.length>0&&<div style={{display:"flex",gap:4,borderBottom:`1px solid ${T.hairline}`,marginBottom:24,overflowX:"auto",scrollbarWidth:"none"}}>
-      {tabs.map(([k,label,arr])=>{const on=tab===k;return(<button key={k} onClick={()=>setTab(k)} style={{display:"flex",alignItems:"center",gap:7,background:"none",border:"none",borderBottom:on?`2px solid ${T.primary}`:"2px solid transparent",padding:"12px 18px",fontSize:14,color:on?T.primary:T.textSec,fontWeight:on?600:400,cursor:"pointer",fontFamily:T.font,whiteSpace:"nowrap",marginBottom:-1}}>
-        {label}<span style={{fontSize:12,color:on?T.primary:T.textPh,background:on?T.surfaceSubtle:T.surfaceCool,borderRadius:T.rp,padding:"1px 8px",fontWeight:600}}>{arr.length}</span>
-      </button>)})}
+    {/* TEMP layout switcher (pick one to keep) */}
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:22,padding:"10px 14px",background:T.surfaceSubtle,borderRadius:T.rs,border:`1px dashed ${T.primaryLight}`}}>
+      <span style={{fontSize:12,fontWeight:600,color:T.primary}}>Preview layout:</span>
+      {[["rows","A · Compact rows"],["zones","B · Two zones"],["summary","C · Summary + progress"]].map(([k,l])=>(<button key={k} onClick={()=>setLayout(k)} style={{padding:"6px 14px",borderRadius:T.rp,border:"none",background:layout===k?T.primary:"transparent",color:layout===k?"#fff":T.textSec,fontSize:13,fontWeight:layout===k?600:500,cursor:"pointer",fontFamily:T.font}}>{l}</button>))}
+    </div>
+
+    {/* LAYOUT A — Compact rows: every project one line, progress inline */}
+    {layout==="rows"&&<div style={{display:"flex",flexDirection:"column",gap:10}}>
+      {projects.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}
     </div>}
-    {tabs.length>0&&(shown.length>0
-      ?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))",gap:20}}>{shown.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}{shown.length===1&&<CreateCard onNew={onNew}/>}</div>
-      :<div style={{textAlign:"center",padding:"60px 0",color:T.textPh,fontSize:14}}>No projects in this category yet.</div>)}
+
+    {/* LAYOUT B — Two zones: progress list on top + grid of the rest */}
+    {layout==="zones"&&<div>
+      {inProduction.length>0&&<div style={{marginBottom:28}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}><Ic n="factory" s={17} color={T.accentText}/><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>In production</h2><span style={{fontSize:13,color:T.textPh}}>{inProduction.length}</span></div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>{inProduction.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>
+      </div>}
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>All projects</h2><span style={{fontSize:13,color:T.textPh}}>{others.length}</span></div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:16}}>{others.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}<CreateCard onNew={onNew}/></div>
+    </div>}
+
+    {/* LAYOUT C — Summary strip + progress list; rest behind toggle */}
+    {layout==="summary"&&<LayoutSummary inProduction={inProduction} others={others} onOpen={onOpen} SummaryStrip={SummaryStrip}/>}
+
     <Footer/>
+  </div>)};
+
+const LayoutSummary=({inProduction,others,onOpen,SummaryStrip})=>{
+  const[showAll,setShowAll]=useState(false);
+  return(<div>
+    <SummaryStrip/>
+    {inProduction.length>0&&<div style={{marginBottom:20}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}><Ic n="factory" s={17} color={T.accentText}/><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>In production</h2></div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>{inProduction.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>
+    </div>}
+    <button onClick={()=>setShowAll(s=>!s)} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:T.primary,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.font,padding:"4px 0"}}>
+      <Ic n={showAll?"chevUp":"chevDown"} s={16} color={T.primary}/> {showAll?"Hide":"View"} other projects ({others.length})
+    </button>
+    {showAll&&<div style={{display:"flex",flexDirection:"column",gap:10,marginTop:12}}>{others.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>}
   </div>)};
 
 const LOCKED=["waiting","ordered","manufacturing","inspection","shipping","completed"];
@@ -435,18 +481,46 @@ const SegToggle=()=>(
     <span style={{flex:1,textAlign:"center",position:"relative",zIndex:1,padding:"7px 0",fontSize:13,fontWeight:700,color:T.primary}}>MAKE</span>
   </div>);
 
+const NOTIFICATIONS=[
+  {id:1,icon:"check",color:T.success,title:"Order confirmed",body:"TOKYO STITCH Co. confirmed your SS Collection T-shirt order.",time:"2h ago",unread:true},
+  {id:2,icon:"factory",color:T.accentText,title:"Production update",body:"Pattern cutting completed for SS Collection T-shirt.",time:"5h ago",unread:true},
+  {id:3,icon:"quote",color:T.primary,title:"Quote ready",body:"OSAKA KNIT Lab sent a quote for Knit vest sample.",time:"1d ago",unread:false},
+  {id:4,icon:"chat",color:T.warning,title:"New message",body:"Stitchify Support replied to your question about lead times.",time:"1d ago",unread:false},
+  {id:5,icon:"track",color:"#2563EB",title:"Shipped",body:"Denim jacket order has shipped via Yamato Transport.",time:"3d ago",unread:false},
+];
+const NotificationsPage=()=>(<div style={{maxWidth:720}}>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
+    <h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Notifications</h1>
+    <button style={{background:"none",border:"none",color:T.primary,fontSize:14,fontWeight:500,cursor:"pointer",fontFamily:T.font}}>Mark all read</button>
+  </div>
+  <div style={{display:"flex",flexDirection:"column",gap:10}}>
+    {NOTIFICATIONS.map(n=>(<div key={n.id} style={{...cardS,padding:"16px 18px",display:"flex",gap:14,alignItems:"flex-start",background:n.unread?T.accentBg:T.bg,borderColor:n.unread?T.accent:T.border}}>
+      <div style={{width:40,height:40,borderRadius:10,background:T.surfaceCool,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Ic n={n.icon} s={19} color={n.color}/></div>
+      <div style={{flex:1}}><div style={{fontSize:15,fontWeight:600,color:T.text}}>{n.title}</div><div style={{fontSize:14,color:T.textSec,marginTop:2,lineHeight:1.4}}>{n.body}</div><div style={{fontSize:12,color:T.textPh,marginTop:4}}>{n.time}</div></div>
+      {n.unread&&<div style={{width:8,height:8,borderRadius:"50%",background:T.primary,flexShrink:0,marginTop:6}}/>}
+    </div>))}
+  </div>
+  <Footer/>
+</div>);
+
 const Header=({pg,setPg,onNew,inFlow})=>{
-  const items=[{key:"dashboard",label:"Home"},{key:"create",label:"MAKE"},{key:"chat",label:"Chat"},{key:"profile",label:"Profile"}];
+  const items=[{key:"dashboard",label:"Home"},{key:"create",label:"MAKE"},{key:"design",label:"Design",disabled:true},{key:"chat",label:"Chat"},{key:"profile",label:"Profile"}];
   const logo=resolveImg("LOGO_AUTH");
   return(<div style={{position:"sticky",top:0,zIndex:50,background:T.bg,borderBottom:`1px solid ${T.hairline}`}}>
     <div style={{maxWidth:1200,margin:"0 auto",padding:"0 44px",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
       <div style={{display:"flex",alignItems:"center",gap:28}}>
         {logo?<img src={logo} alt="Stitchify" style={{height:26}}/>:<span style={{fontSize:18,fontWeight:700}}>Stitchify</span>}
         <nav style={{display:"flex",gap:4}}>
-          {items.map(it=>{const active=(it.key==="create"?inFlow:(pg===it.key&&!inFlow));return(<button key={it.key} onClick={()=>it.key==="create"?onNew():setPg(it.key)} style={{background:"none",border:"none",borderRadius:8,padding:"8px 14px",fontSize:14,color:active?T.primary:T.textSec,fontWeight:active?600:400,cursor:"pointer",fontFamily:T.font,position:"relative"}}>{it.label}{active&&<span style={{position:"absolute",bottom:-1,left:14,right:14,height:2,background:T.primary,borderRadius:2}}/>}</button>)})}
+          {items.map(it=>{if(it.disabled)return(<span key={it.key} title="Coming soon" style={{padding:"8px 14px",fontSize:14,color:"#C4C0CF",fontFamily:T.font,cursor:"default",userSelect:"none"}}>{it.label}</span>);const active=(it.key==="create"?inFlow:(pg===it.key&&!inFlow));return(<button key={it.key} onClick={()=>it.key==="create"?onNew():setPg(it.key)} style={{background:"none",border:"none",borderRadius:8,padding:"8px 14px",fontSize:14,color:active?T.primary:T.textSec,fontWeight:active?600:400,cursor:"pointer",fontFamily:T.font,position:"relative"}}>{it.label}{active&&<span style={{position:"absolute",bottom:-1,left:14,right:14,height:2,background:T.primary,borderRadius:2}}/>}</button>)})}
         </nav>
       </div>
-      <SegToggle/>
+      <div style={{display:"flex",alignItems:"center",gap:16}}>
+        <button onClick={()=>setPg("notifications")} title="Notifications" style={{position:"relative",background:"none",border:"none",cursor:"pointer",padding:6,display:"flex"}}>
+          <Ic n="bell" s={20} color={pg==="notifications"&&!inFlow?T.primary:T.textSec}/>
+          <span style={{position:"absolute",top:3,right:4,width:8,height:8,borderRadius:"50%",background:T.error,border:"2px solid #fff"}}/>
+        </button>
+        <SegToggle/>
+      </div>
     </div>
   </div>)};
 
@@ -473,6 +547,7 @@ function App(){
     else if(phase==="status")content=<StatusPage project={project} onBack={exitFlow} onEditSpec={(p)=>setFlow({phase:"configure",project:p})}/>;
   } else {
     if(pg==="dashboard")content=<DashboardPage projects={projects} onNew={startNew} onOpen={openProject} justOrdered={justOrdered} onDismiss={()=>setJustOrdered(null)}/>;
+    else if(pg==="notifications")content=<NotificationsPage/>;
     else if(pg==="chat")content=<ChatPage/>;
     else if(pg==="profile")content=<ProfilePage/>;
   }
