@@ -173,59 +173,22 @@ const ProjectRow=({p,onOpen})=>{const inProd=IN_PRODUCTION.includes(p.status);re
   </div>)};
 
 const DashboardPage=({projects,onNew,onOpen,justOrdered,onDismiss})=>{
-  const[layout,setLayout]=useState("rows");
   const inProduction=projects.filter(p=>IN_PRODUCTION.includes(p.status));
   const others=projects.filter(p=>!IN_PRODUCTION.includes(p.status));
-  const counts={prod:inProduction.length,draft:projects.filter(p=>p.status==="draft").length,waiting:projects.filter(p=>p.status==="waiting").length,done:projects.filter(p=>p.status==="completed").length};
-  const SummaryStrip=()=>(<div style={{display:"flex",gap:12,marginBottom:24,flexWrap:"wrap"}}>
-    {[["In production",counts.prod,T.accentText,T.accentBg],["Drafts",counts.draft,T.textSec,T.surfaceCool],["Awaiting quote",counts.waiting,T.warning,"#FEF0C7"],["Completed",counts.done,T.success,"#D7F7E0"]].map(([l,n,c,bg])=>(
-      <div key={l} style={{...cardS,padding:"14px 20px",flex:"1 1 0",minWidth:130,background:bg,borderColor:"transparent"}}><div style={{fontSize:26,fontWeight:700,color:c}}>{n}</div><div style={{fontSize:13,color:T.text}}>{l}</div></div>))}
-  </div>);
   return(<div>
     {justOrdered&&<OrderPopup item={justOrdered} onDismiss={onDismiss} onOpen={onOpen}/>}
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
       <div><h1 style={{fontSize:34,fontWeight:700,color:T.text}}>Home</h1><p style={{fontSize:14,color:T.textSec,marginTop:4}}>{projects.length} projects · {inProduction.length} in production</p></div>
       <button onClick={onNew} className="stitched" style={btnP}><Ic n="create" s={15} color="#fff"/> MAKE</button>
     </div>
-    {/* TEMP layout switcher (pick one to keep) */}
-    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:22,padding:"10px 14px",background:T.surfaceSubtle,borderRadius:T.rs,border:`1px dashed ${T.primaryLight}`}}>
-      <span style={{fontSize:12,fontWeight:600,color:T.primary}}>Preview layout:</span>
-      {[["rows","A · Compact rows"],["zones","B · Two zones"],["summary","C · Summary + progress"]].map(([k,l])=>(<button key={k} onClick={()=>setLayout(k)} style={{padding:"6px 14px",borderRadius:T.rp,border:"none",background:layout===k?T.primary:"transparent",color:layout===k?"#fff":T.textSec,fontSize:13,fontWeight:layout===k?600:500,cursor:"pointer",fontFamily:T.font}}>{l}</button>))}
-    </div>
-
-    {/* LAYOUT A — Compact rows: every project one line, progress inline */}
-    {layout==="rows"&&<div style={{display:"flex",flexDirection:"column",gap:10}}>
-      {projects.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}
-    </div>}
-
-    {/* LAYOUT B — Two zones: progress list on top + grid of the rest */}
-    {layout==="zones"&&<div>
-      {inProduction.length>0&&<div style={{marginBottom:28}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}><Ic n="factory" s={17} color={T.accentText}/><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>In production</h2><span style={{fontSize:13,color:T.textPh}}>{inProduction.length}</span></div>
-        <div style={{display:"flex",flexDirection:"column",gap:10}}>{inProduction.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>
-      </div>}
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>All projects</h2><span style={{fontSize:13,color:T.textPh}}>{others.length}</span></div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:16}}>{others.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}<CreateCard onNew={onNew}/></div>
-    </div>}
-
-    {/* LAYOUT C — Summary strip + progress list; rest behind toggle */}
-    {layout==="summary"&&<LayoutSummary inProduction={inProduction} others={others} onOpen={onOpen} SummaryStrip={SummaryStrip}/>}
-
-    <Footer/>
-  </div>)};
-
-const LayoutSummary=({inProduction,others,onOpen,SummaryStrip})=>{
-  const[showAll,setShowAll]=useState(false);
-  return(<div>
-    <SummaryStrip/>
-    {inProduction.length>0&&<div style={{marginBottom:20}}>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}><Ic n="factory" s={17} color={T.accentText}/><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>In production</h2></div>
+    {/* Two zones: in-production progress list on top + grid of the rest */}
+    {inProduction.length>0&&<div style={{marginBottom:28}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}><Ic n="factory" s={17} color={T.accentText}/><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>In production</h2><span style={{fontSize:13,color:T.textPh}}>{inProduction.length}</span></div>
       <div style={{display:"flex",flexDirection:"column",gap:10}}>{inProduction.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>
     </div>}
-    <button onClick={()=>setShowAll(s=>!s)} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:T.primary,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.font,padding:"4px 0"}}>
-      <Ic n={showAll?"chevUp":"chevDown"} s={16} color={T.primary}/> {showAll?"Hide":"View"} other projects ({others.length})
-    </button>
-    {showAll&&<div style={{display:"flex",flexDirection:"column",gap:10,marginTop:12}}>{others.map(p=><ProjectRow key={p.id} p={p} onOpen={onOpen}/>)}</div>}
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}><h2 style={{fontSize:17,fontWeight:700,color:T.text}}>All projects</h2><span style={{fontSize:13,color:T.textPh}}>{others.length}</span></div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:16}}>{others.map(p=><ProjectCard key={p.id} p={p} onOpen={onOpen}/>)}<CreateCard onNew={onNew}/></div>
+    <Footer/>
   </div>)};
 
 const LOCKED=["waiting","ordered","manufacturing","inspection","shipping","completed"];
