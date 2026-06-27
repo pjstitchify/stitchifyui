@@ -47,7 +47,7 @@ const CHAT_MSGS=[
   {from:"admin",name:"Stitchify Support",text:"For 100 pcs with screen printing, most matched factories quote 25–30 days including QC. I can share specific factory timelines once you run the AI match.",time:"10:09"},
 ];
 
-const Ic=({n,s=18,color})=>{const html=(typeof window!=="undefined"&&window._ICONS&&window._ICONS[n])||"";return <svg width={s} height={s} viewBox="0 0 15 15" fill="none" style={{color:color||"currentColor",flexShrink:0}} dangerouslySetInnerHTML={{__html:html}}/>;};
+const Ic=({n,s=18,color,bold})=>{const html=(typeof window!=="undefined"&&window._ICONS&&window._ICONS[n])||"";return <svg width={s} height={s} viewBox="0 0 15 15" fill="none" style={{color:color||"currentColor",flexShrink:0,...(bold?{stroke:"currentColor",strokeWidth:0.6}:{})}} dangerouslySetInnerHTML={{__html:html}}/>;};
 
 const inpS={width:"100%",padding:"11px 14px",border:`1px solid ${T.border}`,borderRadius:T.rs,fontSize:16,fontFamily:T.font,color:T.text,outline:"none",background:T.bg};
 const btnP={display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,padding:"10px 24px",background:T.primary,color:"#fff",border:"none",borderRadius:T.rp,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:T.font};
@@ -56,11 +56,13 @@ const btnGhost={...btnP,background:"transparent",color:T.textSec,border:`1px sol
 const cardS={background:T.bg,border:`1px solid ${T.border}`,borderRadius:T.r};
 const hov=(e,on)=>{e.currentTarget.style.transform=on?"translateY(-2px)":"";e.currentTarget.style.boxShadow=on?T.shadowH:""};
 const resolveImg=(k)=>{try{return window._D?window._D[k]:k}catch{return null}};
+// Title Case for product names, preserving acronyms (SS) and hyphenated words (T-Shirt)
+const titleCase=(s)=>String(s||"").split(" ").map(w=>w===w.toUpperCase()&&w.length<=3?w:w.split("-").map(part=>part.charAt(0).toUpperCase()+part.slice(1).toLowerCase()).join("-")).join(" ");
 
 const Badge=({label,bg,color,size=12})=>(<span style={{fontSize:size,fontWeight:600,padding:"3px 10px",borderRadius:T.rp,background:bg,color,whiteSpace:"nowrap",lineHeight:1.4,letterSpacing:0.1}}>{label}</span>);
 const StatusBadge=({status})=>{const s=STATUSES[status]||STATUSES.draft;return<Badge label={s.label} bg={s.bg} color={s.color}/>;};
 const Footer=()=>(<div style={{textAlign:"center",padding:"28px 0 12px",fontSize:13,color:T.textPh}}>For questions and help, please email support@stitchify.ai</div>);
-const ImgFull=({src,h=180,ar,bg=T.surfaceCool})=>{const[err,setErr]=useState(false);const i=resolveImg(src);const box=ar?{width:"100%",aspectRatio:ar}:{width:"100%",height:h};return(<div style={{...box,background:bg,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>{(!err&&i)?<img src={i} alt="" onError={()=>setErr(true)} style={{maxWidth:"100%",maxHeight:"100%",objectFit:"contain"}}/>:<Ic n="img" s={(ar?60:h)*0.3} color={T.textPh}/>}</div>)};
+const ImgFull=({src,h=180,ar,bg=T.surfaceCool,cover})=>{const[err,setErr]=useState(false);const i=resolveImg(src);const box=ar?{width:"100%",aspectRatio:ar}:{width:"100%",height:h};return(<div style={{...box,background:bg,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden"}}>{(!err&&i)?<img src={i} alt="" onError={()=>setErr(true)} style={cover?{width:"100%",height:"100%",objectFit:"cover"}:{maxWidth:"100%",maxHeight:"100%",objectFit:"contain"}}/>:<Ic n="img" s={(ar?60:h)*0.3} color={T.textPh}/>}</div>)};
 
 const OptionGroup=({label,options,value,onChange,multi,disabled,required})=>{
   const isSel=(o)=>multi?(value||[]).includes(o):value===o;
@@ -84,7 +86,7 @@ const OrderPopup=({item,onDismiss,onOpen})=>{
       <span style={{width:22,height:22,borderRadius:"50%",background:T.accent,display:"flex",alignItems:"center",justifyContent:"center"}}><Ic n="check" s={12} color="#1A1A2E"/></span>
       <span style={{fontSize:16,fontWeight:700,color:T.text}}>Order placed!</span>
     </div>
-    <div style={{fontSize:14,color:T.textSec,marginBottom:18,marginLeft:32}}>{item.nameEn} · {item.qty} pcs · confirmed with {item.factory}. Track its progress below.</div>
+    <div style={{fontSize:14,color:T.textSec,marginBottom:18,marginLeft:32}}>{titleCase(item.nameEn)} · {item.qty} pcs · confirmed with {item.factory}. Track its progress below.</div>
     <div style={{display:"flex",alignItems:"center",width:"100%",marginBottom:8}}>
       {ORDER_STAGES.map((st,i)=>{const done=i<=idx;return(<React.Fragment key={st.k}>
         {i>0&&<div style={{flex:1,height:2,background:i<=idx?T.accent:T.hairline}}/>}
@@ -113,7 +115,7 @@ const ProductionTracker=({items,onOpen})=>{
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
             <div style={{display:"flex",alignItems:"center",gap:12}}>
               <div style={{width:40,height:40,borderRadius:8,overflow:"hidden",background:T.surfaceCool,flexShrink:0}}><ImgFull src={it.img} h={40}/></div>
-              <div><div style={{fontSize:15,fontWeight:600,color:T.text}}>{it.nameEn}</div><div style={{fontSize:12,color:T.textSec}}>{it.qty} pcs · {it.factory}</div></div>
+              <div><div style={{fontSize:15,fontWeight:600,color:T.text}}>{titleCase(it.nameEn)}</div><div style={{fontSize:12,color:T.textSec}}>{it.qty} pcs · {it.factory}</div></div>
             </div>
             <StatusBadge status={it.status}/>
           </div>
@@ -130,24 +132,30 @@ const ProductionTracker=({items,onOpen})=>{
     </div>}
   </div>)};
 
-const ProjectCard=({p,onOpen})=>(
+const ProjectCard=({p,onOpen})=>{
+  const manuf=p.status==="manufacturing";
+  const actBtn={width:32,height:32,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",border:"none",background:T.surfaceCool,transition:"background 150ms"};
+  return(
   <div style={{...cardS,overflow:"hidden",cursor:"pointer",transition:`all 300ms ${T.eo}`}} onMouseEnter={e=>hov(e,1)} onMouseLeave={e=>hov(e,0)} onClick={()=>onOpen(p)}>
-    <div style={{position:"relative"}}><ImgFull src={p.img} ar="3/4"/><div style={{position:"absolute",top:12,right:12}}><StatusBadge status={p.status}/></div></div>
-    <div style={{padding:"16px 20px 20px"}}>
-      <div style={{fontSize:18,fontWeight:600,color:T.text,marginBottom:2}}>{p.nameEn}</div>
-      <div style={{fontSize:13,color:T.textSec,marginBottom:10}}>{p.type} · {p.qty} pcs · {p.roughCost}</div>
-      {p.factory!=="–"&&<div style={{fontSize:12,color:T.accentText,fontWeight:500,marginBottom:10}}>🏭 {p.factory}</div>}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+    <div style={{position:"relative"}}>
+      <ImgFull src={p.img} ar="3/4" cover/>
+      <div style={{position:"absolute",top:12,right:12,filter:"drop-shadow(0 1px 3px rgba(0,0,0,0.25))"}}><StatusBadge status={p.status}/></div>
+    </div>
+    <div style={{padding:"16px 20px 18px"}}>
+      <div style={{fontSize:18,fontWeight:600,color:T.text,marginBottom:2}}>{titleCase(p.nameEn)}</div>
+      <div style={{fontSize:13,color:T.textSec}}>{p.type} · {p.qty} pcs · {p.roughCost}</div>
+      {p.factory!=="–"&&<div style={{fontSize:12,color:T.accentText,fontWeight:500,marginTop:8}}>🏭 {p.factory}</div>}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:14,paddingTop:14,borderTop:`1px solid ${T.hairline}`}}>
         <span style={{fontSize:12,color:T.textPh}}>Updated {p.updated}</span>
-        <div style={{display:"flex",gap:6}}>
-          <button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4}}><Ic n="copy" s={12} color={T.textSec}/>Duplicate</button>
-          {p.status==="manufacturing"
-            ?<button disabled title="Cannot delete a project in manufacturing" onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:"#C4C0CF",borderColor:T.hairline,cursor:"not-allowed",background:T.surfaceCool}}><Ic n="trash" s={12} color="#C4C0CF"/></button>
-            :<button onClick={e=>e.stopPropagation()} style={{...btnGhost,padding:"4px 10px",fontSize:12,gap:4,color:T.error,borderColor:T.error}}><Ic n="trash" s={12} color={T.error}/></button>}
+        <div style={{display:"flex",gap:8}}>
+          <button title="Duplicate" onClick={e=>e.stopPropagation()} style={actBtn} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceSubtle} onMouseLeave={e=>e.currentTarget.style.background=T.surfaceCool}><Ic n="copy" s={16} bold color={T.textSec}/></button>
+          {manuf
+            ?<button disabled title="Cannot delete a project in manufacturing" onClick={e=>e.stopPropagation()} style={{...actBtn,cursor:"not-allowed"}}><Ic n="trash" s={16} bold color="#C4C0CF"/></button>
+            :<button title="Delete" onClick={e=>e.stopPropagation()} style={{...actBtn,background:"#FCE9E9"}} onMouseEnter={e=>e.currentTarget.style.background="#F9D5D5"} onMouseLeave={e=>e.currentTarget.style.background="#FCE9E9"}><Ic n="trash" s={16} bold color={T.error}/></button>}
         </div>
       </div>
     </div>
-  </div>);
+  </div>)};
 
 const CreateCard=({onNew})=>(
   <div onClick={onNew} style={{border:`2px dashed ${T.border}`,borderRadius:T.r,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14,cursor:"pointer",background:T.surfaceCool,minHeight:260,transition:`border-color 200ms`}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.primary} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
@@ -167,7 +175,7 @@ const MiniProgress=({status})=>{const idx=stageIdxOf(status);return(<div style={
 const ProjectRow=({p,onOpen})=>{const inProd=IN_PRODUCTION.includes(p.status);return(
   <div onClick={()=>onOpen(p)} style={{...cardS,display:"flex",alignItems:"center",gap:14,padding:"12px 16px",cursor:"pointer",transition:`all 200ms ${T.eo}`}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.primaryLight} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
     <div style={{width:44,height:58,borderRadius:8,overflow:"hidden",flexShrink:0}}><ImgFull src={p.img} ar="3/4"/></div>
-    <div style={{width:200,flexShrink:0}}><div style={{fontSize:15,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{p.nameEn}</div><div style={{fontSize:12,color:T.textSec}}>{p.qty} pcs · {p.roughCost}</div></div>
+    <div style={{width:200,flexShrink:0}}><div style={{fontSize:15,fontWeight:600,color:T.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{titleCase(p.nameEn)}</div><div style={{fontSize:12,color:T.textSec}}>{p.qty} pcs · {p.roughCost}</div></div>
     <div style={{flex:1,minWidth:120}}>{inProd?<MiniProgress status={p.status}/>:<span style={{fontSize:12,color:T.textPh}}>{p.factory!=="–"?`🏭 ${p.factory}`:`Updated ${p.updated}`}</span>}</div>
     <div style={{flexShrink:0}}><StatusBadge status={p.status}/></div>
   </div>)};
@@ -206,7 +214,7 @@ const ConfiguratorPage=({onBack,project,onWithdraw,onMatch})=>{
 
   return(<div>
     <button onClick={onBack} style={{display:"inline-flex",alignItems:"center",gap:6,background:"none",border:"none",color:T.primary,fontSize:14,fontWeight:500,cursor:"pointer",marginBottom:16,fontFamily:T.font,padding:0}}><Ic n="back" s={15}/> Back to projects</button>
-    {project?<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}><h1 style={{fontSize:28,fontWeight:700,color:T.text}}>{project.nameEn}</h1><StatusBadge status={project.status}/></div>:<h1 style={{fontSize:28,fontWeight:700,color:T.text,marginBottom:8}}>Create a project</h1>}
+    {project?<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}><h1 style={{fontSize:28,fontWeight:700,color:T.text}}>{titleCase(project.nameEn)}</h1><StatusBadge status={project.status}/></div>:<h1 style={{fontSize:28,fontWeight:700,color:T.text,marginBottom:8}}>Create a project</h1>}
     <p style={{fontSize:15,color:T.textSec,marginBottom:24}}>Configure your design, specification and body in one place. We'll match you to the best factories.</p>
     {locked&&<div style={{background:"#FEF3C7",border:"1px solid #FCD34D",borderRadius:T.rs,padding:"14px 18px",marginBottom:24,display:"flex",alignItems:"center",justifyContent:"space-between",gap:16}}>
       <div style={{display:"flex",alignItems:"flex-start",gap:10}}><Ic n="spec" s={18} color={T.warning}/><div><div style={{fontSize:14,fontWeight:600,color:T.warning}}>Specs are locked</div><div style={{fontSize:13,color:T.textSec,marginTop:2}}>This project has an active order ({STATUSES[project.status].label}). Withdraw the order to edit.</div></div></div>
@@ -249,7 +257,7 @@ const ConfiguratorPage=({onBack,project,onWithdraw,onMatch})=>{
           <div style={{fontSize:12,color:T.textSec,marginBottom:2}}>Rough estimate</div>
           <div style={{fontSize:24,fontWeight:700,color:T.text,marginBottom:2}}>{estimate}</div>
           <div style={{fontSize:12,color:T.textPh,marginBottom:18}}>Final quote after factory matching</div>
-          <button onClick={onMatch} disabled={locked} className="stitched" style={{...btnP,width:"100%",padding:"14px",fontSize:15,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer"}}>Get factory matches →</button>
+          <button onClick={onMatch} disabled={locked} className="stitched" style={{...btnP,width:"100%",padding:"14px",fontSize:15,opacity:locked?0.5:1,cursor:locked?"not-allowed":"pointer"}}>Get factory matches</button>
           <div style={{fontSize:12,color:T.textPh,textAlign:"center",marginTop:10}}>No payment required to see matches</div>
         </div>
       </div>
@@ -292,7 +300,7 @@ const StatusPage=({project,onBack,onEditSpec})=>{
   const steps=[{label:"Order confirmed",date:"May 12",done:true},{label:"Material procurement",date:"May 14–16",done:true},{label:"Pattern cutting",date:"May 17–19",done:project.status!=="ordered"},{label:"Sewing",date:"May 20–25",done:false},{label:"Printing",date:"May 26–28",done:false},{label:"QC inspection",date:"May 29–30",done:false},{label:"Shipping",date:"Jun 2",done:false}];
   return(<div>
     <button onClick={onBack} style={{display:"inline-flex",alignItems:"center",gap:6,background:"none",border:"none",color:T.primary,fontSize:14,fontWeight:500,cursor:"pointer",marginBottom:16,fontFamily:T.font,padding:0}}><Ic n="back" s={15}/> Back to projects</button>
-    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}><h1 style={{fontSize:28,fontWeight:700,color:T.text}}>{project.nameEn}</h1><StatusBadge status={project.status}/></div>
+    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:24}}><h1 style={{fontSize:28,fontWeight:700,color:T.text}}>{titleCase(project.nameEn)}</h1><StatusBadge status={project.status}/></div>
     <div style={{display:"grid",gridTemplateColumns:"1fr 320px",gap:24,alignItems:"start"}}>
       <div style={{...cardS,padding:"24px"}}>
         <div style={{fontSize:16,fontWeight:600,marginBottom:18}}>Production timeline</div>
@@ -315,7 +323,7 @@ const StatusPage=({project,onBack,onEditSpec})=>{
           <div style={{fontSize:13,color:T.textSec,marginBottom:12}}>Locked while the order is active.</div>
           <button onClick={()=>onEditSpec(project)} style={{...btnGhost,width:"100%",justifyContent:"center"}}>View / edit spec</button>
         </div>
-        <button style={{...btnO,justifyContent:"center"}}>Message factory</button>
+        <button style={{...btnO,justifyContent:"center"}}>Chat with factory</button>
       </div>
     </div>
     <Footer/>
