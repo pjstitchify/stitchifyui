@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Hind','Noto Sans JP',-apple-system,sans-serif; background: #F5F5F7; }
+input:focus, select:focus, textarea:focus { border-color: #4E35E8 !important; outline: none; }
+::placeholder { color: #757575; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #E8E5F0; border-radius: 3px; }
+button { -webkit-appearance: none; touch-action: manipulation; }
+
+/* Decorative "stitch" inset used on primary CTAs */
+.stitched { position: relative; }
+.stitched::after {
+  content: ''; position: absolute; inset: 4px;
+  border: 1.6px dashed rgba(255,255,255,0.6); border-radius: inherit; pointer-events: none;
+}
+.stitched:active { transform: translateY(1px); }
+
+/* Embroidered ring used on the circular Create button (mobile) */
+.embroidered { position: relative; }
+.embroidered::after {
+  content: ''; position: absolute; inset: 5px;
+  border: 2px dashed rgba(255,255,255,0.75); border-radius: inherit; pointer-events: none;
+}
+.embroidered:active { transform: translateY(1px) scale(0.97); }
