@@ -10,24 +10,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:'Hind','Noto Sans JP',-apple-system,sans-serif; background:#F5F5F7;
-  overscroll-behavior:none; }
+body { font-family:'Hind','Noto Sans JP',-apple-system,sans-serif; background:#F5F5F7; overscroll-behavior:none; }
 input:focus, select:focus, textarea:focus { border-color:#4E35E8 !important; outline:none; }
 input { -webkit-appearance:none; font-size:16px; }
 button { -webkit-appearance:none; touch-action:manipulation; }
-::-webkit-scrollbar { display:none; }
-* { scrollbar-width:none; }
+::-webkit-scrollbar { display:none; } * { scrollbar-width:none; }
+input[type=number]::-webkit-inner-spin-button { display:none; }
+input[type=range] { -webkit-appearance:none; height:4px; background:#E8E5F0; border-radius:2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:#4E35E8; cursor:pointer; box-shadow:0 1px 4px rgba(78,53,232,0.3); }
 .stitched { position:relative; }
-.stitched::after { content:''; position:absolute; inset:4px;
-  border:1.6px dashed rgba(255,255,255,0.6); border-radius:inherit; pointer-events:none; }
+.stitched::after { content:''; position:absolute; inset:4px; border:1.6px dashed rgba(255,255,255,0.6); border-radius:inherit; pointer-events:none; }
 .stitched:active { transform:translateY(1px); }
 .embroidered { position:relative; }
-.embroidered::after { content:''; position:absolute; inset:5px;
-  border:2px dashed rgba(255,255,255,0.7); border-radius:50%; pointer-events:none; }
+.embroidered::after { content:''; position:absolute; inset:5px; border:2px dashed rgba(255,255,255,0.7); border-radius:50%; pointer-events:none; }
+.embroidered:active { transform:translateY(-10px) scale(0.97) !important; }
 </style>
 </head>
 <body>
-<div id="root"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F5F5F7"><div style="font-size:32px;font-weight:700;color:#1A1A2E">Stitchify</div></div></div>
+<div id="root"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script>window._D={};
@@ -351,6 +351,7 @@ function App() {
     { k: "home", icon: "home", label: "\u30DB\u30FC\u30E0" },
     { k: "showroom", icon: "projects", label: "Showroom" },
     { k: "make", icon: "needle", label: "MAKE", center: true },
+    { k: "notifs", icon: "bell", label: "\u901A\u77E5" },
     { k: "profile", icon: "profile", label: "\u30D7\u30ED\u30D5\u30A3\u30FC\u30EB" }
   ];
   return /* @__PURE__ */ React.createElement("div", { style: {
@@ -391,54 +392,52 @@ function App() {
     height: T.TAB_H,
     background: T.bg,
     borderTop: `1px solid ${T.hairline}`,
+    zIndex: 100,
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingBottom: 8,
-    zIndex: 100
+    alignItems: "flex-end",
+    paddingBottom: 10
   } }, TABS.map((t) => {
     const active = tab === t.k;
-    if (t.center) return /* @__PURE__ */ React.createElement(
+    if (t.center) return /* @__PURE__ */ React.createElement("div", { key: t.k, style: {
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 4
+    } }, /* @__PURE__ */ React.createElement(
       "button",
       {
-        key: t.k,
         onClick: () => setTab(t.k),
+        className: "embroidered",
         style: {
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 3,
-          background: "none",
+          width: 54,
+          height: 54,
+          borderRadius: "50%",
+          background: active ? T.primary : "#1A1A2E",
           border: "none",
           cursor: "pointer",
-          fontFamily: T.font,
-          padding: 0
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0 4px 16px rgba(78,53,232,0.4)",
+          transform: "translateY(-14px)",
+          flexShrink: 0
         }
       },
-      /* @__PURE__ */ React.createElement("div", { className: "embroidered", style: {
-        width: 52,
-        height: 52,
-        borderRadius: "50%",
-        background: active ? T.primary : "#1A1A2E",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 4px 14px rgba(78,53,232,0.35)",
-        transform: `translateY(${active ? -6 : -4}px)`,
-        transition: "transform 180ms cubic-bezier(0.05,0.7,0.1,1)"
-      } }, /* @__PURE__ */ React.createElement(Ic, { n: t.icon, s: 22, color: "#fff" })),
-      /* @__PURE__ */ React.createElement("span", { style: {
-        fontSize: 10,
-        fontWeight: active ? 700 : 500,
-        color: active ? T.primary : T.textPh
-      } }, t.label)
-    );
+      /* @__PURE__ */ React.createElement(Ic, { n: t.icon, s: 22, color: "#fff", bold: true })
+    ), /* @__PURE__ */ React.createElement("span", { style: {
+      fontSize: 10,
+      fontWeight: active ? 700 : 600,
+      color: active ? T.primary : T.textPh,
+      marginTop: -10
+    } }, t.label));
     return /* @__PURE__ */ React.createElement(
       "button",
       {
         key: t.k,
         onClick: () => setTab(t.k),
         style: {
+          flex: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -447,20 +446,18 @@ function App() {
           border: "none",
           cursor: "pointer",
           fontFamily: T.font,
-          padding: "4px 10px",
-          flex: 1
+          WebkitTapHighlightColor: "transparent"
         }
       },
       /* @__PURE__ */ React.createElement("div", { style: {
-        width: 36,
+        width: 40,
         height: 32,
         borderRadius: 10,
         background: active ? T.surfaceSubtle : "transparent",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        transition: "background 150ms"
-      } }, /* @__PURE__ */ React.createElement(Ic, { n: t.icon, s: 20, bold: active, color: active ? T.primary : T.textPh })),
+        justifyContent: "center"
+      } }, /* @__PURE__ */ React.createElement(Ic, { n: t.icon, s: 21, bold: active, color: active ? T.primary : T.textPh })),
       /* @__PURE__ */ React.createElement("span", { style: {
         fontSize: 10,
         fontWeight: active ? 700 : 500,
