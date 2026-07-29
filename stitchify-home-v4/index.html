@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#1A1A2E">
@@ -99,7 +99,7 @@ const Spark = ({ data, color = T.primary, w = 72, h = 28 }) => {
 };
 const AuthScreen = ({ onAuth }) => {
   const [mode, setMode] = useState("login");
-  const logoIcon = resolveImg("LOGO_ICON");
+  const logoFull = resolveImg("LOGO_AUTH");
   return /* @__PURE__ */ React.createElement("div", { style: {
     minHeight: "100vh",
     background: T.surfaceCool,
@@ -115,19 +115,7 @@ const AuthScreen = ({ onAuth }) => {
     border: `1px solid ${T.border}`,
     boxShadow: T.shadow,
     padding: 36
-  } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 28 } }, logoIcon ? /* @__PURE__ */ React.createElement("img", { src: logoIcon, alt: "", style: { height: 52, display: "block", margin: "0 auto 10px" } }) : /* @__PURE__ */ React.createElement("div", { style: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
-    background: T.primary,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 24,
-    fontWeight: 800,
-    color: "#fff",
-    margin: "0 auto 10px"
-  } }, "S"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 22, fontWeight: 700, color: T.text, letterSpacing: "-0.4px" } }, "Stitchify"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh, marginTop: 5 } }, "Manufacture \xB7 Promote \xB7 Grow")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", background: T.surfaceCool, borderRadius: T.rp, padding: 4, marginBottom: 22 } }, [["login", "Log in"], ["signup", "Sign up"]].map(([k, l]) => {
+  } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 28 } }, /* @__PURE__ */ React.createElement("img", { src: logoFull, alt: "Stitchify", style: { height: 44, display: "block", margin: "0 auto" } }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh, marginTop: 12 } }, "Manufacture \xB7 Promote \xB7 Grow")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", background: T.surfaceCool, borderRadius: T.rp, padding: 4, marginBottom: 22 } }, [["login", "Log in"], ["signup", "Sign up"]].map(([k, l]) => {
     const on = mode === k;
     return /* @__PURE__ */ React.createElement("button", { key: k, onClick: () => setMode(k), style: {
       flex: 1,
@@ -223,7 +211,7 @@ const NAV_BTM = [
   { k: "help", icon: "sparkle", label: "Help" }
 ];
 const Sidebar = ({ active, setActive }) => {
-  const logoIcon = resolveImg("LOGO_ICON");
+  const logoFull = resolveImg("LOGO_AUTH");
   return /* @__PURE__ */ React.createElement("div", { style: {
     width: 220,
     flexShrink: 0,
@@ -234,25 +222,13 @@ const Sidebar = ({ active, setActive }) => {
     display: "flex",
     flexDirection: "column",
     borderRight: `1px solid ${T.sidebarBorder}`
-  } }, /* @__PURE__ */ React.createElement("div", { style: {
-    padding: "20px 18px 16px",
-    borderBottom: `1px solid ${T.sidebarBorder}`,
-    display: "flex",
-    alignItems: "center",
-    gap: 10
-  } }, logoIcon ? /* @__PURE__ */ React.createElement("img", { src: logoIcon, alt: "", style: { height: 30, width: 30, objectFit: "contain", flexShrink: 0 } }) : /* @__PURE__ */ React.createElement("div", { style: {
-    width: 30,
-    height: 30,
-    borderRadius: 8,
-    background: T.primary,
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 14,
-    fontWeight: 800,
-    color: "#fff"
-  } }, "S"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 15, fontWeight: 700, color: "#fff", letterSpacing: "-0.3px" } }, "Stitchify")), /* @__PURE__ */ React.createElement("nav", { style: { flex: 1, padding: "10px 8px" } }, NAV.map((item) => {
+  } }, /* @__PURE__ */ React.createElement("div", { style: { padding: "18px 16px 16px", borderBottom: `1px solid ${T.sidebarBorder}` } }, /* @__PURE__ */ React.createElement("div", { style: {
+    background: "#fff",
+    borderRadius: 10,
+    padding: "9px 12px",
+    display: "inline-flex",
+    alignItems: "center"
+  } }, /* @__PURE__ */ React.createElement("img", { src: logoFull, alt: "Stitchify", style: { height: 24, display: "block" } }))), /* @__PURE__ */ React.createElement("nav", { style: { flex: 1, padding: "10px 8px" } }, NAV.map((item) => {
     const on = active === item.k;
     return /* @__PURE__ */ React.createElement(
       "button",
@@ -407,6 +383,52 @@ const HomeScreen = ({ goTo }) => /* @__PURE__ */ React.createElement("div", { st
   } }, "View \u2192")));
 })))));
 const STEPS = ["Ordered", "Production", "Inspection", "Shipping", "Delivered"];
+const DOT = 14;
+const ProgressTrack = ({ step }) => {
+  const n = STEPS.length;
+  const half = 50 / n;
+  const spanPct = 100 - 2 * half;
+  const fillPct = n > 1 ? step / (n - 1) * spanPct : 0;
+  return /* @__PURE__ */ React.createElement("div", { style: { margin: "14px 0 8px" } }, /* @__PURE__ */ React.createElement("div", { style: { position: "relative", height: DOT } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: `${half}%`,
+    width: `${spanPct}%`,
+    height: 2,
+    background: T.hairline,
+    transform: "translateY(-50%)",
+    borderRadius: 1
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: `${half}%`,
+    width: `${fillPct}%`,
+    height: 2,
+    background: T.primary,
+    transform: "translateY(-50%)",
+    borderRadius: 1,
+    transition: "width 400ms ease"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", inset: 0, display: "flex" } }, STEPS.map((s, i) => {
+    const done = i <= step;
+    return /* @__PURE__ */ React.createElement("div", { key: s, style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: DOT,
+      height: DOT,
+      borderRadius: "50%",
+      boxSizing: "border-box",
+      background: done ? T.primary : T.bg,
+      border: `2px solid ${done ? T.primary : T.border}`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, done && /* @__PURE__ */ React.createElement("div", { style: { width: 5, height: 5, borderRadius: "50%", background: "#fff" } })));
+  }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", marginTop: 6 } }, STEPS.map((s, i) => /* @__PURE__ */ React.createElement("div", { key: s, style: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 10,
+    lineHeight: 1.2,
+    color: i <= step ? T.primary : T.textPh
+  } }, s))));
+};
 const MAKE_PROJECTS = [
   {
     id: 1,
@@ -490,39 +512,7 @@ const MakeScreen = () => {
     fontFamily: T.font
   } }, l))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 14 } }, filtered.map((p) => {
     const img = resolveImg(p.img);
-    return /* @__PURE__ */ React.createElement(Card, { key: p.id, style: { padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 64, height: 64, borderRadius: T.rs, overflow: "hidden", background: T.surfaceCool, flexShrink: 0 } }, img && /* @__PURE__ */ React.createElement("img", { src: img, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 16, fontWeight: 600, color: T.text } }, p.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh } }, p.code, " \xB7 ", p.factory, " \xB7 ", p.qty, " pcs")), /* @__PURE__ */ React.createElement(Badge, { label: p.statusLabel, bg: p.statusBg, color: p.statusColor })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 0, margin: "12px 0 8px", position: "relative" } }, /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      top: "50%",
-      left: 0,
-      right: 0,
-      height: 2,
-      background: T.hairline,
-      transform: "translateY(-50%)",
-      zIndex: 0
-    } }), /* @__PURE__ */ React.createElement("div", { style: {
-      position: "absolute",
-      top: "50%",
-      left: 0,
-      height: 2,
-      background: T.primary,
-      transform: "translateY(-50%)",
-      zIndex: 1,
-      width: `${p.step / 4 * 100}%`,
-      transition: "width 400ms ease"
-    } }), STEPS.map((s, i) => {
-      const done = i <= p.step;
-      return /* @__PURE__ */ React.createElement("div", { key: s, style: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative", zIndex: 2 } }, /* @__PURE__ */ React.createElement("div", { style: {
-        width: 14,
-        height: 14,
-        borderRadius: "50%",
-        background: done ? T.primary : T.bg,
-        border: `2px solid ${done ? T.primary : T.border}`,
-        marginBottom: 4,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-      } }, done && /* @__PURE__ */ React.createElement("div", { style: { width: 5, height: 5, borderRadius: "50%", background: "#fff" } })), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, color: done ? T.primary : T.textPh, textAlign: "center", lineHeight: 1.2 } }, s));
-    })), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textSec, marginTop: 4 } }, p.detail))));
+    return /* @__PURE__ */ React.createElement(Card, { key: p.id, style: { padding: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 16, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: { width: 64, height: 64, borderRadius: T.rs, overflow: "hidden", background: T.surfaceCool, flexShrink: 0 } }, img && /* @__PURE__ */ React.createElement("img", { src: img, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 16, fontWeight: 600, color: T.text } }, p.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh } }, p.code, " \xB7 ", p.factory, " \xB7 ", p.qty, " pcs")), /* @__PURE__ */ React.createElement(Badge, { label: p.statusLabel, bg: p.statusBg, color: p.statusColor })), /* @__PURE__ */ React.createElement(ProgressTrack, { step: p.step }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textSec, marginTop: 4 } }, p.detail))));
   })));
 };
 const CSTATUS = {

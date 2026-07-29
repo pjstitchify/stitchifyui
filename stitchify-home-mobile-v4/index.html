@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#FFFFFF">
@@ -97,7 +97,7 @@ const Badge = ({ label, bg, color }) => /* @__PURE__ */ React.createElement("spa
 } }, label);
 const AuthScreen = ({ onAuth }) => {
   const [mode, setMode] = useState("login");
-  const logoIcon = resolveImg("LOGO_ICON");
+  const logoFull = resolveImg("LOGO_AUTH");
   return /* @__PURE__ */ React.createElement("div", { style: {
     minHeight: "100vh",
     background: T.surfaceCool,
@@ -113,19 +113,7 @@ const AuthScreen = ({ onAuth }) => {
     border: `1px solid ${T.border}`,
     boxShadow: T.shadow,
     padding: 28
-  } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 24 } }, logoIcon ? /* @__PURE__ */ React.createElement("img", { src: logoIcon, alt: "", style: { height: 52, display: "block", margin: "0 auto 10px" } }) : /* @__PURE__ */ React.createElement("div", { style: {
-    width: 52,
-    height: 52,
-    borderRadius: 14,
-    background: T.primary,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 24,
-    fontWeight: 800,
-    color: "#fff",
-    margin: "0 auto 10px"
-  } }, "S"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 22, fontWeight: 700, color: T.text, letterSpacing: "-0.4px" } }, "Stitchify"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh, marginTop: 5 } }, "Manufacture \xB7 Promote \xB7 Grow")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", background: T.surfaceCool, borderRadius: T.rp, padding: 4, marginBottom: 20 } }, [["login", "Log in"], ["signup", "Sign up"]].map(([k, l]) => {
+  } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 24 } }, /* @__PURE__ */ React.createElement("img", { src: logoFull, alt: "Stitchify", style: { height: 40, display: "block", margin: "0 auto" } }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textPh, marginTop: 12 } }, "Manufacture \xB7 Promote \xB7 Grow")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", background: T.surfaceCool, borderRadius: T.rp, padding: 4, marginBottom: 20 } }, [["login", "Log in"], ["signup", "Sign up"]].map(([k, l]) => {
     const on = mode === k;
     return /* @__PURE__ */ React.createElement("button", { key: k, onClick: () => setMode(k), style: {
       flex: 1,
@@ -361,10 +349,268 @@ const TabPlaceholder = ({ icon, label, note }) => /* @__PURE__ */ React.createEl
   alignItems: "center",
   justifyContent: "center"
 } }, /* @__PURE__ */ React.createElement(Ic, { n: icon, s: 40, color: T.border }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 18, fontWeight: 700, color: T.text, margin: "12px 0 6px" } }, label), note && /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, color: T.textSec, maxWidth: 280, lineHeight: 1.5 } }, note), /* @__PURE__ */ React.createElement("div", { style: { height: T.TAB + 8 } }));
+const STEPS = ["Ordered", "Production", "Inspection", "Shipping", "Delivered"];
+const DOT = 13;
+const MobileTrack = ({ step }) => {
+  const n = STEPS.length;
+  const half = 50 / n;
+  const span = 100 - 2 * half;
+  const fill = n > 1 ? step / (n - 1) * span : 0;
+  return /* @__PURE__ */ React.createElement("div", { style: { margin: "12px 0 4px" } }, /* @__PURE__ */ React.createElement("div", { style: { position: "relative", height: DOT } }, /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: half + "%",
+    width: span + "%",
+    height: 2,
+    background: T.hairline,
+    transform: "translateY(-50%)",
+    borderRadius: 1
+  } }), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "absolute",
+    top: "50%",
+    left: half + "%",
+    width: fill + "%",
+    height: 2,
+    background: T.primary,
+    transform: "translateY(-50%)",
+    borderRadius: 1,
+    transition: "width 400ms ease"
+  } }), /* @__PURE__ */ React.createElement("div", { style: { position: "absolute", inset: 0, display: "flex" } }, STEPS.map((s, i) => {
+    const done = i <= step;
+    return /* @__PURE__ */ React.createElement("div", { key: s, style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: DOT,
+      height: DOT,
+      borderRadius: "50%",
+      boxSizing: "border-box",
+      background: done ? T.primary : T.bg,
+      border: "2px solid " + (done ? T.primary : T.border),
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, done && /* @__PURE__ */ React.createElement("div", { style: { width: 4, height: 4, borderRadius: "50%", background: "#fff" } })));
+  }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", marginTop: 5 } }, STEPS.map((s, i) => /* @__PURE__ */ React.createElement("div", { key: s, style: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 9,
+    lineHeight: 1.2,
+    color: i <= step ? T.primary : T.textPh
+  } }, s))));
+};
+const MAKE_PROJECTS = [
+  {
+    id: 1,
+    img: "IMG_0",
+    name: "Logo Embroidery Sweat",
+    code: "TL-001",
+    factory: "Nishiwaki Textile",
+    step: 4,
+    label: "Delivered",
+    bg: T.successBg,
+    color: T.success,
+    detail: "50 pcs \xB7 received Jul 15"
+  },
+  {
+    id: 2,
+    img: "IMG_4",
+    name: "Pleated Midi Skirt",
+    code: "TL-004",
+    factory: "Kyoto Fabric Co.",
+    step: 2,
+    label: "In production",
+    bg: "#E0EBFD",
+    color: "#2563EB",
+    detail: "30 pcs \xB7 est. Aug 2026"
+  },
+  {
+    id: 3,
+    img: "IMG_3",
+    name: "Ribbed Knit Tee",
+    code: "TL-006",
+    factory: "Osaka Knit Co.",
+    step: 1,
+    label: "In production",
+    bg: "#E0EBFD",
+    color: "#2563EB",
+    detail: "40 pcs \xB7 est. Sep 2026"
+  },
+  {
+    id: 4,
+    img: "IMG_5",
+    name: "Bomber Jacket",
+    code: "TL-005",
+    factory: "Awaiting factory selection",
+    step: 0,
+    label: "Quote received",
+    bg: T.warningBg,
+    color: T.warning,
+    detail: "Quote expires Jul 30 \xB7 20 pcs"
+  }
+];
+const MakeTab = () => {
+  const [seg, setSeg] = useState("active");
+  const rows = seg === "active" ? MAKE_PROJECTS.filter((p) => p.step < 4) : MAKE_PROJECTS.filter((p) => p.step === 4);
+  return /* @__PURE__ */ React.createElement("div", { style: { padding: "16px 16px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 22, fontWeight: 700, color: T.text } }, "Make"), /* @__PURE__ */ React.createElement("button", { className: "stitched", style: {
+    padding: "8px 16px",
+    borderRadius: T.rp,
+    border: "none",
+    background: T.primary,
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    fontFamily: T.font
+  } }, "+ New")), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, color: T.textSec, marginBottom: 16 } }, "Production with our onboarded OEM partners"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 16 } }, [["3", "Active", T.primary], ["1", "Delivered", T.success], ["140", "Units", T.text]].map(([v, l, col]) => /* @__PURE__ */ React.createElement(Card, { key: l, style: { flex: 1, padding: "10px 8px", textAlign: "center" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 19, fontWeight: 800, color: col } }, v), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 10, color: T.textSec, marginTop: 2 } }, l)))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", background: T.surfaceCool, borderRadius: T.rp, padding: 4, marginBottom: 14 } }, [["active", "Active"], ["done", "Completed"]].map(([k, l]) => {
+    const on = seg === k;
+    return /* @__PURE__ */ React.createElement("button", { key: k, onClick: () => setSeg(k), style: {
+      flex: 1,
+      padding: "7px 0",
+      borderRadius: T.rp,
+      border: "none",
+      background: on ? T.bg : "transparent",
+      color: on ? T.primary : T.textSec,
+      fontWeight: on ? 700 : 500,
+      fontSize: 13,
+      cursor: "pointer",
+      fontFamily: T.font,
+      boxShadow: on ? "0 1px 3px rgba(0,0,0,0.1)" : "none"
+    } }, l);
+  })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10 } }, rows.map((p) => {
+    const img = resolveImg(p.img);
+    return /* @__PURE__ */ React.createElement(Card, { key: p.id }, /* @__PURE__ */ React.createElement("div", { style: { padding: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      width: 52,
+      height: 52,
+      borderRadius: T.rs,
+      overflow: "hidden",
+      background: T.surfaceCool,
+      flexShrink: 0
+    } }, img && /* @__PURE__ */ React.createElement("img", { src: img, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", gap: 8, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, fontWeight: 600, color: T.text, lineHeight: 1.3 } }, p.name), /* @__PURE__ */ React.createElement(Badge, { label: p.label, bg: p.bg, color: p.color })), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: T.textPh, marginTop: 3 } }, p.code, " \xB7 ", p.factory))), /* @__PURE__ */ React.createElement(MobileTrack, { step: p.step }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: T.textSec, marginTop: 8 } }, p.detail), p.step === 0 && /* @__PURE__ */ React.createElement("button", { style: {
+      width: "100%",
+      marginTop: 10,
+      padding: "9px 0",
+      borderRadius: T.rs,
+      border: "none",
+      background: T.primary,
+      color: "#fff",
+      fontSize: 13,
+      fontWeight: 600,
+      cursor: "pointer",
+      fontFamily: T.font
+    } }, "Review quote \u2192")));
+  })), /* @__PURE__ */ React.createElement("div", { style: { height: T.TAB + 8 } }));
+};
+const CSTATUS = {
+  open: { label: "Open \xB7 Recruiting", bg: "#F0FDF4", border: "#86EFAC", color: T.success },
+  awaiting: { label: "Awaiting payment", bg: "#EFF6FF", border: "#93C5FD", color: "#2563EB" },
+  draft: { label: "Draft", bg: T.surfaceCool, border: T.border, color: T.textSec }
+};
+const CAMPAIGNS = [
+  {
+    id: 1,
+    img: "IMG_0",
+    name: "Logo Embroidery Sweat PR",
+    type: "Influencer",
+    provision: "Gifting",
+    reward: 25e3,
+    deadline: "Jul 31",
+    applicants: 3,
+    newApps: 2,
+    status: "open"
+  },
+  {
+    id: 2,
+    img: "IMG_1",
+    name: "Wide Pants \u2014 Summer",
+    type: "Photographer",
+    provision: "Rental",
+    reward: 4e4,
+    deadline: "Aug 5",
+    applicants: 1,
+    newApps: 0,
+    status: "awaiting"
+  },
+  {
+    id: 3,
+    img: "IMG_4",
+    name: "Bomber Jacket Look",
+    type: "Model",
+    provision: "Rental",
+    reward: 35e3,
+    deadline: null,
+    applicants: 0,
+    newApps: 0,
+    status: "draft"
+  }
+];
+const ShowroomTab = () => /* @__PURE__ */ React.createElement("div", { style: { padding: "16px 16px 0" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 22, fontWeight: 700, color: T.text } }, "Showroom"), /* @__PURE__ */ React.createElement("button", { className: "stitched", style: {
+  padding: "8px 16px",
+  borderRadius: T.rp,
+  border: "none",
+  background: T.primary,
+  color: "#fff",
+  fontSize: 13,
+  fontWeight: 600,
+  cursor: "pointer",
+  fontFamily: T.font
+} }, "+ New")), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 13, color: T.textSec, marginBottom: 14 } }, "Promote your Make-produced items with creators"), /* @__PURE__ */ React.createElement("div", { style: {
+  fontSize: 11,
+  color: T.textSec,
+  padding: "8px 12px",
+  background: T.showroomBg,
+  borderRadius: T.rs,
+  borderLeft: "3px solid " + T.showroom,
+  marginBottom: 14,
+  lineHeight: 1.5
+} }, "Campaigns are available only for items manufactured through Make."), /* @__PURE__ */ React.createElement("div", { style: {
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  padding: "11px 13px",
+  background: T.errorBg,
+  border: "1px solid " + T.error,
+  borderRadius: T.rs,
+  marginBottom: 16
+} }, /* @__PURE__ */ React.createElement("div", { style: { width: 8, height: 8, borderRadius: "50%", background: T.error, flexShrink: 0 } }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, fontSize: 12, color: T.error, lineHeight: 1.4 } }, /* @__PURE__ */ React.createElement("strong", null, "2 new applicants"), " on Logo Embroidery Sweat PR"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12, fontWeight: 600, color: T.error, whiteSpace: "nowrap" } }, "Review \u2192")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10 } }, CAMPAIGNS.map((c) => {
+  const img = resolveImg(c.img);
+  const st = CSTATUS[c.status];
+  return /* @__PURE__ */ React.createElement(Card, { key: c.id }, /* @__PURE__ */ React.createElement("div", { style: {
+    background: st.bg,
+    borderBottom: "2px solid " + st.border,
+    padding: "8px 14px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 12, fontWeight: 700, color: st.color } }, st.label), c.deadline && /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, color: T.textSec } }, "Due ", c.deadline)), /* @__PURE__ */ React.createElement("div", { style: { padding: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 12, alignItems: "flex-start" } }, /* @__PURE__ */ React.createElement("div", { style: {
+    width: 52,
+    height: 52,
+    borderRadius: T.rs,
+    overflow: "hidden",
+    background: T.surfaceCool,
+    flexShrink: 0
+  } }, img && /* @__PURE__ */ React.createElement("img", { src: img, alt: "", style: { width: "100%", height: "100%", objectFit: "cover" } })), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 6, lineHeight: 1.3 } }, c.name), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 6 } }, /* @__PURE__ */ React.createElement(Badge, { label: c.type, bg: T.surfaceSubtle, color: T.primary }), /* @__PURE__ */ React.createElement(
+    Badge,
+    {
+      label: c.provision,
+      bg: c.provision === "Gifting" ? T.accentBg : "#E0EBFD",
+      color: c.provision === "Gifting" ? T.accentText : "#2563EB"
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 16, fontWeight: 700, color: T.primary } }, yen(c.reward)), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: T.textSec } }, c.applicants, " applicant", c.applicants !== 1 ? "s" : "", c.newApps > 0 && /* @__PURE__ */ React.createElement("span", { style: { color: T.error, fontWeight: 700, marginLeft: 4 } }, c.newApps, " new"))))), /* @__PURE__ */ React.createElement("button", { style: {
+    width: "100%",
+    marginTop: 12,
+    padding: "10px 0",
+    borderRadius: T.rs,
+    border: c.status === "draft" ? "1.5px solid " + T.primary : "none",
+    background: c.status === "draft" ? "transparent" : T.primary,
+    color: c.status === "draft" ? T.primary : "#fff",
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+    fontFamily: T.font
+  } }, c.status === "draft" ? "Edit & publish" : "Review applicants \u2192")));
+})), /* @__PURE__ */ React.createElement("div", { style: { height: T.TAB + 8 } }));
 function App() {
   const [user, setUser] = useState(null);
   const [tab, setTab] = useState("home");
-  const logoIcon = resolveImg("LOGO_ICON");
+  const logoFull = resolveImg("LOGO_AUTH");
   const TABS = [
     { k: "home", icon: "home", label: "Home" },
     { k: "design", icon: "needle", label: "Design" },
@@ -391,7 +637,7 @@ function App() {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "0 16px"
-  } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8 } }, logoIcon && /* @__PURE__ */ React.createElement("img", { src: logoIcon, alt: "", style: { height: 28 } }), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 15, fontWeight: 700, color: T.text } }, "Stitchify")), /* @__PURE__ */ React.createElement("button", { style: {
+  } }, /* @__PURE__ */ React.createElement("img", { src: logoFull, alt: "Stitchify", style: { height: 26, display: "block" } }), /* @__PURE__ */ React.createElement("button", { style: {
     width: 36,
     height: 36,
     borderRadius: 10,
@@ -411,7 +657,7 @@ function App() {
     borderRadius: "50%",
     background: T.error,
     border: `2px solid ${T.bg}`
-  } }))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto" } }, tab === "home" && /* @__PURE__ */ React.createElement(HomeTab, null), tab === "design" && /* @__PURE__ */ React.createElement(DesignTab, null), tab === "make" && /* @__PURE__ */ React.createElement(TabPlaceholder, { icon: "make", label: "Make", note: "Production projects, factory matching, quotes, and progress." }), tab === "showroom" && /* @__PURE__ */ React.createElement(TabPlaceholder, { icon: "showroom", label: "Showroom", note: "Campaign management for MAKE-manufactured items." }), tab === "profile" && /* @__PURE__ */ React.createElement(TabPlaceholder, { icon: "profile", label: "Profile", note: "Account, brand settings, and preferences." })), /* @__PURE__ */ React.createElement("div", { style: {
+  } }))), /* @__PURE__ */ React.createElement("div", { style: { overflowY: "auto" } }, tab === "home" && /* @__PURE__ */ React.createElement(HomeTab, null), tab === "design" && /* @__PURE__ */ React.createElement(DesignTab, null), tab === "make" && /* @__PURE__ */ React.createElement(MakeTab, null), tab === "showroom" && /* @__PURE__ */ React.createElement(ShowroomTab, null), tab === "profile" && /* @__PURE__ */ React.createElement(TabPlaceholder, { icon: "profile", label: "Profile", note: "Account, brand settings, and preferences." })), /* @__PURE__ */ React.createElement("div", { style: {
     position: "fixed",
     bottom: 0,
     left: "50%",
