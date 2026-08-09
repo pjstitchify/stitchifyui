@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/colors.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/typography.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/radius.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/motion.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/base.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/styles.css">
+<script src="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+<style>
+  body { margin:0; background:#EBE5CC; font-family:'Hind','Noto Sans JP',-apple-system,sans-serif; color:#1C1B19; -webkit-font-smoothing:antialiased; }
+  a { color:#4E35E8; text-decoration:none; }
+  a:hover { color:#3D27D4; }
+  ::selection { background:#4E35E8; color:#FFFFFF; }
+  :focus-visible { outline:2px solid #4E35E8; outline-offset:2px; }
+  button { font-family:inherit; }
+  button:active { transform:scale(0.95); }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+</helmet>
+
+<div style="position:fixed;bottom:20px;right:20px;z-index:500;display:flex;gap:4px;padding:4px;background:rgba(255,255,255,0.92);backdrop-filter:blur(7px);border:1px solid #DCD3B4;border-radius:999px;box-shadow:0 4px 16px rgba(10,10,10,0.08)">
+  <button onClick="{{ setDesktop }}" style="{{ deskBtn }}">Desktop</button>
+  <button onClick="{{ setMobile }}" style="{{ mobBtn }}">Mobile</button>
+</div>
+
+<div data-view="{{ view }}" style="{{ frameStyle }}">
+
+  <div style="{{ headerStyle }}">
+    <div style="{{ headerInner }}">
+      <img src="assets/stitchify-logo-dark.png" alt="Stitchify" style="{{ logoStyle }}">
+      <div style="{{ headerRight }}">
+        <div style="{{ navLinks }}">
+          <a href="#make" style="font-size:14px;font-weight:500;color:#1C1B19">MAKE</a>
+          <a href="#showroom" style="font-size:14px;font-weight:500;color:#1C1B19">Showroom</a>
+          <a href="Stitchify Blog.dc.html" style="font-size:14px;font-weight:500;color:#1C1B19">Guides</a>
+          <a href="#faq" style="font-size:14px;font-weight:500;color:#1C1B19">FAQ</a>
+        </div>
+        <div style="display:flex;gap:2px;padding:2px;background:rgba(28,27,25,0.05);border:1px solid #DCD3B4;border-radius:999px">
+          <button onClick="{{ setEn }}" style="{{ enBtn }}">EN</button>
+          <button onClick="{{ setJa }}" style="{{ jaBtn }}">日本語</button>
+        </div>
+        <x-import component-from-global-scope="StitchifyDesignSystem_029d01.Button" variant="primary" onClick="{{ openModal }}" hint-size="auto,40px">Apply to use</x-import>
+      </div>
+    </div>
+  </div>
+
+  <section style="{{ secHero }}">
+    <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:56px;align-items:center">
+      <div style="flex:1 1 420px;min-width:300px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <div style="width:64px;height:2px;background:#4E35E8"></div>
+          <span style="font-size:12px;font-weight:600;letter-spacing:1.4px;color:#4E35E8">MAKE × SHOWROOM</span>
+        </div>
+        <h1 style="{{ h1Style }}">Factory quality,<br>from one piece.</h1>
+        <p style="font-size:18px;line-height:1.6;color:#6F6A5E;margin:0 0 32px;max-width:460px;text-wrap:pretty">Tell us what you're making. We turn it into a real production spec, match the factory, and manufacture it - starting at a single piece.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <x-import component-from-global-scope="StitchifyDesignSystem_029d01.Button" variant="hero" onClick="{{ openModal }}" hint-size="auto,52px">Apply to use</x-import>
+          <a href="#make" style="font-size:15px;font-weight:500;color:#6F6A5E">See how MAKE works →</a>
+        </div>
+      </div>
+
+      <div style="flex:1 1 240px;min-width:200px">
+        <img src="assets/hero-web.jpg" alt="Backstage on the stairwell - wide-leg tailoring and a brushed wool skirt" style="width:100%;aspect-ratio:2/3;object-fit:cover;object-position:62% 26%;border-radius:32px;display:block">
+      </div>
+
+      <div style="flex:1 1 420px;min-width:300px;background:#FFFFFF;border:1px solid #DCD3B4;border-radius:32px;padding:28px;box-shadow:0 14px 34px rgba(28,27,25,0.10)">
+        <div style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;font-weight:400;margin:0 0 16px">What are you making?</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+            <button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button>
+          </sc-for>
+        </div>
+        <div style="position:relative;width:100%;aspect-ratio:4/3;border-radius:24px;overflow:hidden;background:#F4F0E1">
+          <sc-for list="{{ heroImages }}" as="h" hint-placeholder-count="1">
+            <div style="{{ h.style }}"><image-slot id="{{ h.id }}" shape="rect" placeholder="{{ h.ph }}"></image-slot></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 16px;margin-top:20px;padding-top:18px;border-top:1px solid rgba(28,27,25,0.10)">
+          <div>
+            <div style="font-size:12px;color:#6F6A5E;margin-bottom:2px">Rough estimate · 100 pcs</div>
+            <div style="font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-0.3px;white-space:nowrap">{{ estimate }}</div>
+          </div>
+          <div style="font-size:12px;color:rgba(0,0,0,0.40);text-align:right">Final quote after factory matching</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="{{ secWhite }}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div data-reveal style="max-width:680px;margin-bottom:48px">
+        <div style="width:64px;height:2px;background:#4E35E8;margin-bottom:20px"></div>
+        <h2 style="{{ h2Spec }}">The document your factory actually needs.</h2>
+        <p style="font-size:16px;line-height:1.6;color:#6F6A5E;margin:0">Every project becomes a production specification - measurements, fabric, print placement, label. Tap a point to see what we define.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:stretch">
+        <div data-reveal style="flex:1 1 440px;min-width:300px;position:relative;border:1px solid #DCD3B4;border-radius:24px;overflow:hidden;background:#F4F0E1;aspect-ratio:4/3">
+          <img src="https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?fm=jpg&amp;q=80&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Flat-lay of a plain white t-shirt, the garment the spec describes" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+          <sc-for list="{{ hotspots }}" as="h" hint-placeholder-count="4">
+            <button onClick="{{ h.onClick }}" style="{{ h.style }}">{{ h.n }}</button>
+          </sc-for>
+        </div>
+        <div data-reveal style="flex:1 1 340px;min-width:280px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;padding:28px">
+            <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:#4E35E8;margin-bottom:10px">{{ activeSpec.tag }}</div>
+            <div style="font-size:24px;font-weight:600;margin-bottom:8px">{{ activeSpec.title }}</div>
+            <div style="font-size:15px;line-height:1.6;color:#6F6A5E;margin-bottom:20px">{{ activeSpec.note }}</div>
+            <sc-for list="{{ activeSpec.rows }}" as="r" hint-placeholder-count="4">
+              <div style="display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid rgba(28,27,25,0.10);font-size:14px">
+                <span style="color:#6F6A5E">{{ r.k }}</span>
+                <span style="font-weight:500;font-variant-numeric:tabular-nums;text-align:right">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-size:13px;color:rgba(0,0,0,0.40);padding-left:4px">Sample spec - SS Collection T-shirt · 100 pcs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="make" style="{{ secTint }}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-end;margin-bottom:48px">
+        <div style="flex:1 1 480px;min-width:300px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+            <div style="width:64px;height:2px;background:#4E35E8"></div>
+            <span style="font-size:12px;font-weight:600;letter-spacing:1.4px;color:#4E35E8">MAKE</span>
+          </div>
+          <h2 style="{{ h2Big }}">Zero inventory.<br>Production from one piece.</h2>
+        </div>
+        <ul style="flex:1 1 340px;min-width:280px;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px">
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>A production spec built from your answers, not a blank form.</li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>Factory matching ranked on lot size, lead time and price.</li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>Every stage tracked, from pattern cutting to delivery.</li>
+        </ul>
+      </div>
+
+      <div data-reveal style="background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;overflow:hidden;box-shadow:0 14px 34px rgba(28,27,25,0.10);margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid rgba(28,27,25,0.10)">
+          <div aria-disabled="true" style="position:relative;width:208px;display:flex;background:#F4F0E1;border-radius:999px;padding:4px;opacity:0.45;pointer-events:none;user-select:none">
+            <span style="flex:1;text-align:center;padding:7px 0;font-size:13px;font-weight:700;color:#4E35E8;background:#FFFFFF;border-radius:999px;box-shadow:0 1px 3px rgba(0,0,0,0.12)">MAKE</span>
+            <span style="flex:1;text-align:center;padding:7px 0;font-size:13px;font-weight:500;color:#6F6A5E">Showroom</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:32px;padding:28px 24px">
+          <div style="flex:1 1 420px;min-width:280px">
+            <div style="font-size:14px;font-weight:600;margin-bottom:10px">Garment type <span style="color:#B91C1C">*</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+              <span style="display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;border:1.5px solid #4E35E8;background:#EFE9D6;font-size:14px;font-weight:600"><span style="width:16px;height:16px;border-radius:999px;background:#4E35E8;display:inline-block"></span>T-shirt</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Sweatshirt</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Pants</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Jacket</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Knitwear</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:10px">Primary material <span style="color:#B91C1C">*</span></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+              <span style="display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;border:1.5px solid #4E35E8;background:#EFE9D6;font-size:14px;font-weight:600"><span style="width:16px;height:16px;border-radius:999px;background:#4E35E8;display:inline-block"></span>100% Cotton</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Cotton/Poly blend</span>
+              <span style="padding:10px 16px;border-radius:12px;border:1.5px solid #DCD3B4;font-size:14px;color:#1C1B19">Linen</span>
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:10px">Select a body</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-radius:12px;border:1.5px solid #4E35E8;background:#EFE9D6">
+              <div>
+                <div style="font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px">Gildan G500 <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:#4E35E8;color:#FFFFFF">Recommended</span></div>
+                <div style="font-size:13px;color:#6F6A5E;margin-top:2px;font-variant-numeric:tabular-nums">White / Black / Navy · XS–XXL · ¥180–220/pc</div>
+              </div>
+              <span style="width:20px;height:20px;border-radius:999px;background:#4E35E8;flex-shrink:0"></span>
+            </div>
+          </div>
+          <div style="flex:0 1 300px;min-width:260px">
+            <div style="border:1px solid #DCD3B4;border-radius:16px;padding:24px">
+              <div style="font-size:16px;font-weight:600;margin-bottom:16px">Summary</div>
+              <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:8px">
+                  <span style="color:#6F6A5E">{{ r.k }}</span><span style="font-weight:500;text-align:right;font-variant-numeric:tabular-nums">{{ r.v }}</span>
+                </div>
+              </sc-for>
+              <div style="height:1px;background:rgba(28,27,25,0.10);margin:14px 0"></div>
+              <div style="font-size:12px;color:#6F6A5E">Rough estimate</div>
+              <div style="font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;margin:2px 0">¥68,000 – ¥94,000</div>
+              <div style="font-size:12px;color:rgba(0,0,0,0.40);margin-bottom:18px">Final quote after factory matching</div>
+              <div style="background:#4E35E8;color:#FFFFFF;border-radius:999px;padding:14px;text-align:center;font-size:15px;font-weight:600">Get factory matches</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal style="background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;padding:28px 24px">
+        <div style="font-size:20px;font-weight:600;margin-bottom:6px">Factory matches</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+          <span style="width:8px;height:8px;border-radius:999px;background:#4E35E8"></span>
+          <span style="font-size:14px;color:#4E35E8;font-weight:500">AI ranked 3 compatible factories for your spec</span>
+        </div>
+        <sc-for list="{{ factories }}" as="f" hint-placeholder-count="3">
+          <div style="border:1.5px solid #DCD3B4;border-radius:16px;padding:20px 24px;margin-bottom:12px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+            <div>
+              <div style="font-size:18px;font-weight:600">{{ f.name }}</div>
+              <div style="font-size:13px;color:#6F6A5E;font-variant-numeric:tabular-nums">{{ f.meta }}</div>
+              <div style="font-size:14px;color:#6F6A5E;margin-top:8px">{{ f.specialty }}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:28px;font-weight:700;color:#4E35E8;font-variant-numeric:tabular-nums">{{ f.score }}</div>
+              <div style="{{ f.badgeStyle }}">{{ f.match }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="{{ secStatement }}">
+    <div data-reveal style="max-width:900px;margin:0 auto;text-align:center">
+      <p style="{{ statementStyle }}">Making it isn't where it ends.</p>
+      <p style="font-size:18px;line-height:1.7;color:rgba(255,255,255,0.62);margin:0">Items produced through MAKE continue into SHOWROOM.</p>
+    </div>
+  </section>
+
+  <section id="showroom" style="{{ secWhite }}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-end;margin-bottom:48px">
+        <div style="flex:1 1 480px;min-width:300px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+            <div style="width:64px;height:2px;background:#4E35E8"></div>
+            <span style="font-size:12px;font-weight:600;letter-spacing:1.4px;color:#4E35E8">SHOWROOM</span>
+          </div>
+          <h2 style="{{ h2Big }}">Made it.<br>Now put it on people.</h2>
+        </div>
+        <ul style="flex:1 1 340px;min-width:280px;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px">
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>Gift or rent your pieces - creators apply to you.</li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>Influencers, photographers and models in one board.</li>
+          <li style="display:flex;gap:12px;font-size:16px;line-height:1.6;color:#6F6A5E"><span style="width:6px;height:6px;border-radius:999px;background:#4E35E8;margin-top:10px;flex-shrink:0"></span>Applications, matches and deliverables tracked per campaign.</li>
+        </ul>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:24px">
+        <div data-reveal style="flex:1 1 520px;min-width:300px;background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;overflow:hidden;box-shadow:0 14px 34px rgba(28,27,25,0.10)">
+          <div style="padding:16px 24px;border-bottom:1px solid rgba(28,27,25,0.10);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span style="font-size:16px;font-weight:700">Showroom</span>
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:#4E35E8;color:#FFFFFF">All</span>
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid #DCD3B4;color:#6F6A5E">Gifting</span>
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid #DCD3B4;color:#6F6A5E">Rental</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:20px 24px 24px">
+            <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="4">
+              <div style="border:1px solid #DCD3B4;border-radius:16px;overflow:hidden">
+                <div style="position:relative;aspect-ratio:1/1;background:#EFE9D6">
+                  <img src="{{ j.img }}" alt="{{ j.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+                  <span style="position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.95);color:#4E35E8">{{ j.type }}</span>
+                </div>
+                <div style="padding:12px 14px 14px">
+                  <div style="font-size:14px;font-weight:600">{{ j.brand }}</div>
+                  <div style="font-size:12px;color:#6F6A5E;font-variant-numeric:tabular-nums">{{ j.reward }} · {{ j.deadline }}</div>
+                  <div style="font-size:11px;color:#4E35E8;margin-top:6px;font-weight:600">{{ j.applicants }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div data-reveal style="flex:1 1 300px;min-width:280px;background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;padding:24px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <img src="assets/creator-4.jpg" alt="Yuki Tanaka" style="width:48px;height:48px;border-radius:999px;object-fit:cover;object-position:50% 26%;flex-shrink:0;display:block">
+            <div>
+              <div style="font-size:16px;font-weight:600">Yuki Tanaka</div>
+              <div style="font-size:13px;color:#6F6A5E">@yukistyle · 48K followers</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px">
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:#EFE9D6;color:#4E35E8">Influencer</span>
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:#EFE9D6;color:#4E35E8">Photographer</span>
+            <span style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:#EFE9D6;color:#4E35E8">Street</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;color:#15803D;font-size:14px;font-weight:600;margin-bottom:10px">
+            <span style="width:8px;height:8px;border-radius:999px;background:#15803D"></span>Matched - brand contact unlocked
+          </div>
+          <div style="background:#F4F0E1;border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7;color:#6F6A5E">Feed post + Story · #PR #stitchify required<br>Gifting - keep, no return<br>Deliverable due 2026-07-15</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(28,27,25,0.10)">
+            <span style="font-size:13px;color:#6F6A5E">Reward</span>
+            <span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">¥25,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="guides" style="{{ secTint2 }}">
+    <div style="position:absolute;inset:0"><image-slot id="b-guides-bg" shape="rect" placeholder="Drop a fashion background image"></image-slot></div>
+    <div style="position:absolute;inset:0;background:rgba(235,229,204,0.86);pointer-events:none"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto">
+      <div data-reveal style="margin-bottom:40px">
+        <div style="width:64px;height:2px;background:#4E35E8;margin-bottom:20px"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:baseline;justify-content:space-between">
+          <h2 style="{{ h2Plain }}">Guides</h2>
+          <a href="Stitchify Blog.dc.html" style="font-size:15px;font-weight:500;color:#4E35E8">All guides →</a>
+        </div>
+      </div>
+      <div data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+        <sc-for list="{{ guides }}" as="g" hint-placeholder-count="3">
+          <a href="Stitchify Blog.dc.html" style="display:block;background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;padding:32px;text-decoration:none;color:#1C1B19;transition:box-shadow 150ms cubic-bezier(.25,.1,.25,1),transform 150ms cubic-bezier(.05,.7,.1,1)" style-hover="box-shadow:var(--elevation-hover);transform:translateY(-2px)">
+            <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:#4E35E8;margin-bottom:16px">{{ g.cat }}</div>
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:30px;font-weight:400;line-height:1.2;margin-bottom:12px;text-wrap:pretty">{{ g.title }}</div>
+            <div style="font-size:15px;line-height:1.6;color:#6F6A5E">{{ g.desc }}</div>
+            <div style="font-size:13px;color:rgba(0,0,0,0.40);margin-top:24px">{{ g.read }}</div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="{{ secWhite }}">
+    <div style="max-width:760px;margin:0 auto">
+      <div data-reveal style="margin-bottom:36px">
+        <div style="width:64px;height:2px;background:#4E35E8;margin-bottom:20px"></div>
+        <h2 style="{{ h2Plain }}">FAQ</h2>
+      </div>
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+        <div style="border-bottom:1px solid rgba(28,27,25,0.10)">
+          <button onClick="{{ f.onClick }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:inherit;font-size:17px;font-weight:500;color:#1C1B19">
+            {{ f.q }}
+            <span style="{{ f.iconStyle }}">+</span>
+          </button>
+          <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:15px;line-height:1.7;color:#6F6A5E;padding:0 40px 24px 0">{{ f.a }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="{{ secScreening }}">
+    <div data-reveal style="max-width:760px;margin:0 auto;background:#EBE5CC;border-radius:24px;padding:48px">
+      <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:#4E35E8;margin-bottom:12px">SCREENING</div>
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:34px;font-weight:400;margin-bottom:12px">Every application is reviewed.</div>
+      <p style="font-size:15px;line-height:1.7;color:#6F6A5E;margin:0 0 20px;max-width:560px">We read each one so factories receive briefs they can actually quote. It usually takes two business days, and we'll tell you either way.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:28px;font-size:14px;color:#6F6A5E">
+        <span><strong style="color:#1C1B19;font-weight:600">What we look at</strong><br>Your brand, what you want to make</span>
+        <span><strong style="color:#1C1B19;font-weight:600">Turnaround</strong><br>2 business days</span>
+        <span><strong style="color:#1C1B19;font-weight:600">Cost to apply</strong><br>None</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="{{ secCta }}">
+    <div data-reveal style="max-width:720px;margin:0 auto">
+      <h2 style="{{ h2Cta }}">Start with your first piece.</h2>
+      <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.72);margin:0 0 36px">One garment is enough to begin. Apply and we'll take it from there.</p>
+      <button onClick="{{ openModal }}" style="background:#FFFFFF;color:#4E35E8;border:none;border-radius:999px;padding:16px 40px;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;transition:transform 80ms cubic-bezier(.25,.1,.25,1)" style-active="transform:scale(0.95)">Apply to use</button>
+    </div>
+  </section>
+
+  <footer style="{{ footerStyle }}">
+    <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+      <img src="assets/stitchify-logo-light.png" alt="Stitchify" style="height:24px;width:auto;display:block">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:14px;margin-left:auto">
+        <a href="#make" style="color:rgba(255,255,255,0.62)">MAKE</a>
+        <a href="#showroom" style="color:rgba(255,255,255,0.62)">Showroom</a>
+        <a href="#faq" style="color:rgba(255,255,255,0.62)">FAQ</a>
+        <a href="mailto:support@stitchify.ai" style="color:rgba(255,255,255,0.62)">support@stitchify.ai</a>
+      </div>
+      <div style="flex-basis:100%;text-align:center;font-size:12px;color:rgba(255,255,255,0.38)">© 2026 Stitchify</div>
+    </div>
+  </footer>
+</div>
+
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:300;background:rgba(10,10,10,0.45);display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto">
+    <div onClick="{{ stop }}" style="background:#FFFFFF;border-radius:24px;padding:40px;width:100%;max-width:560px;box-shadow:0 24px 64px rgba(10,10,10,0.12)">
+      <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:24px 0">
+          <div style="width:56px;height:56px;border-radius:999px;background:#4E35E8;margin:0 auto 20px"></div>
+          <div style="font-size:24px;font-weight:600;margin-bottom:10px">Application received.</div>
+          <p style="font-size:15px;line-height:1.7;color:#6F6A5E;margin:0 0 28px">We review every application. Expect to hear from us within two business days.</p>
+          <button onClick="{{ closeModal }}" style="background:#4E35E8;color:#FFFFFF;border:none;border-radius:999px;padding:14px 32px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer">Close</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:8px">
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:36px;font-weight:400">Apply to use</div>
+          <button onClick="{{ closeModal }}" style="background:none;border:none;font-size:22px;line-height:1;color:#6F6A5E;cursor:pointer;font-family:inherit">×</button>
+        </div>
+        <p style="font-size:15px;color:#6F6A5E;margin:0 0 24px">All fields are required. We'll reply within two business days.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+          <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+            <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600">
+              {{ f.label }}
+              <input value="{{ f.value }}" onChange="{{ f.onChange }}" placeholder="{{ f.ph }}" style="{{ f.style }}">
+            </label>
+          </sc-for>
+        </div>
+        <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14px;color:#B91C1C;margin-top:14px">Please complete every field before submitting.</div>
+        </sc-if>
+        <button onClick="{{ submit }}" style="width:100%;margin-top:24px;background:#4E35E8;color:#FFFFFF;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;font-family:inherit;cursor:pointer;transition:background-color 150ms cubic-bezier(.25,.1,.25,1)" style-hover="background:#3D27D4" style-active="transform:scale(0.95)">Submit application</button>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+const BASE = { "T-shirt": 200, "Hoodie": 520, "Sweatshirt": 420, "Other": 300 };
+const YEN = (n) => "¥" + n.toLocaleString();
+
+const SPECS = {
+  1: { tag: "BODY", title: "Body & fit", note: "Graded measurements per size, taken flat, in centimetres.", rows: [["Body length (M)", "68.0 cm"], ["Chest width (M)", "52.0 cm"], ["Shoulder", "46.0 cm"], ["Sleeve length", "20.5 cm"], ["Tolerance", "± 1.0 cm"]] },
+  2: { tag: "FABRIC", title: "Fabric & knit", note: "Yarn, weight and finish agreed before cutting.", rows: [["Composition", "100% cotton"], ["Weight", "6.0 oz / 200 gsm"], ["Knit", "Open-end jersey"], ["Finish", "Bio-washed, pre-shrunk"], ["Shrinkage", "≤ 3%"]] },
+  3: { tag: "PRINT", title: "Print & placement", note: "Placement measured from HPS, artwork supplied at 300dpi.", rows: [["Method", "Screen printing"], ["Location", "Front centre"], ["Size", "Medium (10–20 cm)"], ["From HPS", "8.0 cm"], ["Colours", "2 (Pantone matched)"]] },
+  4: { tag: "LABEL", title: "Label & packing", note: "What goes inside the neck and inside the box.", rows: [["Main label", "Brand woven, centre back"], ["Care label", "Printed, side seam"], ["Folding", "Flat, individually polybagged"], ["Carton", "50 pcs / carton"], ["Lead time", "25–30 days"]] }
+};
+
+const HOTSPOT_POS = { 1: ["50%", "62%"], 2: ["36%", "44%"], 3: ["50%", "44%"], 4: ["50%", "26%"] };
+
+class Component extends DCLogic {
+  state = {
+    product: "T-shirt", spec: 1, faq: -1, modalOpen: false, submitted: false, hdrWhite: false, lang: "EN",
+    formError: false, view: "desktop",
+    form: { first: "", last: "", company: "", email: "", phone: "", country: "" }
+  };
+
+  componentDidMount() {
+    this._lastY = window.scrollY || 0;
+    this._onScroll = () => {
+      const y = window.scrollY || 0;
+      const white = y > 60 && y < this._lastY;
+      this._lastY = y;
+      if (white !== this.state.hdrWhite) this.setState({ hdrWhite: white });
+    };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = Array.from(document.querySelectorAll("[data-reveal]"));
+    els.forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(8px)";
+      el.style.transition = "opacity 600ms cubic-bezier(.05,.7,.1,1), transform 600ms cubic-bezier(.05,.7,.1,1)";
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = "1";
+          e.target.style.transform = "translateY(0)";
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    els.forEach((el) => io.observe(el));
+    this._io = io;
+  }
+
+  componentWillUnmount() {
+    if (this._io) this._io.disconnect();
+    if (this._onScroll) window.removeEventListener("scroll", this._onScroll);
+  }
+
+  setField = (k) => (e) => {
+    const v = e.target.value;
+    this.setState((s) => ({ form: { ...s.form, [k]: v } }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const mobile = s.view === "mobile";
+    const q = 100;
+    const base = BASE[s.product] || 200;
+    const low = Math.round((base * q + 350 * q * 0.6 + 15000) / 1000) * 1000;
+    const high = Math.round((base * q * 1.25 + 350 * q + 25000) / 1000) * 1000;
+
+    const viewBtn = (on) => ({
+      border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13, fontWeight: 600,
+      padding: "7px 16px", borderRadius: 999,
+      background: on ? "#4E35E8" : "transparent", color: on ? "#FFFFFF" : "#6F6A5E"
+    });
+
+    const products = ["T-shirt", "Hoodie", "Sweatshirt", "Other"].map((label) => {
+      const on = s.product === label;
+      return {
+        label,
+        onClick: () => this.setState({ product: label }),
+        style: {
+          fontFamily: "inherit", fontSize: 14, fontWeight: on ? 600 : 400, cursor: "pointer",
+          padding: "10px 18px", borderRadius: 999,
+          background: on ? "#4E35E8" : "#FFFFFF",
+          color: on ? "#FFFFFF" : "#1C1B19",
+          border: on ? "1px solid transparent" : "1px solid #DCD3B4",
+          transition: "background-color 150ms cubic-bezier(.25,.1,.25,1), color 150ms cubic-bezier(.25,.1,.25,1)"
+        }
+      };
+    });
+
+    const heroImages = ["T-shirt", "Hoodie", "Sweatshirt", "Other"].map((label) => ({
+      id: "b-hero-" + label.toLowerCase().replace(/[^a-z]/g, ""),
+      ph: "Drop a " + label.toLowerCase() + " shot",
+      style: {
+        position: "absolute", inset: 0,
+        opacity: s.product === label ? 1 : 0,
+        pointerEvents: s.product === label ? "auto" : "none",
+        transition: "opacity 400ms cubic-bezier(.05,.7,.1,1)"
+      }
+    }));
+
+    const hotspots = [1, 2, 3, 4].map((n) => {
+      const on = s.spec === n;
+      const [left, top] = HOTSPOT_POS[n];
+      return {
+        n, onClick: () => this.setState({ spec: n }),
+        style: {
+          position: "absolute", left, top, transform: "translate(-50%,-50%)",
+          width: 32, height: 32, borderRadius: 999, cursor: "pointer", fontFamily: "inherit",
+          fontSize: 13, fontWeight: 700,
+          background: on ? "#4E35E8" : "rgba(255,255,255,0.92)",
+          color: on ? "#FFFFFF" : "#1C1B19",
+          border: on ? "2px solid #4E35E8" : "1px solid #DCD3B4",
+          boxShadow: on ? "0 0 0 6px rgba(78,53,232,0.18)" : "0 4px 16px rgba(10,10,10,0.08)",
+          transition: "background-color 150ms cubic-bezier(.25,.1,.25,1), box-shadow 150ms cubic-bezier(.25,.1,.25,1)"
+        }
+      };
+    });
+
+    const sp = SPECS[s.spec];
+
+    const faqData = [
+      ["Can I really order one piece?", "Yes. MAKE is built for sample and single-piece runs - the factory matching filters on minimum lot, so you only see factories that will take your quantity."],
+      ["What does it cost to apply?", "Nothing. Applying, building a spec and seeing factory matches are all free. You only pay once you place an order against a quote."],
+      ["Can I change the spec after submitting?", "Freely, until an order is placed. Once you request a quote you'll need to withdraw it first, and the spec unlocks again."],
+      ["How long does manufacturing take?", "For 100 pieces with screen printing, most matched factories quote 25–30 days including QC. Your project page shows each stage as it completes."],
+      ["Do I have to use SHOWROOM?", "No. It's there when you want it - every item made through MAKE can be gifted or rented to creators, but the two work independently."]
+    ];
+    const faqs = faqData.map(([q2, a], i) => ({
+      q: q2, a, open: s.faq === i,
+      onClick: () => this.setState({ faq: s.faq === i ? -1 : i }),
+      iconStyle: {
+        fontSize: 22, color: "#4E35E8", flexShrink: 0, lineHeight: 1,
+        transform: s.faq === i ? "rotate(45deg)" : "rotate(0deg)",
+        transition: "transform 250ms cubic-bezier(.25,.1,.25,1)"
+      }
+    }));
+
+    const inputStyle = {
+      fontFamily: "inherit", fontSize: 16, fontWeight: 400, color: "#1C1B19",
+      padding: "12px 14px", border: "1px solid #DCD3B4", borderRadius: 12,
+      outline: "none", background: "#FFFFFF", width: "100%", boxSizing: "border-box"
+    };
+    const fieldDefs = [
+      ["first", "First name", "Aiko"], ["last", "Last name", "Tanaka"],
+      ["company", "Company / brand", "Aiko Studio"], ["email", "Email address", "aiko@brand.jp"],
+      ["phone", "Contact number", "+81 90-1234-5678"], ["country", "Country", "Japan"]
+    ];
+    const fields = fieldDefs.map(([k, label, ph]) => ({
+      label, ph, value: s.form[k], onChange: this.setField(k),
+      style: (s.formError && !s.form[k].trim()) ? { ...inputStyle, borderColor: "#B91C1C" } : inputStyle
+    }));
+
+    const langBtn = (on) => ({
+      border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 11, fontWeight: 600,
+      padding: "4px 10px", borderRadius: 999, lineHeight: 1.4, whiteSpace: "nowrap",
+      background: on ? "#1C1B19" : "transparent", color: on ? "#FFFFFF" : "#6F6A5E",
+      transition: "background-color 150ms cubic-bezier(.25,.1,.25,1), color 150ms cubic-bezier(.25,.1,.25,1)"
+    });
+
+    return {
+      headerStyle: {
+        position: "sticky", top: 0, zIndex: 100,
+        background: s.hdrWhite ? "rgba(255,255,255,0.96)" : "rgba(235,229,204,0.92)",
+        backdropFilter: "blur(7px)",
+        borderBottom: s.hdrWhite ? "1px solid rgba(28,27,25,0.06)" : "1px solid rgba(28,27,25,0.10)",
+        transition: "background-color 250ms cubic-bezier(.25,.1,.25,1), border-color 250ms cubic-bezier(.25,.1,.25,1)"
+      },
+      headerInner: { maxWidth: 1200, margin: "0 auto", padding: mobile ? "12px 16px" : "14px 32px", display: "flex", alignItems: "center", gap: mobile ? 10 : 32 },
+      headerRight: { display: "flex", gap: mobile ? 8 : 26, marginLeft: "auto", alignItems: "center" },
+      logoStyle: { height: mobile ? 22 : 26, width: "auto", display: "block" },
+      enBtn: langBtn(s.lang === "EN"),
+      jaBtn: langBtn(s.lang === "JA"),
+      setEn: () => this.setState({ lang: "EN" }),
+      setJa: () => this.setState({ lang: "JA" }),
+      frameStyle: mobile
+        ? { width: 390, margin: "0 auto", border: "1px solid #DCD3B4", borderRadius: 24, overflow: "hidden", boxShadow: "0 24px 64px rgba(10,10,10,0.12)" }
+        : { width: "100%" },
+      view: s.view,
+      navLinks: mobile ? { display: "none" } : { display: "flex", gap: 26, alignItems: "center" },
+      secHero: { background: "#EBE5CC", padding: mobile ? "48px 20px 56px" : "88px 32px 88px" },
+      secWhite: { background: "#FFFFFF", padding: mobile ? "64px 20px" : "96px 32px" },
+      secTint: { background: "#EBE5CC", padding: mobile ? "56px 20px" : "80px 32px" },
+      secTint2: { position: "relative", overflow: "hidden", background: "#EBE5CC", padding: mobile ? "64px 20px" : "120px 32px" },
+      secStatement: { background: "#1A1A2E", color: "#FFFFFF", padding: mobile ? "64px 20px" : "96px 32px" },
+      secScreening: { background: "#FFFFFF", padding: mobile ? "0 20px 64px" : "0 32px 96px" },
+      secCta: { background: "#4E35E8", color: "#FFFFFF", padding: mobile ? "64px 20px" : "80px 32px", textAlign: "center" },
+      footerStyle: { background: "#0A0A0A", color: "rgba(255,255,255,0.62)", padding: mobile ? "40px 20px" : "56px 32px" },
+      h1Style: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 40 : 76, lineHeight: 1.05, fontWeight: 400, letterSpacing: mobile ? "-0.5px" : "-1px", margin: "0 0 20px", color: "#1C1B19", textWrap: "pretty" },
+      h2Spec: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 28 : 48, fontWeight: 400, lineHeight: 1.2, margin: "0 0 14px", letterSpacing: "-0.3px" },
+      h2Big: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 32 : 56, fontWeight: 400, lineHeight: 1.15, margin: 0, letterSpacing: "-0.5px" },
+      h2Plain: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 28 : 48, fontWeight: 400, margin: 0, letterSpacing: "-0.3px" },
+      h2Cta: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 34 : 68, fontWeight: 400, lineHeight: 1.1, margin: "0 0 20px", letterSpacing: "-0.6px" },
+      statementStyle: { fontFamily: "'Instrument Serif',Georgia,serif", fontSize: mobile ? 28 : 56, lineHeight: 1.3, fontWeight: 400, margin: "0 0 28px", letterSpacing: "-0.4px", textWrap: "pretty" },
+      deskBtn: viewBtn(!mobile),
+      mobBtn: viewBtn(mobile),
+      setDesktop: () => this.setState({ view: "desktop" }),
+      setMobile: () => this.setState({ view: "mobile" }),
+
+      products, heroImages, hotspots, faqs, fields,
+      estimate: YEN(low) + " – " + YEN(high),
+      activeSpec: { tag: sp.tag, title: sp.title, note: sp.note, rows: sp.rows.map(([k, v]) => ({ k, v })) },
+
+      summaryRows: [
+        { k: "Garment", v: "T-shirt" }, { k: "Material", v: "100% Cotton" },
+        { k: "Processing", v: "Screen printing" }, { k: "Body", v: "Gildan G500" },
+        { k: "Sizes", v: "S, M, L" }, { k: "Quantity", v: "100 pcs" }
+      ],
+      factories: [
+        { name: "TOKYO STITCH Co.", meta: "Tokyo · Min lot 30 · 25–30 days", specialty: "Cut & sew, embroidery", score: "94%", match: "Excellent match", badgeStyle: { fontSize: 12, fontWeight: 600, padding: "4px 12px", borderRadius: 999, background: "#A3E635", color: "#1C1B19", display: "inline-block" } },
+        { name: "OSAKA KNIT Lab", meta: "Osaka · Min lot 10 · 20–25 days", specialty: "Knitwear, small lot", score: "87%", match: "Good match", badgeStyle: { fontSize: 12, fontWeight: 600, padding: "4px 12px", borderRadius: 999, background: "#EFE9D6", color: "#4E35E8", display: "inline-block" } },
+        { name: "FUKUOKA CRAFT", meta: "Fukuoka · Min lot 50 · 30–35 days", specialty: "Mass production, printing", score: "79%", match: "Partial match", badgeStyle: { fontSize: 12, fontWeight: 600, padding: "4px 12px", borderRadius: 999, background: "#EFE9D6", color: "#4E35E8", display: "inline-block" } }
+      ],
+      jobs: [
+        { type: "Influencer", brand: "MUJI Studio", reward: "¥25,000", deadline: "Jul 15", applicants: "5 applied", img: "assets/creator-1.jpg", alt: "Creator in a brown oversized sweatshirt" },
+        { type: "Model", brand: "Tokyo Denim", reward: "¥30,000", deadline: "Jul 12", applicants: "4 applied", img: "assets/creator-2.jpg", alt: "Model in a black leather jacket on a stairwell" },
+        { type: "Influencer", brand: "Kyoto Modern", reward: "¥28,000", deadline: "Jul 5", applicants: "2 applied", img: "assets/creator-3.jpg", alt: "Creator in a linen shirt, black and white portrait" }
+      ],
+      guides: [
+        { cat: "MANUFACTURING", title: "What a factory needs before it can quote you", desc: "The five things every spec must answer, and why a missing one costs you a week.", read: "6 min read" },
+        { cat: "COST", title: "Where the money actually goes on 100 pieces", desc: "Body, print, setup, shipping - a line-by-line breakdown of a real quote.", read: "8 min read" },
+        { cat: "BRAND BUILDING", title: "Your first drop doesn't need 500 units", desc: "How small runs and creator gifting replace guessing at demand.", read: "5 min read" }
+      ],
+
+      modalOpen: s.modalOpen,
+      submitted: s.submitted,
+      notSubmitted: !s.submitted,
+      formError: s.formError,
+      openModal: () => this.setState({ modalOpen: true, submitted: false, formError: false }),
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      submit: () => {
+        const ok = Object.values(this.state.form).every((v) => v.trim().length > 0);
+        this.setState(ok ? { submitted: true, formError: false } : { formError: true });
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

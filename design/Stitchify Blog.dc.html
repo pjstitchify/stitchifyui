@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/colors.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/typography.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/radius.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/motion.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/tokens/base.css">
+<link rel="stylesheet" href="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/styles.css">
+<script src="_ds/stitchify-design-system-029d01f2-8981-446b-9eb3-c9989f78e69a/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+<style>
+  body { margin:0; background:#EBE5CC; font-family:'Hind','Noto Sans JP',-apple-system,sans-serif; color:#1C1B19; -webkit-font-smoothing:antialiased; }
+  a { color:#4E35E8; text-decoration:none; }
+  a:hover { color:#3D27D4; }
+  ::selection { background:#4E35E8; color:#FFFFFF; }
+  :focus-visible { outline:2px solid #4E35E8; outline-offset:2px; }
+  a[data-tile] { transition:box-shadow 150ms cubic-bezier(.25,.1,.25,1), transform 150ms cubic-bezier(.05,.7,.1,1), border-color 150ms cubic-bezier(.25,.1,.25,1); }
+  a[data-tile]:hover { transform:translateY(-2px); box-shadow:0 14px 34px rgba(28,27,25,0.10); border-color:#4E35E8; }
+  a[data-tile] [data-arrow] { transition:transform 250ms cubic-bezier(.05,.7,.1,1), background-color 150ms cubic-bezier(.25,.1,.25,1), color 150ms cubic-bezier(.25,.1,.25,1); }
+  a[data-tile]:hover [data-arrow] { transform:translateX(8px); background:#4E35E8; color:#FFFFFF; }
+  a[data-tile]:active { transform:scale(0.99); }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+</helmet>
+
+<div style="position:sticky;top:0;z-index:100;background:rgba(235,229,204,0.92);backdrop-filter:blur(7px);border-bottom:1px solid rgba(28,27,25,0.10)">
+  <div style="max-width:1200px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:32px">
+    <a href="Stitchify LP - Brief.dc.html" style="display:block"><img src="assets/stitchify-logo-dark.png" alt="Stitchify" style="height:26px;width:auto;display:block"></a>
+    <div style="display:flex;gap:26px;margin-left:auto;align-items:center">
+      <a href="Stitchify LP - Brief.dc.html#make" style="font-size:14px;font-weight:500;color:#1C1B19">MAKE</a>
+      <a href="Stitchify LP - Brief.dc.html#showroom" style="font-size:14px;font-weight:500;color:#1C1B19">Showroom</a>
+      <a href="Stitchify Blog.dc.html" style="font-size:14px;font-weight:600;color:#4E35E8">Guides</a>
+      <a href="Stitchify LP - Brief.dc.html#faq" style="font-size:14px;font-weight:500;color:#1C1B19">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<section style="background:#EBE5CC;padding:72px 32px 56px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="width:64px;height:2px;background:#4E35E8;margin-bottom:20px"></div>
+    <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:64px;line-height:1.05;font-weight:400;letter-spacing:-1px;margin:0 0 16px">Guides</h1>
+    <p style="font-size:18px;line-height:1.6;color:#6F6A5E;margin:0;max-width:560px;text-wrap:pretty">Everything we learned getting small runs through real factories, written down so you don't have to learn it the expensive way.</p>
+  </div>
+</section>
+
+<section style="background:#FFFFFF;padding:56px 32px 96px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+      <sc-for list="{{ posts }}" as="p" hint-placeholder-count="6">
+        <a data-tile href="Stitchify Blog.dc.html" style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #DCD3B4;border-radius:24px;padding:32px;color:#1C1B19">
+          <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:#4E35E8;margin-bottom:16px">{{ p.cat }}</div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:30px;font-weight:400;line-height:1.2;margin-bottom:12px;text-wrap:pretty">{{ p.title }}</div>
+          <div style="font-size:15px;line-height:1.6;color:#6F6A5E;margin-bottom:28px">{{ p.desc }}</div>
+          <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:16px">
+            <span style="font-size:13px;color:rgba(0,0,0,0.40)">{{ p.read }}</span>
+            <span data-arrow style="width:36px;height:36px;border-radius:999px;border:1px solid #DCD3B4;display:flex;align-items:center;justify-content:center;font-size:16px;color:#4E35E8">→</span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#4E35E8;color:#FFFFFF;padding:80px 32px;text-align:center">
+  <div style="max-width:720px;margin:0 auto">
+    <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:56px;font-weight:400;line-height:1.1;margin:0 0 20px;letter-spacing:-0.6px">Start with your first piece.</h2>
+    <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.72);margin:0 0 36px">One garment is enough to begin. Apply and we'll take it from there.</p>
+    <a href="Stitchify LP - Brief.dc.html" style="display:inline-block;background:#FFFFFF;color:#4E35E8;border-radius:999px;padding:16px 40px;font-size:16px;font-weight:600">Apply to use</a>
+  </div>
+</section>
+
+<footer style="background:#0A0A0A;color:rgba(255,255,255,0.62);padding:56px 32px">
+  <div style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+    <img src="assets/stitchify-logo-light.png" alt="Stitchify" style="height:24px;width:auto;display:block">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:14px;margin-left:auto">
+      <a href="Stitchify LP - Brief.dc.html#make" style="color:rgba(255,255,255,0.62)">MAKE</a>
+      <a href="Stitchify LP - Brief.dc.html#showroom" style="color:rgba(255,255,255,0.62)">Showroom</a>
+      <a href="mailto:support@stitchify.ai" style="color:rgba(255,255,255,0.62)">support@stitchify.ai</a>
+    </div>
+    <div style="flex-basis:100%;text-align:center;font-size:12px;color:rgba(255,255,255,0.38)">© 2026 Stitchify</div>
+  </div>
+</footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+const POSTS = [
+  { cat: "MANUFACTURING", title: "What a factory needs before it can quote you", desc: "The five things every spec must answer, and why a missing one costs you a week.", read: "6 min read" },
+  { cat: "COST", title: "Where the money actually goes on 100 pieces", desc: "Body, print, setup, shipping - a line-by-line breakdown of a real quote.", read: "8 min read" },
+  { cat: "BRAND BUILDING", title: "Your first drop doesn't need 500 units", desc: "How small runs and creator gifting replace guessing at demand.", read: "5 min read" },
+  { cat: "MANUFACTURING", title: "Reading a tech pack without a pattern background", desc: "Measurement points, tolerances and the vocabulary factories expect back.", read: "7 min read" },
+  { cat: "SHOWROOM", title: "Gifting beats paid posts for a first collection", desc: "What creators actually want from a small brand, and what to send them.", read: "4 min read" },
+  { cat: "COST", title: "Why your sample costs more than your run", desc: "Setup, cutting and the fixed costs that don't scale down with quantity.", read: "5 min read" }
+];
+
+class Component extends DCLogic {
+  state = { cat: "All" };
+
+  renderVals() {
+    const s = this.state;
+    const labels = ["All", "MANUFACTURING", "COST", "BRAND BUILDING", "SHOWROOM"];
+    const cats = labels.map((label) => {
+      const on = s.cat === label;
+      return {
+        label,
+        onClick: () => this.setState({ cat: label }),
+        style: {
+          fontFamily: "inherit", fontSize: 13, fontWeight: 600, cursor: "pointer",
+          padding: "8px 16px", borderRadius: 999,
+          letterSpacing: label === "All" ? "0" : "0.6px",
+          background: on ? "#1C1B19" : "#FFFFFF",
+          color: on ? "#FFFFFF" : "#6F6A5E",
+          border: on ? "1px solid #1C1B19" : "1px solid #DCD3B4",
+          transition: "background-color 150ms cubic-bezier(.25,.1,.25,1), color 150ms cubic-bezier(.25,.1,.25,1)"
+        }
+      };
+    });
+    const posts = s.cat === "All" ? POSTS : POSTS.filter((p) => p.cat === s.cat);
+    return { cats, posts };
+  }
+}
+
+</script>
+</body>
+</html>
