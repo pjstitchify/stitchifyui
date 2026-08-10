@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guides - Stitchify</title>
+<meta name="description" content="Practical guides on manufacturing, cost and building a fashion brand from a small first run.">
+<meta name="theme-color" content="#EBE5CC">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+JP:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --purple:#4E35E8; --purple-hover:#3D27D4;
+    --cream:#EBE5CC; --cream-tint:#EFE9D6; --warm:#F4F0E1;
+    --white:#FFFFFF; --ink:#1C1B19; --ink-muted:#6F6A5E; --ink-faint:rgba(0,0,0,0.40);
+    --border:#DCD3B4; --hairline:rgba(28,27,25,0.10); --footer:#0A0A0A;
+    --shadow-card:0 14px 34px rgba(28,27,25,0.10);
+    --ease:cubic-bezier(.25,.1,.25,1); --ease-enter:cubic-bezier(.05,.7,.1,1);
+    --serif:'Instrument Serif',Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--white);color:var(--ink);
+       font-family:'Hind','Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
+       -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:var(--purple);text-decoration:none}
+  a:hover{color:var(--purple-hover)}
+  button{font-family:inherit}
+  button:active{transform:scale(0.95)}
+  ::selection{background:var(--purple);color:#fff}
+  :focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+  img{display:block}
+  .wrap{max-width:1200px;margin:0 auto}
+  .serif{font-family:var(--serif);font-weight:400}
+  .rule{width:64px;height:2px;background:var(--purple)}
+  .btn-primary{background:var(--purple);color:#fff;border:none;border-radius:999px;
+    font-weight:600;cursor:pointer;transition:background-color 150ms var(--ease)}
+  .btn-primary:hover{background:var(--purple-hover)}
+
+  header{position:sticky;top:0;z-index:100;background:rgba(235,229,204,0.92);
+    -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+    border-bottom:1px solid var(--hairline);
+    transition:background-color 250ms var(--ease),border-color 250ms var(--ease)}
+  header.white{background:rgba(255,255,255,0.96);border-bottom-color:rgba(28,27,25,0.06)}
+  .hdr-inner{max-width:1200px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;gap:32px}
+  .hdr-right{display:flex;gap:26px;margin-left:auto;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{font-size:14px;font-weight:500;color:var(--ink)}
+  .lang{display:flex;gap:2px;padding:2px;background:rgba(28,27,25,0.05);
+    border:1px solid var(--border);border-radius:999px}
+  .lang button{border:none;cursor:pointer;font-size:11px;font-weight:600;padding:4px 10px;
+    border-radius:999px;line-height:1.4;white-space:nowrap;background:transparent;color:var(--ink-muted);
+    transition:background-color 150ms var(--ease),color 150ms var(--ease)}
+  .lang button.on{background:var(--ink);color:#fff}
+
+  .masthead{background:var(--cream);padding:96px 32px 80px}
+  h1{font-family:var(--serif);font-size:64px;font-weight:400;line-height:1.1;
+     letter-spacing:-0.8px;margin:0 0 18px;text-wrap:pretty}
+  .body{background:var(--white);padding:56px 32px 96px}
+
+  .cat{font-size:13px;font-weight:600;cursor:pointer;padding:8px 16px;border-radius:999px;
+    background:var(--white);color:var(--ink-muted);border:1px solid var(--border);
+    transition:background-color 150ms var(--ease),color 150ms var(--ease),border-color 150ms var(--ease)}
+  .cat.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .cat:not([data-c="All"]){letter-spacing:0.6px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+  .tile{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--border);
+    border-radius:24px;padding:32px;color:var(--ink);min-height:280px;
+    transition:box-shadow 150ms var(--ease),transform 150ms var(--ease-enter),border-color 150ms var(--ease)}
+  .tile:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);border-color:var(--purple);color:var(--ink)}
+  .tile:active{transform:scale(0.99)}
+  .tile-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:24px}
+  .arrow{width:36px;height:36px;border-radius:999px;border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink);
+    flex-shrink:0;transition:transform 250ms var(--ease-enter),background-color 250ms var(--ease),
+    color 250ms var(--ease),border-color 250ms var(--ease)}
+  .tile:hover .arrow{transform:translateX(8px);background:var(--purple);color:#fff;border-color:var(--purple)}
+
+  .sec-cta{background:var(--purple);color:#fff;padding:80px 32px;text-align:center}
+  .h2-cta{font-family:var(--serif);font-size:68px;font-weight:400;line-height:1.1;
+    margin:0 0 20px;letter-spacing:-0.6px}
+
+  @media (max-width:768px){
+    .hdr-inner{padding:12px 16px;gap:10px}
+    .hdr-right{gap:8px}
+    .nav-links{display:none}
+    .masthead{padding:56px 20px 48px}
+    h1{font-size:40px;letter-spacing:-0.5px}
+    .body{padding:40px 20px 64px}
+    .sec-cta{padding:64px 20px}
+    .h2-cta{font-size:34px}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} }
+</style>
+</head>
+<body>
+
+<!-- SECTION: header -->
+<header id="hdr">
+  <div class="hdr-inner">
+    <a href="index.html"><img src="assets/stitchify-logo-dark.png" alt="Stitchify" style="height:26px;width:auto"></a>
+    <div class="hdr-right">
+      <nav class="nav-links">
+        <a href="index.html#make">MAKE</a>
+        <a href="index.html#showroom">Showroom</a>
+        <a href="guides.html" style="color:var(--purple)">Guides</a>
+        <a href="index.html#faq">FAQ</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <button class="on" aria-pressed="true">EN</button>
+        <button aria-pressed="false">日本語</button>
+      </div>
+      <a class="btn-primary" href="index.html"
+        style="padding:0 20px;height:40px;font-size:14px;display:inline-flex;align-items:center;color:#fff">Apply to use</a>
+    </div>
+  </div>
+</header>
+
+<!-- SECTION: masthead -->
+<section class="masthead">
+  <div class="wrap">
+    <div class="rule" style="margin-bottom:20px"></div>
+    <h1>Guides</h1>
+    <p style="font-size:18px;line-height:1.6;color:var(--ink-muted);margin:0;max-width:560px;text-wrap:pretty">
+      Practical notes on getting a garment made - what factories need, where the money goes,
+      and how a small first run beats guessing at demand.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION: posts -->
+<section class="body">
+  <div class="wrap">
+    <div id="cats" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px"></div>
+    <div class="grid" id="grid"></div>
+    <p id="empty" hidden style="font-size:15px;color:var(--ink-muted);padding:32px 0">
+      No guides in this category yet.
+    </p>
+  </div>
+</section>
+
+<!-- SECTION: cta -->
+<section class="sec-cta">
+  <div style="max-width:720px;margin:0 auto">
+    <h2 class="h2-cta">Start with your first piece.</h2>
+    <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.72);margin:0 0 36px">
+      One garment is enough to begin. Apply and we'll take it from there.
+    </p>
+    <a href="index.html" style="background:#fff;color:var(--purple);border-radius:999px;
+      padding:16px 40px;font-size:16px;font-weight:600;display:inline-block">Apply to use</a>
+  </div>
+</section>
+
+<!-- SECTION: footer -->
+<footer style="background:var(--footer);color:rgba(255,255,255,0.62);padding:56px 32px">
+  <div class="wrap" style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+    <img src="assets/stitchify-logo-light.png" alt="Stitchify" style="height:24px;width:auto">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:14px;margin-left:auto">
+      <a href="index.html#make" style="color:rgba(255,255,255,0.62)">MAKE</a>
+      <a href="index.html#showroom" style="color:rgba(255,255,255,0.62)">Showroom</a>
+      <a href="index.html#faq" style="color:rgba(255,255,255,0.62)">FAQ</a>
+      <a href="mailto:support@stitchify.ai" style="color:rgba(255,255,255,0.62)">support@stitchify.ai</a>
+    </div>
+    <div style="flex-basis:100%;text-align:center;font-size:12px;color:rgba(255,255,255,0.38)">© 2026 Stitchify</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){ return document.querySelector(s); };
+
+  var POSTS=[
+    {cat:"MANUFACTURING", title:"What a factory needs before it can quote you", desc:"The five things every spec must answer, and why a missing one costs you a week.", read:"6 min read"},
+    {cat:"COST",          title:"Where the money actually goes on 100 pieces",  desc:"Body, print, setup, shipping - a line-by-line breakdown of a real quote.",      read:"8 min read"},
+    {cat:"BRAND BUILDING",title:"Your first drop doesn't need 500 units",       desc:"How small runs and creator gifting replace guessing at demand.",               read:"5 min read"},
+    {cat:"MANUFACTURING", title:"Reading a tech pack without a pattern background", desc:"Measurement points, tolerances and the vocabulary factories expect back.",  read:"7 min read"},
+    {cat:"SHOWROOM",      title:"Gifting beats paid posts for a first collection", desc:"What creators actually want from a small brand, and what to send them.",    read:"4 min read"},
+    {cat:"COST",          title:"Why your sample costs more than your run",     desc:"Setup, cutting and the fixed costs that don't scale down with quantity.",      read:"5 min read"}
+  ];
+  var LABELS=["All","MANUFACTURING","COST","BRAND BUILDING","SHOWROOM"];
+  var active="All";
+
+  function render(){
+    var grid=$("#grid"); grid.innerHTML="";
+    var shown=POSTS.filter(function(p){ return active==="All" || p.cat===active; });
+    $("#empty").hidden = shown.length>0;
+    shown.forEach(function(p){
+      var a=document.createElement("a");
+      a.href="#"; a.className="tile";
+      a.innerHTML=
+        '<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:var(--purple);margin-bottom:16px">'+p.cat+'</div>'+
+        '<div class="serif" style="font-size:30px;line-height:1.2;margin-bottom:12px;text-wrap:pretty">'+p.title+'</div>'+
+        '<div style="font-size:15px;line-height:1.6;color:var(--ink-muted)">'+p.desc+'</div>'+
+        '<div class="tile-foot"><span style="font-size:13px;color:var(--ink-faint)">'+p.read+'</span>'+
+        '<span class="arrow" aria-hidden="true">→</span></div>';
+      grid.appendChild(a);
+    });
+  }
+
+  (function(){
+    var box=$("#cats");
+    LABELS.forEach(function(label){
+      var b=document.createElement("button");
+      b.textContent=label; b.className="cat"+(label===active?" on":"");
+      b.setAttribute("data-c",label);
+      b.setAttribute("aria-pressed", label===active?"true":"false");
+      b.addEventListener("click",function(){
+        active=label;
+        Array.prototype.forEach.call(box.children,function(c){
+          var on=c.getAttribute("data-c")===label;
+          c.className="cat"+(on?" on":"");
+          c.setAttribute("aria-pressed",on?"true":"false");
+        });
+        render();
+      });
+      box.appendChild(b);
+    });
+    render();
+  })();
+
+  document.querySelectorAll(".lang button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".lang button").forEach(function(x){
+        x.classList.remove("on"); x.setAttribute("aria-pressed","false");
+      });
+      b.classList.add("on"); b.setAttribute("aria-pressed","true");
+    });
+  });
+
+  (function(){
+    var hdr=$("#hdr"), lastY=window.scrollY||0, white=false;
+    window.addEventListener("scroll",function(){
+      var y=window.scrollY||0, next=y>60&&y<lastY; lastY=y;
+      if(next!==white){ white=next; hdr.classList.toggle("white",white); }
+    },{passive:true});
+  })();
+})();
+</script>
+</body>
+</html>
