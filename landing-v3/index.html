@@ -51,7 +51,7 @@
   [data-reveal].in{opacity:1;transform:none}
 
   /* ---- section padding ---- */
-  .sec-hero{background:var(--cream);padding:88px 32px}
+  .sec-hero{background:var(--cream);padding:88px 32px 56px}
   .sec-white{background:var(--white);padding:96px 32px}
   .sec-tint{background:var(--cream);padding:80px 32px}
   .sec-guides{position:relative;overflow:hidden;background:var(--cream);padding:120px 32px}
@@ -91,16 +91,16 @@
 
   /* ---- hero ---- */
   .hero-grid{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:56px;align-items:center}
-  .hero-copy{flex:1 1 420px;min-width:300px}
-  .hero-photo{flex:1 1 240px;min-width:200px}
+  .hero-copy{flex:1 1 480px;min-width:300px}
+  .hero-photo{flex:0 1 420px;min-width:220px}
   .hero-photo img{width:100%;aspect-ratio:2/3;object-fit:cover;object-position:62% 26%;border-radius:32px}
-  .hero-card{flex:1 1 420px;min-width:300px;background:var(--white);border:1px solid var(--border);
+  .hero-card{background:var(--white);border:1px solid var(--border);
     border-radius:32px;padding:28px;box-shadow:var(--shadow-card)}
   .pill{font-size:14px;cursor:pointer;padding:10px 18px;border-radius:999px;background:var(--white);
     color:var(--ink);border:1px solid var(--border);font-weight:400;
     transition:background-color 150ms var(--ease),color 150ms var(--ease)}
   .pill.on{background:var(--purple);color:#fff;border-color:transparent;font-weight:600}
-  .well{position:relative;width:100%;aspect-ratio:4/3;border-radius:24px;overflow:hidden;background:var(--warm)}
+  .well{position:relative;width:100%;aspect-ratio:4/3;max-height:420px;border-radius:24px;overflow:hidden;background:var(--warm)}
   .well img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
     transition:opacity 400ms var(--ease-enter)}
   .well img.on{opacity:1}
@@ -151,6 +151,9 @@
   /* ---- modal ---- */
   .overlay{position:fixed;inset:0;z-index:300;background:rgba(10,10,10,0.45);
     display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+  /* a class with display:flex outranks the UA [hidden] rule, so restate it */
+  .overlay[hidden]{display:none}
+  #done-state[hidden],#form-state[hidden]{display:none}
   .sheet{background:var(--white);border-radius:24px;padding:40px;width:100%;max-width:560px;
     box-shadow:var(--shadow-modal)}
   .sheet label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
@@ -161,8 +164,9 @@
 
   /* ---- mobile ---- */
   @media (max-width:768px){
-    .sec-hero{padding:48px 20px 56px}
+    .sec-hero{padding:48px 20px 40px}
     .sec-white,.sec-tint,.sec-guides,.sec-statement{padding:64px 20px}
+    section[style*="0 32px 88px"]{padding:0 20px 56px!important}
     .sec-screening{padding:0 20px 64px}
     .sec-cta{padding:64px 20px}
     .hdr-inner{padding:12px 16px;gap:10px}
@@ -175,6 +179,8 @@
     .statement{font-size:28px}
     .hero-grid{gap:32px}
     .sheet{padding:28px 22px}
+    .well{max-height:none}
+    .hero-card{padding:22px!important}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -227,22 +233,33 @@
       <img src="assets/hero-web.jpg" alt="Backstage on the stairwell - wide-leg tailoring and a brushed wool skirt">
     </div>
 
-    <div class="hero-card">
-      <div class="serif" style="font-size:26px;margin:0 0 16px">What are you making?</div>
-      <div id="pills" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
-      <div class="well" id="well">
-        <img src="assets/product-tshirt.jpg"     alt="T-shirt"     data-p="T-shirt" class="on">
-        <img src="assets/product-hoodie.jpg"     alt="Hoodie"      data-p="Hoodie">
-        <img src="assets/product-sweatshirt.jpg" alt="Sweatshirt"  data-p="Sweatshirt">
-        <img src="assets/product-other.jpg"      alt="Other"       data-p="Other">
-      </div>
-      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;
-        gap:8px 16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--hairline)">
-        <div>
-          <div style="font-size:12px;color:var(--ink-muted);margin-bottom:2px">Rough estimate · 100 pcs</div>
-          <div class="num" id="estimate" style="font-size:24px;font-weight:700;letter-spacing:-0.3px;white-space:nowrap"></div>
+  </div>
+</section>
+
+<!-- SECTION: product picker -->
+<section style="background:var(--cream);padding:0 32px 88px">
+  <div class="wrap">
+    <div data-reveal>
+      <div class="hero-card" style="width:100%;padding:36px">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:18px">
+          <div class="serif" style="font-size:34px">What are you making?</div>
+          <div style="font-size:13px;color:var(--ink-faint)">Pick one to see a rough estimate</div>
         </div>
-        <div style="font-size:12px;color:var(--ink-faint);text-align:right">Final quote after factory matching</div>
+        <div id="pills" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px"></div>
+        <div class="well" id="well">
+          <img src="assets/product-tshirt.jpg"     alt="T-shirt"    data-p="T-shirt" class="on">
+          <img src="assets/product-hoodie.jpg"     alt="Hoodie"     data-p="Hoodie">
+          <img src="assets/product-sweatshirt.jpg" alt="Sweatshirt" data-p="Sweatshirt">
+          <img src="assets/product-other.jpg"      alt="Other"      data-p="Other">
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;
+          gap:8px 16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--hairline)">
+          <div>
+            <div style="font-size:12px;color:var(--ink-muted);margin-bottom:2px">Rough estimate · 100 pcs</div>
+            <div class="num" id="estimate" style="font-size:28px;font-weight:700;letter-spacing:-0.3px;white-space:nowrap"></div>
+          </div>
+          <div style="font-size:12px;color:var(--ink-faint);text-align:right">Final quote after factory matching</div>
+        </div>
       </div>
     </div>
   </div>
