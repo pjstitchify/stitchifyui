@@ -6,18 +6,18 @@
 <title>Stitchify - Factory quality, from one piece</title>
 <meta name="description" content="Tell us what you're making. We turn it into a real production spec, match the factory, and manufacture it - starting at a single piece.">
 <meta property="og:title" content="Stitchify - Factory quality, from one piece">
-<meta property="og:description" content="Production specs, factory matching and creator campaigns for independent fashion brands.">
+<meta property="og:description" content="Production specs, small-run manufacturing and creator campaigns for independent fashion brands.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#EBE5CC">
+<meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+JP:wght@400;500;600;700&display=swap">
 <style>
   :root{
     --purple:#4E35E8; --purple-hover:#3D27D4; --lime:#A3E635;
-    --cream:#EBE5CC; --cream-tint:#EFE9D6; --warm:#F4F0E1;
+    --cream:#FFFFFF; --cream-tint:#F4F2FD; --warm:#F7F7F9;
     --white:#FFFFFF; --ink:#1C1B19; --ink-muted:#6F6A5E; --ink-faint:rgba(0,0,0,0.40);
-    --border:#DCD3B4; --hairline:rgba(28,27,25,0.10);
+    --border:#E5E3EC; --hairline:rgba(28,27,25,0.09);
     --deep:#1A1A2E; --footer:#0A0A0A;
     --error:#B91C1C; --success:#15803D;
     --shadow-card:0 14px 34px rgba(28,27,25,0.10);
@@ -53,8 +53,8 @@
   /* ---- section padding ---- */
   .sec-hero{background:var(--cream);padding:88px 32px 56px}
   .sec-white{background:var(--white);padding:96px 32px}
-  .sec-tint{background:var(--cream);padding:80px 32px}
-  .sec-guides{position:relative;overflow:hidden;background:var(--cream);padding:120px 32px}
+  .sec-tint{background:#FAFAFB;padding:80px 32px;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+  .sec-guides{position:relative;overflow:hidden;background:#FAFAFB;padding:120px 32px;border-top:1px solid var(--hairline)}
   .sec-statement{background:var(--deep);color:#fff;padding:96px 32px}
   .sec-screening{background:var(--white);padding:0 32px 96px}
   .sec-cta{background:var(--purple);color:#fff;padding:80px 32px;text-align:center}
@@ -73,7 +73,7 @@
     margin:0 0 28px;letter-spacing:-0.4px;text-wrap:pretty}
 
   /* ---- header ---- */
-  header{position:sticky;top:0;z-index:100;background:rgba(235,229,204,0.92);
+  header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.90);
     -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
     border-bottom:1px solid var(--hairline);
     transition:background-color 250ms var(--ease),border-color 250ms var(--ease)}
@@ -101,16 +101,19 @@
     transition:background-color 150ms var(--ease),color 150ms var(--ease)}
   .pill.on{background:var(--purple);color:#fff;border-color:transparent;font-weight:600}
   .well{position:relative;width:100%;aspect-ratio:4/3;max-height:420px;border-radius:24px;overflow:hidden;background:var(--warm)}
-  .well img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  .well img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%;opacity:0;
     transition:opacity 400ms var(--ease-enter)}
   .well img.on{opacity:1}
 
   /* ---- spec hotspots ---- */
-  .spot{position:absolute;transform:translate(-50%,-50%);width:32px;height:32px;border-radius:999px;
-    cursor:pointer;font-size:13px;font-weight:700;background:rgba(255,255,255,0.92);color:var(--ink);
-    border:1px solid var(--border);box-shadow:var(--shadow-pop);
-    transition:background-color 150ms var(--ease),box-shadow 150ms var(--ease),color 150ms var(--ease)}
-  .spot.on{background:var(--purple);color:#fff;border:2px solid var(--purple);
+  .spot{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:999px;
+    cursor:pointer;font-size:13px;font-weight:700;background:rgba(255,255,255,0.94);color:var(--ink);
+    border:2px solid var(--border);box-sizing:border-box;padding:0;line-height:1;
+    display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-pop);
+    transition:background-color 150ms var(--ease),box-shadow 150ms var(--ease),
+      color 150ms var(--ease),border-color 150ms var(--ease)}
+  .spot:active{transform:translate(-50%,-50%) scale(0.94)}
+  .spot.on{background:var(--purple);color:#fff;border-color:var(--purple);
     box-shadow:0 0 0 6px rgba(78,53,232,0.18)}
   .kv{display:flex;justify-content:space-between;gap:16px;padding:9px 0;
     border-bottom:1px solid var(--hairline);font-size:14px}
@@ -220,7 +223,7 @@
       </div>
       <h1 class="h1">Factory quality,<br>from one piece.</h1>
       <p style="font-size:18px;line-height:1.6;color:var(--ink-muted);margin:0 0 32px;max-width:460px;text-wrap:pretty">
-        Tell us what you're making. We turn it into a real production spec, match the factory,
+        Tell us what you're making. We turn it into a real production spec, review it with a factory,
         and manufacture it - starting at a single piece.
       </p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
@@ -243,7 +246,7 @@
       <div class="hero-card" style="width:100%;padding:36px">
         <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:18px">
           <div class="serif" style="font-size:34px">What are you making?</div>
-          <div style="font-size:13px;color:var(--ink-faint)">Pick one to see a rough estimate</div>
+          <div style="font-size:13px;color:var(--ink-faint)">Every project starts here</div>
         </div>
         <div id="pills" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px"></div>
         <div class="well" id="well">
@@ -252,13 +255,14 @@
           <img src="assets/product-sweatshirt.jpg" alt="Sweatshirt" data-p="Sweatshirt">
           <img src="assets/product-other.jpg"      alt="Other"      data-p="Other">
         </div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;
-          gap:8px 16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--hairline)">
-          <div>
-            <div style="font-size:12px;color:var(--ink-muted);margin-bottom:2px">Rough estimate · 100 pcs</div>
-            <div class="num" id="estimate" style="font-size:28px;font-weight:700;letter-spacing:-0.3px;white-space:nowrap"></div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;
+          gap:12px 16px;margin-top:20px;padding-top:18px;border-top:1px solid var(--hairline)">
+          <div style="font-size:14px;color:var(--ink-muted);line-height:1.5">
+            Pricing depends on fabric, finishing and quantity. We'll quote it properly once we've seen your spec.
           </div>
-          <div style="font-size:12px;color:var(--ink-faint);text-align:right">Final quote after factory matching</div>
+          <button class="btn-primary js-apply" style="padding:0 22px;height:46px;font-size:15px;white-space:nowrap">
+            Get a quote
+          </button>
         </div>
       </div>
     </div>
@@ -308,13 +312,13 @@
       </div>
       <ul class="bullets">
         <li>A production spec built from your answers, not a blank form.</li>
-        <li>Factory matching ranked on lot size, lead time and price.</li>
+        <li>Reviewed by us, then produced by a factory suited to your lot size.</li>
         <li>Every stage tracked, from pattern cutting to delivery.</li>
       </ul>
     </div>
 
     <div data-reveal style="background:var(--white);border:1px solid var(--border);border-radius:24px;
-      overflow:hidden;box-shadow:var(--shadow-card);margin-bottom:24px">
+      overflow:hidden;box-shadow:var(--shadow-card)">
       <div style="display:flex;align-items:center;gap:10px;padding:14px 24px;border-bottom:1px solid var(--hairline)">
         <div aria-disabled="true" style="position:relative;width:208px;display:flex;background:var(--warm);
           border-radius:999px;padding:4px;opacity:0.45;pointer-events:none;user-select:none">
@@ -342,7 +346,7 @@
                 Gildan G500
                 <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--purple);color:#fff">Recommended</span>
               </div>
-              <div class="num" style="font-size:13px;color:var(--ink-muted);margin-top:2px">White / Black / Navy · XS-XXL · ¥180-220/pc</div>
+              <div style="font-size:13px;color:var(--ink-muted);margin-top:2px">White / Black / Navy · XS-XXL</div>
             </div>
             <span style="width:20px;height:20px;border-radius:999px;background:var(--purple);flex-shrink:0"></span>
           </div>
@@ -352,23 +356,16 @@
             <div style="font-size:16px;font-weight:600;margin-bottom:16px">Summary</div>
             <div id="summary"></div>
             <div style="height:1px;background:var(--hairline);margin:14px 0"></div>
-            <div style="font-size:12px;color:var(--ink-muted)">Rough estimate</div>
-            <div class="num" style="font-size:24px;font-weight:700;margin:2px 0">¥68,000 - ¥94,000</div>
-            <div style="font-size:12px;color:var(--ink-faint);margin-bottom:18px">Final quote after factory matching</div>
-            <div style="background:var(--purple);color:#fff;border-radius:999px;padding:14px;text-align:center;font-size:15px;font-weight:600">Get factory matches</div>
+            <div style="font-size:13px;color:var(--ink-muted);line-height:1.6;margin-bottom:18px">
+              Once the spec is complete we review it and come back with a quote.
+            </div>
+            <div style="background:var(--purple);color:#fff;border-radius:999px;padding:14px;text-align:center;font-size:15px;font-weight:600">Submit spec</div>
           </div>
         </div>
       </div>
     </div>
 
-    <div data-reveal style="background:var(--white);border:1px solid var(--border);border-radius:24px;padding:28px 24px">
-      <div style="font-size:20px;font-weight:600;margin-bottom:6px">Factory matches</div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
-        <span style="width:8px;height:8px;border-radius:999px;background:var(--purple)"></span>
-        <span style="font-size:14px;color:var(--purple);font-weight:500">AI ranked 3 compatible factories for your spec</span>
-      </div>
-      <div id="factories"></div>
-    </div>
+</div>
   </div>
 </section>
 
@@ -446,7 +443,7 @@
 <section id="guides" class="sec-guides">
   <img src="assets/guides-bg.jpg" alt="" aria-hidden="true"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-  <div style="position:absolute;inset:0;background:rgba(235,229,204,0.86);pointer-events:none"></div>
+  <div style="position:absolute;inset:0;background:rgba(255,255,255,0.88);pointer-events:none"></div>
   <div style="position:relative" class="wrap">
     <div data-reveal style="margin-bottom:40px">
       <div class="rule" style="margin-bottom:20px"></div>
@@ -472,7 +469,7 @@
 
 <!-- SECTION: screening -->
 <section class="sec-screening">
-  <div data-reveal style="max-width:760px;margin:0 auto;background:var(--cream);border-radius:24px;padding:48px">
+  <div data-reveal style="max-width:760px;margin:0 auto;background:#FAFAFB;border:1px solid var(--border);border-radius:24px;padding:48px">
     <div style="font-size:11px;font-weight:600;letter-spacing:1.2px;color:var(--purple);margin-bottom:12px">SCREENING</div>
     <div class="serif" style="font-size:34px;margin-bottom:12px">Every application is reviewed.</div>
     <p style="font-size:15px;line-height:1.7;color:var(--ink-muted);margin:0 0 20px;max-width:560px">
@@ -551,9 +548,6 @@
   var el = function(t,p){ var n=document.createElement(t); if(p) n.innerHTML=p; return n; };
 
   /* ---------- data ---------- */
-  var BASE = {"T-shirt":200,"Hoodie":520,"Sweatshirt":420,"Other":300};
-  var YEN  = function(n){ return "¥"+n.toLocaleString("en-US"); };
-
   var SPECS = {
     1:{tag:"BODY",title:"Body & fit",note:"Graded measurements per size, taken flat, in centimetres.",
        rows:[["Body length (M)","68.0 cm"],["Chest width (M)","52.0 cm"],["Shoulder","46.0 cm"],["Sleeve length","20.5 cm"],["Tolerance","± 1.0 cm"]]},
@@ -569,16 +563,12 @@
   var SUMMARY = [["Garment","T-shirt"],["Material","100% Cotton"],["Processing","Screen printing"],
                  ["Body","Gildan G500"],["Sizes","S, M, L"],["Quantity","100 pcs"]];
 
-  var FACTORIES = [
-    {name:"TOKYO STITCH Co.", meta:"Tokyo · Min lot 30 · 25-30 days",   specialty:"Cut & sew, embroidery",     score:"94%", match:"Excellent match", top:true},
-    {name:"OSAKA KNIT Lab",   meta:"Osaka · Min lot 10 · 20-25 days",   specialty:"Knitwear, small lot",       score:"87%", match:"Good match"},
-    {name:"FUKUOKA CRAFT",    meta:"Fukuoka · Min lot 50 · 30-35 days", specialty:"Mass production, printing", score:"79%", match:"Partial match"}
-  ];
 
   var JOBS = [
     {type:"Influencer", brand:"MUJI Studio",  reward:"¥25,000", deadline:"Jul 15", applicants:"5 applied", img:"assets/creator-1.jpg", alt:"Creator in a brown oversized sweatshirt"},
     {type:"Model",      brand:"Tokyo Denim",  reward:"¥30,000", deadline:"Jul 12", applicants:"4 applied", img:"assets/creator-2.jpg", alt:"Model in a black leather jacket on a stairwell"},
-    {type:"Influencer", brand:"Kyoto Modern", reward:"¥28,000", deadline:"Jul 5",  applicants:"2 applied", img:"assets/creator-3.jpg", alt:"Creator in a linen shirt, black and white portrait"}
+    {type:"Influencer", brand:"Kyoto Modern", reward:"¥28,000", deadline:"Jul 5",  applicants:"2 applied", img:"assets/creator-3.jpg", alt:"Creator in a linen shirt, black and white portrait"},
+    {type:"Photographer",brand:"Aiko Studio",  reward:"¥32,000", deadline:"Jul 18", applicants:"6 applied", img:"assets/creator-4-card.jpg", alt:"Yuki Tanaka, creator portrait"}
   ];
 
   var GUIDES = [
@@ -588,10 +578,10 @@
   ];
 
   var FAQS = [
-    ["Can I really order one piece?","Yes. MAKE is built for sample and single-piece runs - the factory matching filters on minimum lot, so you only see factories that will take your quantity."],
-    ["What does it cost to apply?","Nothing. Applying, building a spec and seeing factory matches are all free. You only pay once you place an order against a quote."],
+    ["Can I really order one piece?","Yes. MAKE is built for sample and single-piece runs. We work with factories that accept small lots, so a first piece is a real order rather than an exception."],
+    ["What does it cost to apply?","Nothing. Applying and building a spec are free. You only pay once you place an order against a quote."],
     ["Can I change the spec after submitting?","Freely, until an order is placed. Once you request a quote you'll need to withdraw it first, and the spec unlocks again."],
-    ["How long does manufacturing take?","For 100 pieces with screen printing, most matched factories quote 25-30 days including QC. Your project page shows each stage as it completes."],
+    ["How long does manufacturing take?","For 100 pieces with screen printing, most factories quote 25-30 days including QC. Your project page shows each stage as it completes."],
     ["Do I have to use SHOWROOM?","No. It's there when you want it - every item made through MAKE can be gifted or rented to creators, but the two work independently."]
   ];
 
@@ -601,12 +591,6 @@
 
   /* ---------- hero product picker ---------- */
   var product = "T-shirt";
-  function estimate(){
-    var q=100, base=BASE[product]||200;
-    var low  = Math.round((base*q + 350*q*0.6 + 15000)/1000)*1000;
-    var high = Math.round((base*q*1.25 + 350*q + 25000)/1000)*1000;
-    $("#estimate").textContent = YEN(low)+" - "+YEN(high);
-  }
   (function(){
     var box=$("#pills");
     ["T-shirt","Hoodie","Sweatshirt","Other"].forEach(function(label){
@@ -623,11 +607,9 @@
         Array.prototype.forEach.call($("#well").children,function(img){
           img.classList.toggle("on", img.getAttribute("data-p")===label);
         });
-        estimate();
       });
       box.appendChild(b);
     });
-    estimate();
   })();
 
   /* ---------- spec hotspots ---------- */
@@ -656,7 +638,7 @@
         spec=n;
         Array.prototype.forEach.call(box.children,function(c,i){
           var on=(i+1)===n;
-          c.className="spot"+(on?" on":"");
+          c.classList.toggle("on",on);           // keeps inline left/top intact
           c.setAttribute("aria-pressed",on?"true":"false");
         });
         drawSpec();
@@ -674,22 +656,6 @@
         '<span style="color:var(--ink-muted)">'+r[0]+'</span>'+
         '<span class="num" style="font-weight:500;text-align:right">'+r[1]+'</span>'
       )).style.cssText="display:flex;justify-content:space-between;gap:12px;font-size:13px;margin-bottom:8px";
-    });
-
-    var f=$("#factories");
-    FACTORIES.forEach(function(x){
-      var badge = x.top
-        ? 'background:var(--lime);color:var(--ink)'
-        : 'background:var(--cream-tint);color:var(--purple)';
-      var d=el("div",
-        '<div><div style="font-size:18px;font-weight:600">'+x.name+'</div>'+
-        '<div class="num" style="font-size:13px;color:var(--ink-muted)">'+x.meta+'</div>'+
-        '<div style="font-size:14px;color:var(--ink-muted);margin-top:8px">'+x.specialty+'</div></div>'+
-        '<div style="text-align:right"><div class="num" style="font-size:28px;font-weight:700;color:var(--purple)">'+x.score+'</div>'+
-        '<div style="font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;display:inline-block;'+badge+'">'+x.match+'</div></div>'
-      );
-      d.style.cssText="border:1.5px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:12px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap";
-      f.appendChild(d);
     });
 
     var j=$("#jobs");
