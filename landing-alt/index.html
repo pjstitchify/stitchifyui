@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stitchify - Factory quality, from one piece</title>
+<meta name="description" content="Tell us what you're making. We turn it into a real production spec, review it with a factory, and manufacture it - starting at a single piece.">
+<meta property="og:title" content="Stitchify - Factory quality, from one piece">
+<meta property="og:description" content="Production specs, small-run manufacturing and creator campaigns for independent fashion brands.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Noto+Sans+JP:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --purple:#4E35E8; --purple-hover:#3D27D4; --lime:#A3E635;
+    --white:#FFFFFF; --paper:#FAFAFA; --tint:#F4F2FD; --warm:#F7F7F9;
+    --ink:#111111; --ink-muted:#5E5C57; --ink-faint:#9A968E;
+    --rule:#111111; --hair:#E2E0DA;
+    --deep:#141414;
+    --error:#B91C1C; --success:#15803D;
+    --serif:'Instrument Serif',Georgia,serif;
+    --ease:cubic-bezier(.25,.1,.25,1);
+    --ease-enter:cubic-bezier(.05,.7,.1,1);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--white);color:var(--ink);
+    font-family:'Hind','Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--purple);color:#fff}
+  :focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ── editorial spine: hard rules, no rounded cards ── */
+  .shell{max-width:1320px;margin:0 auto;padding:0 40px}
+  .rule-top{border-top:1px solid var(--rule)}
+  .hair-top{border-top:1px solid var(--hair)}
+
+  /* two-column document grid: sticky label rail + wide content */
+  .doc{display:grid;grid-template-columns:200px 1fr;gap:0}
+  .rail{padding:40px 32px 64px 0;border-right:1px solid var(--hair)}
+  .rail-inner{position:sticky;top:96px}
+  .idx{font-family:var(--serif);font-size:56px;line-height:0.9;color:var(--purple);
+    display:block;margin-bottom:14px}
+  .rail-label{font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--ink);line-height:1.5}
+  .rail-meta{font-size:12px;color:var(--ink-faint);line-height:1.6;margin-top:14px;
+    padding-top:14px;border-top:1px solid var(--hair)}
+  .content{padding:40px 0 64px 56px;min-width:0}
+
+  /* type: big, tight, left-aligned. never centred. */
+  .display{font-family:var(--serif);font-weight:400;letter-spacing:-2px;line-height:0.94;
+    margin:0;font-size:clamp(52px,8.4vw,124px)}
+  .h-sec{font-family:var(--serif);font-weight:400;letter-spacing:-1px;line-height:1.02;
+    margin:0 0 22px;font-size:clamp(34px,4.6vw,60px);max-width:15ch}
+  .lede{font-size:19px;line-height:1.55;color:var(--ink-muted);max-width:52ch;margin:0}
+  .body{font-size:16px;line-height:1.7;color:var(--ink-muted);max-width:60ch}
+
+  /* buttons: square-ish, deliberate, not pill-shaped everywhere */
+  .cta{display:inline-flex;align-items:center;gap:12px;background:var(--purple);color:#fff;
+    border:none;padding:17px 30px;font-size:15px;font-weight:600;cursor:pointer;
+    transition:background-color 150ms var(--ease)}
+  .cta:hover{background:var(--purple-hover)}
+  .cta:active{transform:translateY(1px)}
+  .cta-ghost{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--rule);
+    background:transparent;color:var(--ink);padding:16px 28px;font-size:15px;font-weight:500;
+    cursor:pointer;transition:background-color 150ms var(--ease),color 150ms var(--ease)}
+  .cta-ghost:hover{background:var(--ink);color:#fff}
+  .stitched{position:relative}
+  .stitched::after{content:'';position:absolute;inset:4px;
+    border:1.5px dashed rgba(255,255,255,0.55);pointer-events:none}
+
+  /* header */
+  header{position:sticky;top:0;z-index:100;background:var(--white);
+    border-bottom:1px solid var(--rule)}
+  .hdr{max-width:1320px;margin:0 auto;padding:0 40px;height:64px;
+    display:flex;align-items:center;gap:36px}
+  .hdr nav{display:flex;gap:28px;margin-left:auto}
+  .hdr nav a{font-size:13px;font-weight:500;letter-spacing:0.3px;
+    padding-bottom:2px;border-bottom:1px solid transparent}
+  .hdr nav a:hover{border-bottom-color:var(--ink)}
+  .lang{display:flex;border:1px solid var(--hair)}
+  .lang button{border:none;background:transparent;cursor:pointer;font-size:11px;font-weight:600;
+    padding:5px 9px;color:var(--ink-faint)}
+  .lang button.on{background:var(--ink);color:#fff}
+
+  /* hero: type left, image bleeding right, asymmetric */
+  .hero{display:grid;grid-template-columns:1.05fr 0.95fr;gap:0;align-items:stretch;
+    border-bottom:1px solid var(--rule)}
+  .hero-l{padding:76px 56px 64px 0;display:flex;flex-direction:column;justify-content:center}
+  .hero-r{position:relative;border-left:1px solid var(--hair);min-height:560px;overflow:hidden}
+  .hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 22%}
+  .kicker{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+  .kicker span{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+  .kicker i{flex:1;height:1px;background:var(--rule);font-style:normal;max-width:88px}
+
+  /* running data strip - like a spec header, not stat cards */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule)}
+  .strip div{padding:22px 26px;border-right:1px solid var(--hair)}
+  .strip div:last-child{border-right:none}
+  .strip dt{font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--ink-faint);margin:0 0 7px}
+  .strip dd{margin:0;font-family:var(--serif);font-size:31px;line-height:1}
+
+  /* spec table - real tabular data, not cards */
+  table.spec{width:100%;border-collapse:collapse}
+  table.spec th{text-align:left;font-size:11px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--ink-faint);padding:0 0 12px;border-bottom:1px solid var(--rule)}
+  table.spec td{padding:13px 0;border-bottom:1px solid var(--hair);font-size:15px;vertical-align:top}
+  table.spec td:first-child{color:var(--ink-muted);width:44%;padding-right:20px}
+  table.spec td:last-child{font-weight:500;text-align:right}
+
+  /* hotspot figure */
+  .fig{position:relative;border:1px solid var(--hair);background:var(--warm);aspect-ratio:4/3}
+  .fig>img{width:100%;height:100%;object-fit:cover}
+  .spot{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;
+    box-sizing:border-box;padding:0;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:700;font-family:inherit;
+    background:var(--white);color:var(--ink);border:1px solid var(--rule);
+    transition:background-color 140ms var(--ease),color 140ms var(--ease),
+      border-color 140ms var(--ease),box-shadow 140ms var(--ease)}
+  .spot:hover{background:var(--tint)}
+  .spot.on{background:var(--purple);color:#fff;border-color:var(--purple);
+    box-shadow:0 0 0 5px rgba(78,53,232,0.14)}
+  .spot:active{transform:translate(-50%,-50%) scale(0.94)}
+
+  /* product selector - horizontal ledger row, not a card */
+  .ledger{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule)}
+  .ledger button{border:none;border-right:1px solid var(--hair);background:transparent;
+    padding:0;cursor:pointer;text-align:left;display:block;
+    transition:background-color 150ms var(--ease)}
+  .ledger button:last-child{border-right:none}
+  .ledger button:hover{background:var(--paper)}
+  .ledger button.on{background:var(--tint)}
+  .ledger .thumb{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--warm);
+    border-bottom:1px solid var(--hair)}
+  .ledger .thumb img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;
+    filter:grayscale(1);transition:filter 220ms var(--ease)}
+  .ledger button.on .thumb img,.ledger button:hover .thumb img{filter:grayscale(0)}
+  .ledger .cap{padding:16px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .ledger .cap b{font-size:15px;font-weight:600}
+  .ledger .cap i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:1px;
+    color:var(--ink-faint)}
+  .ledger button.on .cap i{color:var(--purple)}
+
+  /* creator plates - staggered, varied heights, not a uniform grid */
+  .plates{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);
+    border:1px solid var(--hair)}
+  .plate{background:var(--white);position:relative}
+  .plate .ph{position:relative;overflow:hidden;background:var(--warm)}
+  .plate:nth-child(odd) .ph{aspect-ratio:3/4}
+  .plate:nth-child(even) .ph{aspect-ratio:4/5}
+  .plate .ph img{width:100%;height:100%;object-fit:cover}
+  .plate .tag{position:absolute;top:0;left:0;background:var(--white);
+    font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+    padding:6px 10px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+  .plate .meta{padding:14px 16px 18px}
+
+  /* guides - numbered index list, not cards */
+  .index-row{display:grid;grid-template-columns:56px 1fr auto;gap:24px;align-items:baseline;
+    padding:26px 0;border-bottom:1px solid var(--hair);transition:padding-left 200ms var(--ease-enter)}
+  .index-row:hover{padding-left:12px}
+  .index-row .n{font-family:var(--serif);font-size:22px;color:var(--purple)}
+  .index-row h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2.4vw,30px);
+    line-height:1.2;margin:0 0 6px;letter-spacing:-0.4px}
+  .index-row p{margin:0;font-size:15px;line-height:1.6;color:var(--ink-muted);max-width:60ch}
+  .index-row .rt{font-size:12px;color:var(--ink-faint);white-space:nowrap}
+
+  /* faq - definition list feel */
+  .q{width:100%;display:grid;grid-template-columns:44px 1fr 30px;gap:16px;align-items:start;
+    background:none;border:none;cursor:pointer;text-align:left;padding:22px 0;
+    font-size:clamp(16px,1.7vw,19px);font-weight:500;color:var(--ink);line-height:1.4}
+  .q .qn{font-family:var(--serif);font-size:17px;color:var(--purple);padding-top:2px}
+  .q .sign{font-size:20px;color:var(--purple);line-height:1;justify-self:end;
+    transition:transform 240ms var(--ease)}
+  .q[aria-expanded="true"] .sign{transform:rotate(45deg)}
+  .a{display:none;padding:0 74px 26px 60px;font-size:15.5px;line-height:1.75;color:var(--ink-muted)}
+  .a.open{display:block}
+  .faq-item{border-bottom:1px solid var(--hair)}
+
+  /* closing */
+  .closing{background:var(--deep);color:#fff;border-top:1px solid var(--rule)}
+  .closing .display{color:#fff}
+
+  /* modal */
+  .veil{position:fixed;inset:0;z-index:300;background:rgba(17,17,17,0.55);
+    display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+  .veil[hidden]{display:none}
+  #form-state[hidden],#done-state[hidden]{display:none}
+  .panel{background:var(--white);width:100%;max-width:600px;padding:44px;
+    border:1px solid var(--rule);box-shadow:0 30px 80px rgba(0,0,0,0.22)}
+  .panel label{display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:700;
+    letter-spacing:1.2px;text-transform:uppercase;color:var(--ink-faint)}
+  .panel input{font-family:inherit;font-size:16px;font-weight:400;color:var(--ink);
+    padding:11px 0;border:none;border-bottom:1px solid var(--hair);outline:none;background:transparent}
+  .panel input:focus{border-bottom-color:var(--purple)}
+  .panel input.bad{border-bottom-color:var(--error)}
+
+  [data-r]{opacity:0;transform:translateY(10px);
+    transition:opacity 700ms var(--ease-enter),transform 700ms var(--ease-enter)}
+  [data-r].in{opacity:1;transform:none}
+
+  @media (max-width:1020px){
+    .strip{grid-template-columns:repeat(2,1fr)}
+    .strip div:nth-child(2){border-right:none}
+    .strip div:nth-child(1),.strip div:nth-child(2){border-bottom:1px solid var(--hair)}
+    .plates{grid-template-columns:repeat(2,1fr)}
+    .ledger{grid-template-columns:repeat(2,1fr)}
+    .ledger button:nth-child(2){border-right:none}
+  }
+  @media (max-width:1020px){
+    .spec-split{grid-template-columns:1fr!important;gap:30px!important}
+    .brief-split{grid-template-columns:1fr!important}
+    .brief-split>div:first-child{border-right:none!important;border-bottom:1px solid var(--hair)}
+    .stages{grid-template-columns:repeat(3,1fr)!important}
+    .close-split{grid-template-columns:1fr!important;gap:32px!important}
+  }
+  @media (max-width:860px){
+    .two-col{grid-template-columns:1fr!important;gap:18px!important}
+    .stages{grid-template-columns:repeat(2,1fr)!important}
+    .pull{grid-template-columns:1fr!important}
+    .pull-q{padding-left:0!important}
+    .plates{grid-template-columns:1fr!important}
+    .shell{padding:0 20px}
+    .hdr{padding:0 20px;gap:14px}
+    .hdr nav{display:none}
+    .hero{grid-template-columns:1fr}
+    .hero-l{padding:48px 0 40px}
+    .hero-r{min-height:340px;border-left:none;border-top:1px solid var(--hair)}
+    .doc{grid-template-columns:1fr}
+    .rail{padding:32px 0 0;border-right:none;display:flex;gap:18px;align-items:flex-start}
+    .rail-inner{position:static;display:flex;gap:18px;align-items:baseline}
+    .idx{font-size:34px;margin:0}
+    .rail-meta{display:none}
+    .content{padding:20px 0 52px}
+    .index-row{grid-template-columns:32px 1fr;gap:14px}
+    .index-row .rt{grid-column:2;padding-top:6px}
+    .a{padding:0 0 22px 46px}
+    .panel{padding:28px 22px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{transition:none!important;animation:none!important}
+    [data-r]{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- SECTION: header -->
+<header>
+  <div class="hdr">
+    <a href="index.html" aria-label="Stitchify home">
+      <img src="assets/stitchify-logo-dark.png" alt="Stitchify" style="height:24px;width:auto">
+    </a>
+    <nav>
+      <a href="#make">Make</a>
+      <a href="#showroom">Showroom</a>
+      <a href="guides.html">Guides</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Language">
+      <button class="on" aria-pressed="true">EN</button>
+      <button aria-pressed="false">日本語</button>
+    </div>
+    <button class="cta stitched js-apply" style="padding:11px 20px;font-size:13px">Get Access</button>
+  </div>
+</header>
+
+<!-- SECTION: hero -->
+<div class="shell">
+  <div class="hero">
+    <div class="hero-l">
+      <div class="kicker"><i></i><span>Make × Showroom</span></div>
+      <h1 class="display">Factory&nbsp;quality,<br>from one piece.</h1>
+      <p class="lede" style="margin:30px 0 36px">
+        Tell us what you're making. We turn it into a real production spec,<br>
+        review it with a factory, and manufacture it - starting at a single piece.
+      </p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+        <button class="cta stitched js-apply">Get Access</button>
+        <a href="#make" class="cta-ghost">How Make works</a>
+      </div>
+    </div>
+    <div class="hero-r">
+      <img src="assets/hero-web.jpg" alt="Backstage on the stairwell - wide-leg tailoring and a brushed wool skirt">
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: data strip -->
+<div class="shell">
+  <dl class="strip" style="margin:0">
+    <div><dt>Minimum order</dt><dd>One piece</dd></div>
+    <div><dt>Spec built by</dt><dd>Stitchify</dd></div>
+    <div><dt>Typical lead time</dt><dd>25-30 days</dd></div>
+    <div><dt>Cost to apply</dt><dd>None</dd></div>
+  </dl>
+</div>
+
+<!-- SECTION: 01 what are you making -->
+<div class="shell">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">01</span>
+        <span class="rail-label">What are<br>you making</span>
+        <div class="rail-meta">Pick a category to begin. Everything after this is built from your answers.</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <h2 class="h-sec">What are you making?</h2>
+      <p class="body" style="margin:0 0 34px">
+        Every project starts with a category. It sets the questions we ask next and the
+        factories we take it to.
+      </p>
+      <div class="ledger" id="ledger"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
+        align-items:center;padding:22px 0 0;border-top:1px solid var(--hair);margin-top:-1px">
+        <p class="body" style="margin:0;max-width:46ch;font-size:15px">
+          Pricing depends on fabric, finishing and quantity. We'll quote it properly
+          once we've seen your spec.
+        </p>
+        <div aria-hidden="true" style="border:1px solid var(--hair);color:var(--ink-faint);
+          padding:14px 26px;font-size:14px;font-weight:600;white-space:nowrap;user-select:none;
+          background:var(--paper)">Get a quote</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: 02 the spec -->
+<div class="shell rule-top">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">02</span>
+        <span class="rail-label">The<br>specification</span>
+        <div class="rail-meta">Sample spec<br>SS Collection T-shirt<br>100 pcs</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <h2 class="h-sec">The document your factory actually needs.</h2>
+      <p class="body" style="margin:0 0 38px">
+        Every project becomes a production specification - measurements, fabric, print
+        placement, label. Tap a point to see what we define.
+      </p>
+      <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:start" class="spec-split">
+        <div class="fig">
+          <img src="assets/spec-flatlay.jpg" alt="Flat-lay of a plain t-shirt, the garment the spec describes">
+          <div id="spots"></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px">
+            <span id="spec-tag" style="font-size:11px;font-weight:700;letter-spacing:1.6px;
+              color:var(--purple)"></span>
+          </div>
+          <div id="spec-title" class="serif"
+            style="font-family:var(--serif);font-size:30px;letter-spacing:-0.4px;margin:0 0 10px"></div>
+          <p id="spec-note" style="font-size:15px;line-height:1.65;color:var(--ink-muted);margin:0 0 26px"></p>
+          <table class="spec"><thead><tr><th>Attribute</th><th style="text-align:right">Value</th></tr></thead>
+            <tbody id="spec-rows"></tbody></table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: 03 make -->
+<div class="shell rule-top" id="make">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">03</span>
+        <span class="rail-label">Make</span>
+        <div class="rail-meta">Production from a single piece, with no stock held up front.</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <h2 class="h-sec">Zero inventory. Production from one piece.</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 40px" class="two-col">
+        <p class="body" style="margin:0">
+          A production spec built from your answers, not a blank form. Reviewed by us,
+          then produced by a factory suited to your lot size.
+        </p>
+        <p class="body" style="margin:0">
+          Every stage tracked, from pattern cutting to delivery - so you always know
+          where the run is without chasing anyone for an update.
+        </p>
+      </div>
+
+      <ol style="list-style:none;margin:0 0 40px;padding:0;display:grid;
+        grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule)" class="stages">
+        <li style="padding:20px 18px 22px 0;border-right:1px solid var(--hair)">
+          <div class="num" style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:7px">01</div>
+          <div style="font-size:14px;font-weight:600">Spec built</div></li>
+        <li style="padding:20px 18px 22px;border-right:1px solid var(--hair)">
+          <div class="num" style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:7px">02</div>
+          <div style="font-size:14px;font-weight:600">Reviewed</div></li>
+        <li style="padding:20px 18px 22px;border-right:1px solid var(--hair)">
+          <div class="num" style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:7px">03</div>
+          <div style="font-size:14px;font-weight:600">Quoted</div></li>
+        <li style="padding:20px 18px 22px;border-right:1px solid var(--hair)">
+          <div class="num" style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:7px">04</div>
+          <div style="font-size:14px;font-weight:600">Produced</div></li>
+        <li style="padding:20px 0 22px 18px">
+          <div class="num" style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:7px">05</div>
+          <div style="font-size:14px;font-weight:600">Delivered</div></li>
+      </ol>
+
+      <div style="border:1px solid var(--hair)">
+        <div style="padding:14px 22px;border-bottom:1px solid var(--hair);font-size:11px;
+          font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-faint)">
+          Project brief - in progress
+        </div>
+        <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:0" class="brief-split">
+          <div style="padding:26px 24px;border-right:1px solid var(--hair)">
+            <div style="font-size:13px;font-weight:600;margin-bottom:11px">Garment type</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px">
+              <span style="padding:8px 15px;border:1px solid var(--purple);background:var(--tint);
+                font-size:13px;font-weight:600">T-shirt</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Sweatshirt</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Pants</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Jacket</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Knitwear</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:11px">Primary material</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px">
+              <span style="padding:8px 15px;border:1px solid var(--purple);background:var(--tint);
+                font-size:13px;font-weight:600">100% Cotton</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Cotton/Poly blend</span>
+              <span style="padding:8px 15px;border:1px solid var(--hair);font-size:13px;color:var(--ink-muted)">Linen</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:11px">Selected body</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;
+              padding:15px 17px;border:1px solid var(--purple);background:var(--tint)">
+              <div>
+                <div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                  Gildan G500
+                  <span style="font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 8px;
+                    background:var(--purple);color:#fff">RECOMMENDED</span>
+                </div>
+                <div style="font-size:12.5px;color:var(--ink-muted);margin-top:3px">White / Black / Navy · XS-XXL</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:26px 24px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:14px">Summary</div>
+            <table class="spec"><tbody id="summary"></tbody></table>
+            <p style="font-size:13.5px;line-height:1.65;color:var(--ink-muted);margin:20px 0 16px">
+              Once the spec is complete we review it and come back with a quote.
+            </p>
+            <div aria-hidden="true" style="border:1px solid var(--hair);background:var(--paper);
+              color:var(--ink-faint);padding:13px;text-align:center;font-size:14px;font-weight:600;
+              user-select:none">Submit spec</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: pull quote -->
+<div class="shell rule-top">
+  <div style="padding:72px 0 76px;display:grid;grid-template-columns:200px 1fr" class="pull">
+    <div></div>
+    <blockquote data-r style="margin:0;padding-left:56px" class="pull-q">
+      <p class="display" style="font-size:clamp(34px,5vw,66px);letter-spacing:-1.4px;line-height:1.06;margin:0 0 20px">
+        Making it isn't<br>where it ends.
+      </p>
+      <p class="body" style="margin:0;font-size:17px">
+        Items produced through Make continue into Showroom.
+      </p>
+    </blockquote>
+  </div>
+</div>
+
+<!-- SECTION: 04 showroom -->
+<div class="shell rule-top" id="showroom">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">04</span>
+        <span class="rail-label">Showroom</span>
+        <div class="rail-meta">Gift or rent finished pieces. Creators apply to you.</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <h2 class="h-sec">Made it. Now put it on people.</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 38px" class="two-col">
+        <p class="body" style="margin:0">
+          Gift or rent your pieces - creators apply to you, rather than you chasing them.
+          Influencers, photographers and models all sit in one board.
+        </p>
+        <p class="body" style="margin:0">
+          Applications, matches and deliverables are tracked per campaign, so a run and
+          the campaign behind it stay attached to each other.
+        </p>
+      </div>
+      <div class="plates" id="plates"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:26px;justify-content:space-between;
+        align-items:baseline;padding-top:18px;font-size:13px;color:var(--ink-faint)">
+        <span>Open campaigns · sample data</span>
+        <span>Gifting - keep, no return &nbsp;/&nbsp; Rental - returned after the shoot</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: 05 guides -->
+<div class="shell rule-top" id="guides">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">05</span>
+        <span class="rail-label">Guides</span>
+        <div class="rail-meta">Notes on getting a garment made.</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:baseline;
+        justify-content:space-between;margin-bottom:14px">
+        <h2 class="h-sec" style="margin:0">Guides</h2>
+        <a href="guides.html" style="font-size:14px;font-weight:500;border-bottom:1px solid var(--ink);
+          padding-bottom:2px">All guides</a>
+      </div>
+      <div id="guide-list" style="border-top:1px solid var(--rule);margin-top:24px"></div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: 06 faq -->
+<div class="shell rule-top" id="faq">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">06</span>
+        <span class="rail-label">Questions</span>
+        <div class="rail-meta">Still unclear? Write to support@stitchify.ai</div>
+      </div>
+    </div>
+    <div class="content" data-r>
+      <h2 class="h-sec">FAQ</h2>
+      <div id="faq-list" style="border-top:1px solid var(--rule);margin-top:26px"></div>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: screening -->
+<div class="shell rule-top">
+  <section class="doc">
+    <div class="rail">
+      <div class="rail-inner">
+        <span class="idx">07</span>
+        <span class="rail-label">Screening</span>
+      </div>
+    </div>
+    <div class="content" data-r style="padding-bottom:76px">
+      <h2 class="h-sec" style="font-size:clamp(28px,3.4vw,42px)">Every application is reviewed.</h2>
+      <p class="body" style="margin:0 0 32px">
+        We read each one so factories receive briefs they can actually quote. It usually
+        takes two business days, and we'll tell you either way.
+      </p>
+      <dl class="strip" style="margin:0;border-top:1px solid var(--rule)">
+        <div style="grid-column:span 2"><dt>What we look at</dt>
+          <dd style="font-size:17px;font-family:inherit;font-weight:500">Your brand, and what you want to make</dd></div>
+        <div><dt>Turnaround</dt><dd style="font-size:17px;font-family:inherit;font-weight:500">2 business days</dd></div>
+        <div><dt>Cost to apply</dt><dd style="font-size:17px;font-family:inherit;font-weight:500">None</dd></div>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<!-- SECTION: closing -->
+<div class="closing">
+  <div class="shell">
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:end;
+      padding:88px 0 92px" class="close-split">
+      <div>
+        <h2 class="display" style="font-size:clamp(40px,6.4vw,88px);letter-spacing:-1.8px;margin:0 0 24px">
+          Start with your<br>first piece.
+        </h2>
+        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.66);margin:0;max-width:44ch">
+          One garment is enough to begin. Apply and we'll take it from there.
+        </p>
+      </div>
+      <div style="display:flex;justify-content:flex-start;padding-bottom:8px">
+        <button class="cta stitched js-apply" style="padding:19px 40px;font-size:16px">Get Access</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: footer -->
+<footer style="background:var(--deep);color:rgba(255,255,255,0.5);
+  border-top:1px solid rgba(255,255,255,0.13)">
+  <div class="shell" style="display:flex;flex-wrap:wrap;gap:28px;align-items:center;padding:34px 40px">
+    <img src="assets/stitchify-logo-light.png" alt="Stitchify" style="height:21px;width:auto">
+    <div style="display:flex;gap:26px;flex-wrap:wrap;font-size:13px;margin-left:auto">
+      <a href="#make" style="color:rgba(255,255,255,0.5)">Make</a>
+      <a href="#showroom" style="color:rgba(255,255,255,0.5)">Showroom</a>
+      <a href="guides.html" style="color:rgba(255,255,255,0.5)">Guides</a>
+      <a href="#faq" style="color:rgba(255,255,255,0.5)">FAQ</a>
+      <a href="mailto:support@stitchify.ai" style="color:rgba(255,255,255,0.5)">support@stitchify.ai</a>
+    </div>
+    <div style="flex-basis:100%;font-size:11.5px;color:rgba(255,255,255,0.3);
+      letter-spacing:0.4px">© 2026 Stitchify</div>
+  </div>
+</footer>
+
+<!-- SECTION: modal -->
+<div class="veil" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="panel" id="panel">
+    <div id="form-state">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:6px">
+        <h2 id="modal-title" class="display" style="font-size:38px;letter-spacing:-0.8px;margin:0">Get Access</h2>
+        <button id="close-x" aria-label="Close" style="background:none;border:none;font-size:24px;
+          line-height:1;color:var(--ink-faint);cursor:pointer;padding:2px 4px">×</button>
+      </div>
+      <p style="font-size:15px;color:var(--ink-muted);margin:0 0 28px;line-height:1.6">
+        All fields are required. We'll reply within two business days.
+      </p>
+      <div id="fields" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px"></div>
+      <p id="form-error" hidden style="font-size:14px;color:var(--error);margin:18px 0 0">
+        Please complete every field before submitting.
+      </p>
+      <button class="cta stitched" id="submit" style="width:100%;justify-content:center;margin-top:30px;padding:17px">
+        Submit application
+      </button>
+    </div>
+    <div id="done-state" hidden style="padding:10px 0">
+      <div style="width:44px;height:44px;background:var(--purple);margin-bottom:22px"></div>
+      <h2 class="display" style="font-size:34px;letter-spacing:-0.6px;margin:0 0 12px">Application received.</h2>
+      <p style="font-size:15px;line-height:1.7;color:var(--ink-muted);margin:0 0 30px">
+        We review every application. Expect to hear from us within two business days.
+      </p>
+      <button class="cta-ghost" id="close-done">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var el=function(t,h){var n=document.createElement(t); if(h!=null)n.innerHTML=h; return n;};
+
+  /* ── data ── */
+  var PRODUCTS=[
+    {name:"T-shirt",   img:"assets/product-tshirt.jpg",     note:"Jersey"},
+    {name:"Hoodie",    img:"assets/product-hoodie.jpg",     note:"Fleece"},
+    {name:"Sweatshirt",img:"assets/product-sweatshirt.jpg", note:"Loopback"},
+    {name:"Other",     img:"assets/product-other.jpg",      note:"Tell us"}
+  ];
+
+  var SPECS={
+    1:{tag:"BODY",title:"Body & fit",note:"Graded measurements per size, taken flat, in centimetres.",
+       rows:[["Body length (M)","68.0 cm"],["Chest width (M)","52.0 cm"],["Shoulder","46.0 cm"],["Sleeve length","20.5 cm"],["Tolerance","± 1.0 cm"]]},
+    2:{tag:"FABRIC",title:"Fabric & knit",note:"Yarn, weight and finish agreed before cutting.",
+       rows:[["Composition","100% cotton"],["Weight","6.0 oz / 200 gsm"],["Knit","Open-end jersey"],["Finish","Bio-washed, pre-shrunk"],["Shrinkage","≤ 3%"]]},
+    3:{tag:"PRINT",title:"Print & placement",note:"Placement measured from HPS, artwork supplied at 300dpi.",
+       rows:[["Method","Screen printing"],["Location","Front centre"],["Size","Medium (10-20 cm)"],["From HPS","8.0 cm"],["Colours","2 (Pantone matched)"]]},
+    4:{tag:"LABEL",title:"Label & packing",note:"What goes inside the neck and inside the box.",
+       rows:[["Main label","Brand woven, centre back"],["Care label","Printed, side seam"],["Folding","Flat, individually polybagged"],["Carton","50 pcs / carton"],["Lead time","25-30 days"]]}
+  };
+  var POS={1:["50%","62%"],2:["36%","44%"],3:["50%","44%"],4:["50%","26%"]};
+
+  var SUMMARY=[["Garment","T-shirt"],["Material","100% Cotton"],["Processing","Screen printing"],
+               ["Body","Gildan G500"],["Sizes","S, M, L"],["Quantity","100 pcs"]];
+
+  var PLATES=[
+    {type:"Influencer",  brand:"MUJI Studio",  reward:"¥25,000", deadline:"Jul 15", applicants:"5 applied", img:"assets/creator-1.jpg", alt:"Creator in a brown oversized sweatshirt"},
+    {type:"Model",       brand:"Tokyo Denim",  reward:"¥30,000", deadline:"Jul 12", applicants:"4 applied", img:"assets/creator-2.jpg", alt:"Model in a black leather jacket on a stairwell"},
+    {type:"Influencer",  brand:"Kyoto Modern", reward:"¥28,000", deadline:"Jul 5",  applicants:"2 applied", img:"assets/creator-3.jpg", alt:"Creator in a linen shirt, black and white portrait"},
+    {type:"Photographer",brand:"Aiko Studio",  reward:"¥32,000", deadline:"Jul 18", applicants:"6 applied", img:"assets/creator-4-card.jpg", alt:"Yuki Tanaka, creator portrait"}
+  ];
+
+  var GUIDES=[
+    {cat:"Manufacturing", title:"What a factory needs before it can quote you", desc:"The five things every spec must answer, and why a missing one costs you a week.", read:"6 min"},
+    {cat:"Cost",          title:"Where the money actually goes on 100 pieces",  desc:"Body, print, setup, shipping - a line-by-line breakdown of a real quote.",      read:"8 min"},
+    {cat:"Brand building",title:"Your first drop doesn't need 500 units",       desc:"How small runs and creator gifting replace guessing at demand.",               read:"5 min"}
+  ];
+
+  var FAQS=[
+    ["Can I really order just one piece?","Yes. Make is built for sample and single-piece runs. Most factories won't quote an unknown brand under 500 units, so we work with partners who accept small lots and have agreed those terms in advance. Your first piece is a real order, not a favour."],
+    ["What does it cost to get started?","Nothing. Applying, building a production spec and having it reviewed are all free. You only pay once you approve a quote and place an order, so you can see the full cost of a run before committing to anything."],
+    ["What is a production spec, and why does it matter?","It's the document a factory needs before it can quote you: graded measurements, fabric weight and composition, print method and placement, labelling and packing. Send a factory an idea and you'll wait a week for questions. Send a complete spec and you get a price."],
+    ["I've never had anything manufactured before. Is that a problem?","No - that's who this is built for. You answer questions about what you're making in plain language, and we turn those answers into the technical document. You don't need to know what a tolerance is, or how to grade a size run."],
+    ["How long does manufacturing take?","For around 100 pieces with screen printing, expect 25-30 days including quality inspection. Knitwear and structured outerwear take longer, sampling is quicker. Your project page shows each stage - Ordered, Production, Inspection, Shipping, Delivered - as it completes."],
+    ["Can I change the spec after submitting it?","Freely, right up until an order is placed. Once you've requested a quote the spec locks so the factory is pricing a fixed target. Withdraw the request and it unlocks again."],
+    ["What is Showroom, and do I have to use it?","Showroom is where you promote what you've made. Post a campaign against a finished item and creators - influencers, photographers and models - apply to you. It's entirely optional; the two halves work independently."],
+    ["Why can I only run campaigns on items made through Make?","Because we can verify those items exist, confirm the stock is real, and stand behind what a creator is being asked to promote. It protects you from a campaign built on stock that hasn't arrived, and protects creators from promoting something that never ships."],
+    ["What's the difference between gifting and rental?","With gifting the creator keeps the piece, which suits everyday items and simpler shoots. With rental it comes back after the shoot, which makes sense for higher-value pieces or limited stock - just build return shipping into your timeline."],
+    ["When am I charged for a campaign?","When you approve a creator, not when you publish. The reward is held from that point and released once deliverables are submitted and you've confirmed them. If a creator misses the deadline, the campaign is flagged and the held amount returns to you."]
+  ];
+
+  var FIELDS=[["first","First name","Aiko"],["last","Last name","Tanaka"],
+              ["company","Company / brand","Aiko Studio"],["email","Email address","aiko@brand.jp"],
+              ["phone","Contact number","+81 90-1234-5678"],["country","Country","Japan"]];
+
+  /* ── product ledger ── */
+  (function(){
+    var box=$("#ledger"), active=0;
+    PRODUCTS.forEach(function(p,i){
+      var b=el("button",
+        '<span class="thumb"><img src="'+p.img+'" alt="'+p.name+'" loading="lazy"></span>'+
+        '<span class="cap"><b>'+p.name+'</b><i>'+p.note+'</i></span>');
+      if(i===0) b.className="on";
+      b.setAttribute("aria-pressed", i===0?"true":"false");
+      b.addEventListener("click",function(){
+        active=i;
+        Array.prototype.forEach.call(box.children,function(c,j){
+          c.classList.toggle("on", j===i);
+          c.setAttribute("aria-pressed", j===i?"true":"false");
+        });
+      });
+      box.appendChild(b);
+    });
+  })();
+
+  /* ── spec hotspots ── */
+  var spec=1;
+  function drawSpec(){
+    var s=SPECS[spec];
+    $("#spec-tag").textContent=s.tag;
+    $("#spec-title").textContent=s.title;
+    $("#spec-note").textContent=s.note;
+    var body=$("#spec-rows"); body.innerHTML="";
+    s.rows.forEach(function(r){
+      var tr=el("tr");
+      tr.appendChild(el("td",r[0]));
+      var td=el("td",r[1]); td.className="num";
+      tr.appendChild(td); body.appendChild(tr);
+    });
+  }
+  (function(){
+    var box=$("#spots");
+    [1,2,3,4].forEach(function(n){
+      var b=el("button",String(n));
+      b.className="spot"+(n===spec?" on":"");
+      b.style.left=POS[n][0]; b.style.top=POS[n][1];
+      b.setAttribute("aria-label","Show spec section "+n);
+      b.setAttribute("aria-pressed", n===spec?"true":"false");
+      b.addEventListener("click",function(){
+        spec=n;
+        Array.prototype.forEach.call(box.children,function(c,i){
+          var on=(i+1)===n;
+          c.classList.toggle("on",on);
+          c.setAttribute("aria-pressed",on?"true":"false");
+        });
+        drawSpec();
+      });
+      box.appendChild(b);
+    });
+    drawSpec();
+  })();
+
+  /* ── summary table ── */
+  (function(){
+    var t=$("#summary");
+    SUMMARY.forEach(function(r){
+      var tr=el("tr");
+      tr.appendChild(el("td",r[0]));
+      var td=el("td",r[1]); td.className="num";
+      tr.appendChild(td); t.appendChild(tr);
+    });
+  })();
+
+  /* ── creator plates ── */
+  (function(){
+    var box=$("#plates");
+    PLATES.forEach(function(p){
+      var d=el("div",
+        '<div class="ph"><span class="tag">'+p.type+'</span>'+
+        '<img src="'+p.img+'" alt="'+p.alt+'" loading="lazy"></div>'+
+        '<div class="meta"><div style="font-size:14px;font-weight:600;margin-bottom:3px">'+p.brand+'</div>'+
+        '<div class="num" style="font-size:12.5px;color:var(--ink-muted)">'+p.reward+' · '+p.deadline+'</div>'+
+        '<div style="font-size:11px;font-weight:700;letter-spacing:.8px;color:var(--purple);margin-top:8px">'+
+        p.applicants.toUpperCase()+'</div></div>');
+      d.className="plate";
+      box.appendChild(d);
+    });
+  })();
+
+  /* ── guides index ── */
+  (function(){
+    var box=$("#guide-list");
+    GUIDES.forEach(function(g,i){
+      var a=el("a",
+        '<span class="n">0'+(i+1)+'</span>'+
+        '<span><h3>'+g.title+'</h3><p>'+g.desc+'</p>'+
+        '<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.2px;'+
+        'text-transform:uppercase;color:var(--purple);margin-top:10px">'+g.cat+'</span></span>'+
+        '<span class="rt">'+g.read+'</span>');
+      a.href="guides.html"; a.className="index-row";
+      box.appendChild(a);
+    });
+  })();
+
+  /* ── faq ── */
+  (function(){
+    var box=$("#faq-list");
+    FAQS.forEach(function(pair,i){
+      var item=el("div"); item.className="faq-item";
+      var n=(i+1)<10?"0"+(i+1):String(i+1);
+      var q=el("button",'<span class="qn">'+n+'</span><span>'+pair[0]+
+              '</span><span class="sign" aria-hidden="true">+</span>');
+      q.className="q"; q.setAttribute("aria-expanded", i===0?"true":"false");
+      q.setAttribute("aria-controls","a-"+i);
+      var a=el("div",pair[1]); a.className="a"+(i===0?" open":""); a.id="a-"+i;
+      q.addEventListener("click",function(){
+        var open=q.getAttribute("aria-expanded")==="true";
+        Array.prototype.forEach.call(box.children,function(r){
+          r.querySelector(".q").setAttribute("aria-expanded","false");
+          r.querySelector(".a").classList.remove("open");
+        });
+        if(!open){ q.setAttribute("aria-expanded","true"); a.classList.add("open"); }
+      });
+      item.appendChild(q); item.appendChild(a); box.appendChild(item);
+    });
+  })();
+
+  /* ── language pill (visual only) ── */
+  document.querySelectorAll(".lang button").forEach(function(b){
+    b.addEventListener("click",function(){
+      document.querySelectorAll(".lang button").forEach(function(x){
+        x.classList.remove("on"); x.setAttribute("aria-pressed","false");
+      });
+      b.classList.add("on"); b.setAttribute("aria-pressed","true");
+    });
+  });
+
+  /* ── reveal ── */
+  (function(){
+    var els=[].slice.call(document.querySelectorAll("[data-r]"));
+    if(!("IntersectionObserver" in window)||
+       (window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)){
+      els.forEach(function(e){e.classList.add("in");}); return;
+    }
+    var io=new IntersectionObserver(function(en){
+      en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+    },{rootMargin:"0px 0px -6% 0px",threshold:0.04});
+    els.forEach(function(e){io.observe(e);});
+  })();
+
+  /* ── modal ── */
+  (function(){
+    var modal=$("#modal"), panel=$("#panel"),
+        fs=$("#form-state"), ds=$("#done-state"), errBox=$("#form-error"), last=null;
+    FIELDS.forEach(function(f){
+      var l=el("label",f[1]);
+      var i=document.createElement("input");
+      i.placeholder=f[2]; i.setAttribute("data-k",f[0]);
+      i.type = f[0]==="email"?"email":(f[0]==="phone"?"tel":"text");
+      i.autocomplete=({first:"given-name",last:"family-name",company:"organization",
+                       email:"email",phone:"tel",country:"country-name"})[f[0]];
+      i.addEventListener("input",function(){ if(i.value.trim()) i.classList.remove("bad"); });
+      l.appendChild(i); $("#fields").appendChild(l);
+    });
+    function open(){
+      last=document.activeElement;
+      modal.hidden=false; fs.hidden=false; ds.hidden=true; errBox.hidden=true;
+      document.querySelectorAll("#fields input").forEach(function(i){i.classList.remove("bad");});
+      document.body.style.overflow="hidden";
+      var f=$("#fields input"); if(f) f.focus();
+    }
+    function close(){
+      modal.hidden=true; document.body.style.overflow=""; if(last) last.focus();
+    }
+    document.querySelectorAll(".js-apply").forEach(function(b){ b.addEventListener("click",open); });
+    $("#close-x").addEventListener("click",close);
+    $("#close-done").addEventListener("click",close);
+    modal.addEventListener("click",function(e){ if(e.target===modal) close(); });
+    panel.addEventListener("click",function(e){ e.stopPropagation(); });
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!modal.hidden) close(); });
+    $("#submit").addEventListener("click",function(){
+      var ok=true;
+      document.querySelectorAll("#fields input").forEach(function(i){
+        if(!i.value.trim()){ i.classList.add("bad"); ok=false; }
+      });
+      if(!ok){ errBox.hidden=false; return; }
+      errBox.hidden=true; fs.hidden=true; ds.hidden=false; $("#close-done").focus();
+    });
+  })();
+})();
+</script>
+</body>
+</html>
