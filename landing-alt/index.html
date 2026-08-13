@@ -146,7 +146,13 @@
     border-bottom:1px solid var(--hair)}
   .ledger .thumb img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;
     filter:grayscale(1);transition:filter 220ms var(--ease)}
-  .ledger button.on .thumb img,.ledger button:hover .thumb img{filter:grayscale(0)}
+  .ledger button.on .thumb img,
+  .ledger button:hover .thumb img,
+  .ledger button.cycle .thumb img{filter:grayscale(0)}
+  .ledger button.cycle{background:var(--paper)}
+  /* user hover always wins over the cycle */
+  .ledger:hover button.cycle:not(:hover){background:transparent}
+  .ledger:hover button.cycle:not(:hover) .thumb img{filter:grayscale(1)}
   .ledger .cap{padding:16px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
   .ledger .cap b{font-size:15px;font-weight:600}
   .ledger .cap i{font-style:normal;font-size:11px;font-weight:700;letter-spacing:1px;
@@ -231,6 +237,7 @@
     .close-split h2{white-space:normal!important;font-size:clamp(32px,8.4vw,48px)!important}
     .close-split p{white-space:normal!important;max-width:38ch}
     .two-col{grid-template-columns:1fr!important;gap:18px!important}
+    .two-col p br,.lede br{display:none}
     .stages{grid-template-columns:repeat(2,1fr)!important}
     .plates{grid-template-columns:1fr!important}
     .shell{padding:0 20px}
@@ -285,9 +292,9 @@
     <div class="hero-l">
       <div class="kicker"><i></i><span>MAKE × Showroom</span></div>
       <h1 class="display">Factory&nbsp;quality,<br>from one piece.</h1>
-      <p class="lede" style="margin:30px 0 36px">
+      <p class="lede" style="margin:30px 0 36px;max-width:none;font-size:clamp(15px,1.55vw,19px)">
         Tell us what you're making. We turn it into a real production spec,<br>
-        review it with a factory, and manufacture it - starting at a single piece.
+        review it with a factory, and make it - starting at a single piece.
       </p>
       <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
         <button class="cta stitched js-apply">Get Access</button>
@@ -391,13 +398,13 @@
     <div class="content" data-r>
       <h2 class="h-sec h-two">Zero inventory.<br>Production from one piece.</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 40px" class="two-col">
-        <p class="body" style="margin:0">
-          A production spec built from your answers, not a blank form. Reviewed by us,
+        <p class="body" style="margin:0;max-width:none">
+          A production spec built from your answers, not a blank form,<br>
           then produced by a factory suited to your lot size.
         </p>
-        <p class="body" style="margin:0">
-          Every stage tracked, from pattern cutting to delivery - so you always know
-          where the run is without chasing anyone for an update.
+        <p class="body" style="margin:0;max-width:none">
+          Every stage tracked, from pattern cutting through to delivery,<br>
+          so you always know where the run is without chasing anyone.
         </p>
       </div>
 
@@ -500,13 +507,13 @@
     <div class="content" data-r>
       <h2 class="h-sec h-one">Made it. Now put it on people.</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 38px" class="two-col">
-        <p class="body" style="margin:0">
-          Gift or rent your pieces - creators apply to you, rather than you chasing them.
-          Influencers, photographers and models all sit in one board.
+        <p class="body" style="margin:0;max-width:none">
+          Gift or rent your pieces, and creators apply to you.<br>
+          Influencers, photographers and models sit in one board.
         </p>
-        <p class="body" style="margin:0">
-          Applications, matches and deliverables are tracked per campaign, so a run and
-          the campaign behind it stay attached to each other.
+        <p class="body" style="margin:0;max-width:none">
+          Applications, matches and deliverables tracked per campaign,<br>
+          so a run and the campaign behind it stay attached.
         </p>
       </div>
       <div class="plates" id="plates"></div>
@@ -709,22 +716,59 @@
 
   /* ── product ledger ── */
   (function(){
-    var box=$("#ledger"), active=0;
+    var box=$("#ledger"), chosen=false, cycle=0, timer=null;
+
     PRODUCTS.forEach(function(p,i){
       var b=el("button",
         '<span class="thumb"><img src="'+p.img+'" alt="'+p.name+'" loading="lazy"></span>'+
         '<span class="cap"><b>'+p.name+'</b><i>'+p.note+'</i></span>');
-      if(i===0) b.className="on";
-      b.setAttribute("aria-pressed", i===0?"true":"false");
+      b.setAttribute("aria-pressed","false");
       b.addEventListener("click",function(){
-        active=i;
+        chosen=true; stop();
         Array.prototype.forEach.call(box.children,function(c,j){
+          c.classList.remove("cycle");
           c.classList.toggle("on", j===i);
           c.setAttribute("aria-pressed", j===i?"true":"false");
         });
       });
       box.appendChild(b);
     });
+
+    function paint(){
+      Array.prototype.forEach.call(box.children,function(c,j){
+        c.classList.toggle("cycle", j===cycle);
+      });
+    }
+    function start(){
+      if(chosen||timer) return;
+      paint();
+      timer=setInterval(function(){
+        cycle=(cycle+1)%PRODUCTS.length;
+        paint();
+      },1800);
+    }
+    function stop(){
+      if(timer){ clearInterval(timer); timer=null; }
+      Array.prototype.forEach.call(box.children,function(c){ c.classList.remove("cycle"); });
+    }
+
+    // pause while the visitor is interacting, resume when they leave
+    box.addEventListener("mouseenter",function(){ if(timer){clearInterval(timer);timer=null;} });
+    box.addEventListener("mouseleave",function(){ if(!chosen) start(); });
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){
+      box.children[0].classList.add("on");
+      box.children[0].setAttribute("aria-pressed","true");
+    } else if("IntersectionObserver" in window){
+      // only run while the section is actually on screen
+      var io=new IntersectionObserver(function(en){
+        en.forEach(function(e){ e.isIntersecting ? start() : stop(); });
+      },{threshold:0.25});
+      io.observe(box);
+    } else {
+      start();
+    }
   })();
 
   /* ── spec hotspots ── */
