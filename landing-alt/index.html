@@ -55,8 +55,12 @@
   /* type: big, tight, left-aligned. never centred. */
   .display{font-family:var(--serif);font-weight:400;letter-spacing:-2px;line-height:0.94;
     margin:0;font-size:clamp(52px,8.4vw,124px)}
-  .h-sec{font-family:var(--serif);font-weight:400;letter-spacing:-1px;line-height:1.02;
-    margin:0 0 22px;font-size:clamp(34px,4.6vw,60px);max-width:15ch}
+  .h-sec{font-family:var(--serif);font-weight:400;letter-spacing:-1px;line-height:1.04;
+    margin:0 0 22px;font-size:clamp(32px,4.4vw,58px);text-wrap:balance}
+  /* headlines that must hold one line, shrinking rather than wrapping */
+  .h-one{white-space:nowrap;font-size:clamp(26px,4.2vw,58px)}
+  /* headlines that break at a chosen point */
+  .h-two br{display:inline}
   .lede{font-size:19px;line-height:1.55;color:var(--ink-muted);max-width:52ch;margin:0}
   .body{font-size:16px;line-height:1.7;color:var(--ink-muted);max-width:60ch}
 
@@ -219,13 +223,12 @@
     .brief-split{grid-template-columns:1fr!important}
     .brief-split>div:first-child{border-right:none!important;border-bottom:1px solid var(--hair)}
     .stages{grid-template-columns:repeat(3,1fr)!important}
-    .close-split{grid-template-columns:1fr!important;gap:32px!important}
   }
   @media (max-width:860px){
+    /* nowrap would overflow at this width - allow the break, keep it tight */
+    .h-one{white-space:normal;font-size:clamp(26px,7.4vw,40px)}
     .two-col{grid-template-columns:1fr!important;gap:18px!important}
     .stages{grid-template-columns:repeat(2,1fr)!important}
-    .pull{grid-template-columns:1fr!important}
-    .pull-q{padding-left:0!important}
     .plates{grid-template-columns:1fr!important}
     .shell{padding:0 20px}
     .hdr{padding:0 20px;gap:14px}
@@ -285,7 +288,7 @@
       </p>
       <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
         <button class="cta stitched js-apply">Get Access</button>
-        <a href="#make" class="cta-ghost">How Make works</a>
+        <a href="#make" class="cta-ghost">Explore MAKE</a>
       </div>
     </div>
     <div class="hero-r">
@@ -315,7 +318,7 @@
       </div>
     </div>
     <div class="content" data-r>
-      <h2 class="h-sec">What are you making?</h2>
+      <h2 class="h-sec h-one">What are you making?</h2>
       <p class="body" style="margin:0 0 34px">
         Every project starts with a category. It sets the questions we ask next and the
         factories we take it to.
@@ -346,7 +349,7 @@
       </div>
     </div>
     <div class="content" data-r>
-      <h2 class="h-sec">The document your factory actually needs.</h2>
+      <h2 class="h-sec h-two">The document your factory<br>actually needs.</h2>
       <p class="body" style="margin:0 0 38px">
         Every project becomes a production specification - measurements, fabric, print
         placement, label. Tap a point to see what we define.
@@ -383,7 +386,7 @@
       </div>
     </div>
     <div class="content" data-r>
-      <h2 class="h-sec">Zero inventory. Production from one piece.</h2>
+      <h2 class="h-sec h-two">Zero inventory.<br>Production from one piece.</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 40px" class="two-col">
         <p class="body" style="margin:0">
           A production spec built from your answers, not a blank form. Reviewed by us,
@@ -468,13 +471,12 @@
 
 <!-- SECTION: pull quote -->
 <div class="shell rule-top">
-  <div style="padding:72px 0 76px;display:grid;grid-template-columns:200px 1fr" class="pull">
-    <div></div>
-    <blockquote data-r style="margin:0;padding-left:56px" class="pull-q">
+  <div style="padding:96px 0 100px" class="pull">
+    <blockquote data-r style="margin:0;text-align:center" class="pull-q">
       <p class="display" style="font-size:clamp(34px,5vw,66px);letter-spacing:-1.4px;line-height:1.06;margin:0 0 20px">
         Making it isn't<br>where it ends.
       </p>
-      <p class="body" style="margin:0;font-size:17px">
+      <p class="body" style="margin:0 auto;font-size:17px;max-width:46ch">
         Items produced through Make continue into Showroom.
       </p>
     </blockquote>
@@ -492,7 +494,7 @@
       </div>
     </div>
     <div class="content" data-r>
-      <h2 class="h-sec">Made it. Now put it on people.</h2>
+      <h2 class="h-sec h-one">Made it. Now put it on people.</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin:0 0 38px" class="two-col">
         <p class="body" style="margin:0">
           Gift or rent your pieces - creators apply to you, rather than you chasing them.
@@ -562,7 +564,7 @@
       </div>
     </div>
     <div class="content" data-r style="padding-bottom:76px">
-      <h2 class="h-sec" style="font-size:clamp(28px,3.4vw,42px)">Every application is reviewed.</h2>
+      <h2 class="h-sec h-one" style="font-size:clamp(24px,3.2vw,42px)">Every application is reviewed.</h2>
       <p class="body" style="margin:0 0 32px">
         We read each one so factories receive briefs they can actually quote. It usually
         takes two business days, and we'll tell you either way.
@@ -580,19 +582,14 @@
 <!-- SECTION: closing -->
 <div class="closing">
   <div class="shell">
-    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:end;
-      padding:88px 0 92px" class="close-split">
-      <div>
-        <h2 class="display" style="font-size:clamp(40px,6.4vw,88px);letter-spacing:-1.8px;margin:0 0 24px">
-          Start with your<br>first piece.
-        </h2>
-        <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.66);margin:0;max-width:44ch">
-          One garment is enough to begin. Apply and we'll take it from there.
-        </p>
-      </div>
-      <div style="display:flex;justify-content:flex-start;padding-bottom:8px">
-        <button class="cta stitched js-apply" style="padding:19px 40px;font-size:16px">Get Access</button>
-      </div>
+    <div style="padding:100px 0 104px;text-align:center" class="close-split">
+      <h2 class="display" style="font-size:clamp(40px,6.4vw,88px);letter-spacing:-1.8px;margin:0 0 24px">
+        Start with your<br>first piece.
+      </h2>
+      <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.66);margin:0 auto 40px;max-width:44ch">
+        One garment is enough to begin. Apply and we'll take it from there.
+      </p>
+      <button class="cta stitched js-apply" style="padding:19px 42px;font-size:16px">Get Access</button>
     </div>
   </div>
 </div>
