@@ -97,7 +97,7 @@
     border-bottom:1px solid var(--rule)}
   .hero-l{padding:76px 56px 64px 0;display:flex;flex-direction:column;justify-content:center}
   .hero-r{position:relative;border-left:1px solid var(--hair);min-height:560px;overflow:hidden}
-  .hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 22%}
+  .hero-r img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0%}
   .kicker{display:flex;align-items:center;gap:14px;margin-bottom:28px}
   .kicker span{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
   .kicker i{flex:1;height:1px;background:var(--rule);font-style:normal;max-width:88px}
@@ -227,6 +227,9 @@
   @media (max-width:860px){
     /* nowrap would overflow at this width - allow the break, keep it tight */
     .h-one{white-space:normal;font-size:clamp(26px,7.4vw,40px)}
+    .pull-q .display{white-space:normal!important;font-size:clamp(28px,8vw,42px)!important}
+    .close-split h2{white-space:normal!important;font-size:clamp(32px,8.4vw,48px)!important}
+    .close-split p{white-space:normal!important;max-width:38ch}
     .two-col{grid-template-columns:1fr!important;gap:18px!important}
     .stages{grid-template-columns:repeat(2,1fr)!important}
     .plates{grid-template-columns:1fr!important}
@@ -263,7 +266,7 @@
       <img src="assets/stitchify-logo-dark.png" alt="Stitchify" style="height:24px;width:auto">
     </a>
     <nav>
-      <a href="#make">Make</a>
+      <a href="#make">MAKE</a>
       <a href="#showroom">Showroom</a>
       <a href="guides.html">Guides</a>
       <a href="#faq">FAQ</a>
@@ -280,7 +283,7 @@
 <div class="shell">
   <div class="hero">
     <div class="hero-l">
-      <div class="kicker"><i></i><span>Make × Showroom</span></div>
+      <div class="kicker"><i></i><span>MAKE × Showroom</span></div>
       <h1 class="display">Factory&nbsp;quality,<br>from one piece.</h1>
       <p class="lede" style="margin:30px 0 36px">
         Tell us what you're making. We turn it into a real production spec,<br>
@@ -381,7 +384,7 @@
     <div class="rail">
       <div class="rail-inner">
         <span class="idx">03</span>
-        <span class="rail-label">Make</span>
+        <span class="rail-label">MAKE</span>
         <div class="rail-meta">Production from a single piece, with no stock held up front.</div>
       </div>
     </div>
@@ -473,11 +476,12 @@
 <div class="shell rule-top">
   <div style="padding:96px 0 100px" class="pull">
     <blockquote data-r style="margin:0;text-align:center" class="pull-q">
-      <p class="display" style="font-size:clamp(34px,5vw,66px);letter-spacing:-1.4px;line-height:1.06;margin:0 0 20px">
-        Making it isn't<br>where it ends.
+      <p class="display" style="font-size:clamp(28px,5.2vw,66px);letter-spacing:-1.4px;
+        line-height:1.06;margin:0 0 20px;white-space:nowrap">
+        Making it isn't where it ends.
       </p>
       <p class="body" style="margin:0 auto;font-size:17px;max-width:46ch">
-        Items produced through Make continue into Showroom.
+        Items produced through MAKE continue into Showroom.
       </p>
     </blockquote>
   </div>
@@ -583,10 +587,12 @@
 <div class="closing">
   <div class="shell">
     <div style="padding:100px 0 104px;text-align:center" class="close-split">
-      <h2 class="display" style="font-size:clamp(40px,6.4vw,88px);letter-spacing:-1.8px;margin:0 0 24px">
-        Start with your<br>first piece.
+      <h2 class="display" style="font-size:clamp(30px,5.6vw,80px);letter-spacing:-1.6px;
+        margin:0 0 24px;white-space:nowrap">
+        Start with your first piece.
       </h2>
-      <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,0.66);margin:0 auto 40px;max-width:44ch">
+      <p style="font-size:clamp(14px,1.7vw,18px);line-height:1.6;color:rgba(255,255,255,0.66);
+        margin:0 auto 40px;white-space:nowrap">
         One garment is enough to begin. Apply and we'll take it from there.
       </p>
       <button class="cta stitched js-apply" style="padding:19px 42px;font-size:16px">Get Access</button>
@@ -600,14 +606,14 @@
   <div class="shell" style="display:flex;flex-wrap:wrap;gap:28px;align-items:center;padding:34px 40px">
     <img src="assets/stitchify-logo-light.png" alt="Stitchify" style="height:21px;width:auto">
     <div style="display:flex;gap:26px;flex-wrap:wrap;font-size:13px;margin-left:auto">
-      <a href="#make" style="color:rgba(255,255,255,0.5)">Make</a>
+      <a href="#make" style="color:rgba(255,255,255,0.5)">MAKE</a>
       <a href="#showroom" style="color:rgba(255,255,255,0.5)">Showroom</a>
       <a href="guides.html" style="color:rgba(255,255,255,0.5)">Guides</a>
       <a href="#faq" style="color:rgba(255,255,255,0.5)">FAQ</a>
       <a href="mailto:support@stitchify.ai" style="color:rgba(255,255,255,0.5)">support@stitchify.ai</a>
     </div>
     <div style="flex-basis:100%;font-size:11.5px;color:rgba(255,255,255,0.3);
-      letter-spacing:0.4px">© 2026 Stitchify</div>
+      letter-spacing:0.4px;text-align:center">© 2026 Stitchify</div>
   </div>
 </footer>
 
@@ -685,14 +691,14 @@
   ];
 
   var FAQS=[
-    ["Can I really order just one piece?","Yes. Make is built for sample and single-piece runs. Most factories won't quote an unknown brand under 500 units, so we work with partners who accept small lots and have agreed those terms in advance. Your first piece is a real order, not a favour."],
+    ["Can I really order just one piece?","Yes. MAKE is built for sample and single-piece runs. Most factories won't quote an unknown brand under 500 units, so we work with partners who accept small lots and have agreed those terms in advance. Your first piece is a real order, not a favour."],
     ["What does it cost to get started?","Nothing. Applying, building a production spec and having it reviewed are all free. You only pay once you approve a quote and place an order, so you can see the full cost of a run before committing to anything."],
     ["What is a production spec, and why does it matter?","It's the document a factory needs before it can quote you: graded measurements, fabric weight and composition, print method and placement, labelling and packing. Send a factory an idea and you'll wait a week for questions. Send a complete spec and you get a price."],
     ["I've never had anything manufactured before. Is that a problem?","No - that's who this is built for. You answer questions about what you're making in plain language, and we turn those answers into the technical document. You don't need to know what a tolerance is, or how to grade a size run."],
     ["How long does manufacturing take?","For around 100 pieces with screen printing, expect 25-30 days including quality inspection. Knitwear and structured outerwear take longer, sampling is quicker. Your project page shows each stage - Ordered, Production, Inspection, Shipping, Delivered - as it completes."],
     ["Can I change the spec after submitting it?","Freely, right up until an order is placed. Once you've requested a quote the spec locks so the factory is pricing a fixed target. Withdraw the request and it unlocks again."],
     ["What is Showroom, and do I have to use it?","Showroom is where you promote what you've made. Post a campaign against a finished item and creators - influencers, photographers and models - apply to you. It's entirely optional; the two halves work independently."],
-    ["Why can I only run campaigns on items made through Make?","Because we can verify those items exist, confirm the stock is real, and stand behind what a creator is being asked to promote. It protects you from a campaign built on stock that hasn't arrived, and protects creators from promoting something that never ships."],
+    ["Why can I only run campaigns on items made through MAKE?","Because we can verify those items exist, confirm the stock is real, and stand behind what a creator is being asked to promote. It protects you from a campaign built on stock that hasn't arrived, and protects creators from promoting something that never ships."],
     ["What's the difference between gifting and rental?","With gifting the creator keeps the piece, which suits everyday items and simpler shoots. With rental it comes back after the shoot, which makes sense for higher-value pieces or limited stock - just build return shipping into your timeline."],
     ["When am I charged for a campaign?","When you approve a creator, not when you publish. The reward is held from that point and released once deliverables are submitted and you've confirmed them. If a creator misses the deadline, the campaign is flagged and the held amount returns to you."]
   ];
@@ -808,9 +814,9 @@
       var n=(i+1)<10?"0"+(i+1):String(i+1);
       var q=el("button",'<span class="qn">'+n+'</span><span>'+pair[0]+
               '</span><span class="sign" aria-hidden="true">+</span>');
-      q.className="q"; q.setAttribute("aria-expanded", i===0?"true":"false");
+      q.className="q"; q.setAttribute("aria-expanded","false");
       q.setAttribute("aria-controls","a-"+i);
-      var a=el("div",pair[1]); a.className="a"+(i===0?" open":""); a.id="a-"+i;
+      var a=el("div",pair[1]); a.className="a"; a.id="a-"+i;
       q.addEventListener("click",function(){
         var open=q.getAttribute("aria-expanded")==="true";
         Array.prototype.forEach.call(box.children,function(r){
